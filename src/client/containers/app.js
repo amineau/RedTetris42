@@ -1,10 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import  Board  from '../components/board'
 
 
 const App = ({message}) => {
   return (
-    <span>{message}</span>
+    <div>
+      <span>{message} + prout</span>
+      <Board />
+    </div>
   )
 }
 

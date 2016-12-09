@@ -1,0 +1,32 @@
+body {
+    background-color:darkolivegreen
+}
+
+.board {
+    display: flex;
+    border: solid;
+    flex-wrap: wrap;
+    width: 200px;
+    height: 400px;
+}
+
+.cell {
+    width: 20px;
+    height: 20px;
+}
+
+.red {
+    background-color: darkred;
+}
+
+.blue {
+    background-color: darkblue;
+}
+
+.green {
+    background-color: seagreen;
+}
+
+.yellow {
+    background-color: yellow;
+}
