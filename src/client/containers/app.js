@@ -1,22 +1,30 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import  Board  from '../components/board'
+import * as allActions from '../actions'
 
-
-const App = ({message}) => {
+const App = ({piece,test,actions}) => {
   return (
     <div>
-      <span>{message} + prout</span>
-      <Board />
+      <Board piece={piece} test={test} />
+      <button onClick={actions.fall}>FALL</button>
     </div>
   )
 }
 
 const mapStateToProps = (state) => {
   return {
-    message: state.message
+    piece: state.piece,
+    blocs: state.blocs,
+    test: state.test
   }
 }
-export default connect(mapStateToProps, null)(App)
+
+const mapDispatchToProps = dispatch => ({
+    actions: bindActionCreators(allActions, dispatch)
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(App)
 
 

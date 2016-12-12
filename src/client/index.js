@@ -5,22 +5,24 @@ import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'                                                                                                                                                    
 import {storeStateMiddleWare} from './middleware/storeStateMiddleWare'
-import reducer from './reducers'
+import move from './reducers'
 import App from './containers/app'
-import {alert} from './actions/alert'
 
-const initialState = {}
+const initialState = 
+{
+  piece: {81: "blue", 82: "blue", 83: "blue", 84: "blue"},
+  blocs: {},
+  test: 'prout'
+};
 
 const store = createStore(
-  reducer,
+  move,
   initialState,
   applyMiddleware(thunk, createLogger())
 )
 
 ReactDom.render((
   <Provider store={store}>
-    <App/>
+    <App store={store}/>
   </Provider>
 ), document.getElementById('tetris'))
-
-store.dispatch(alert('Soon, will be here a fantastic Tetris ...'))
