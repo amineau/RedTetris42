@@ -10,7 +10,10 @@ import App from './containers/app'
 
 const initialState = 
 {
-  piece: {81: "blue", 82: "blue", 83: "blue", 84: "blue"},
+  piece: {
+      crd: [81, 82, 83, 84],
+      color: "blue"      
+    },
   blocs: {},
   test: 'prout'
 };
@@ -23,6 +26,6 @@ const store = createStore(
 
 ReactDom.render((
   <Provider store={store}>
-    <App store={store}/>
+    <App />
   </Provider>
 ), document.getElementById('tetris'))

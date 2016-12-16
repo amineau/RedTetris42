@@ -1,20 +1,17 @@
 import { FALL } from '../constants/ActionTypes'
-var _ = require('lodash');
 
 const move = (state = {}, action) => {
     switch(action.type){
         case FALL:
-            // return {
-            //     piece: _.forEach(piece, function(value, key){
-            //         key++;
-            //     })
-            // }
-            // return {
-            //     piece: _.forEach(state.piece, function(value, key){
-            //         value = 'green'
-            //     })
-            // }
-            return {test: "caca"}
+            return {
+                ...state,
+                piece: {
+                    ...state.piece,
+                    crd: [...state.piece.crd.map((n) => {
+                        return n += 10;
+                    })]
+                }
+            }
         // case ROTATE:
         //     return state
         // case LEFT:
