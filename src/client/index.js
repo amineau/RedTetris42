@@ -14,7 +14,7 @@ const initialState =
       crd: [81, 82, 83, 84],
       color: "blue"      
     },
-  oldTetros: {},
+  oldTetros: [97, 98],
 };
 
 const store = createStore(

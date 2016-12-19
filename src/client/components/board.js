@@ -5,7 +5,13 @@ class Board extends React.Component {
     render() {
         const cells = [];
         for (let i = 0; i < 200; i++) {
-            cells.push(<Cell key={i} nbr={i} tetro={this.props.tetro}/>)
+            cells.push(
+                <Cell
+                    key={i}
+                    nbr={i}
+                    tetro={this.props.tetro}
+                    structure={this.props.structure} />
+            )
         }
         return (
             <div className="board">

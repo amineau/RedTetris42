@@ -5,3 +5,9 @@ export const fall = () => {
         type: types.FALL,
     }
 }
+
+export const dive = () => {
+    return {
+        type: types.DIVE,
+    }
+}

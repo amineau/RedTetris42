@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux'
 import  Board  from '../components/board'
 import * as allActions from '../actions'
 
-const App = ({ tetro, actions }) => {
+const App = ({ tetro, structure, actions }) => {
   return (
     <div>
-      <Board tetro={tetro} />
+      <Board tetro={tetro} structure={structure}/>
       <button onClick={actions.fall}>FALL</button>
       <button onClick={actions.dive}>DIVE</button>
     </div>

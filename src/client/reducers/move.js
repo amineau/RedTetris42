@@ -1,4 +1,4 @@
-import { FALL } from '../constants/ActionTypes'
+import { FALL, DIVE } from '../constants/ActionTypes'
 
 const move = (state = {}, action) => {
     switch(action.type){
@@ -18,8 +18,17 @@ const move = (state = {}, action) => {
         //     return state
         // case RIGHT:
         //     return state
-        // case DIVE:
-        //     return state
+        case DIVE:
+            return {
+                ...state,
+                currentTetro: {
+                    ...state.currentTetro,
+                    crd: [...state.currentTetro.crd.map((n) => {
+                        if (state.oldTetro.find(n+10))
+                            return n += 10;
+                    })]
+                }
+            }
         default:
             return state
     }
