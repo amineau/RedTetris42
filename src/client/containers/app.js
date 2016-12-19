@@ -4,20 +4,20 @@ import { bindActionCreators } from 'redux'
 import  Board  from '../components/board'
 import * as allActions from '../actions'
 
-const App = ({piece,test,actions}) => {
+const App = ({ tetro, actions }) => {
   return (
     <div>
-      <Board piece={piece} test={test} />
+      <Board tetro={tetro} />
       <button onClick={actions.fall}>FALL</button>
+      <button onClick={actions.dive}>DIVE</button>
     </div>
   )
 }
 
 const mapStateToProps = (state) => {
   return {
-    piece: state.piece,
-    blocs: state.blocs,
-    test: state.test
+    tetro: state.currentTetro,
+    structure: state.oldTetros,
   }
 }
 

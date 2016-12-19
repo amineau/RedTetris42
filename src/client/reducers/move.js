@@ -5,9 +5,9 @@ const move = (state = {}, action) => {
         case FALL:
             return {
                 ...state,
-                piece: {
-                    ...state.piece,
-                    crd: [...state.piece.crd.map((n) => {
+                currentTetro: {
+                    ...state.currentTetro,
+                    crd: [...state.currentTetro.crd.map((n) => {
                         return n += 10;
                     })]
                 }

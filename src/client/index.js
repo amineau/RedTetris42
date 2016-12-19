@@ -10,12 +10,11 @@ import App from './containers/app'
 
 const initialState = 
 {
-  piece: {
+  currentTetro: {
       crd: [81, 82, 83, 84],
       color: "blue"      
     },
-  blocs: {},
-  test: 'prout'
+  oldTetros: {},
 };
 
 const store = createStore(
