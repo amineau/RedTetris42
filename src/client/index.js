@@ -11,10 +11,10 @@ import App from './containers/app'
 const initialState = 
 {
   currentTetro: {
-      crd: [81, 82, 83, 84],
+      crd: [81, 82, 91, 71],
       color: "blue"      
     },
-  oldTetros: [97, 98],
+  oldTetros: [190, 191, 192, 193, 194, 195, 196, 197, 198, 199],
 };
 
 const store = createStore(

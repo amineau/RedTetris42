@@ -11,3 +11,15 @@ export const dive = () => {
         type: types.DIVE,
     }
 }
+
+export const left = () => {
+    return {
+        type: types.LEFT,
+    }
+}
+
+export const right = () => {
+    return {
+        type: types.RIGHT,
+    }
+}

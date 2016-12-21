@@ -10,6 +10,8 @@ const App = ({ tetro, structure, actions }) => {
       <Board tetro={tetro} structure={structure}/>
       <button onClick={actions.fall}>FALL</button>
       <button onClick={actions.dive}>DIVE</button>
+      <button onClick={actions.left}>LEFT</button>
+      <button onClick={actions.right}>RIGHT</button>
     </div>
   )
 }
