@@ -14,11 +14,24 @@ function addLine(n) {
     return n += 10; 
 }
 
+function concatCrdStruct(e) {
+    let res = [];
+    e.forEach((el) => {
+        res = res.concat(el.crd);
+    });
+    return res;
+}
+
+function pickRandom(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
 const move = (state = {}, action) => {
     switch(action.type){
         case FALL:
             const nextMove = [...state.currentTetro.crd.map(addLine)];
-            const res = array.intersection(nextMove, [...state.oldTetros])
+            const struct = concatCrdStruct([...state.oldTetros]);
+            const res = array.intersection(nextMove, struct)
             if (res.length == 0) {
                 return {
                     ...state,
@@ -30,7 +43,18 @@ const move = (state = {}, action) => {
                     }
                 }
             }
-            else return {...state}
+            else {
+                const newOld = [...state.oldTetros.concat([{...state.currentTetro}])];
+                return {
+                    ...state, 
+                    currentTetro: {
+                        crd: pickRandom([[81, 82, 91, 71], [81, 82, 83, 84], [81, 82, 83, 93]]),
+                        color: pickRandom(["red", "blue", "green", "yellow"])
+                    },
+                    oldTetros: newOld
+
+                }
+            }
         // case ROTATE:
         //     return state
         case LEFT:

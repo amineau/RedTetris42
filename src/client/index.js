@@ -12,9 +12,20 @@ const initialState =
 {
   currentTetro: {
       crd: [81, 82, 91, 71],
-      color: "blue"      
+      color: "blue",
+      type: "t",
+      position: 0
     },
-  oldTetros: [190, 191, 192, 193, 194, 195, 196, 197, 198, 199],
+  oldTetros: [
+      {
+        crd: [190, 191, 192, 193, 194, 195, 196, 197, 198, 199],
+        color: "blue"
+      },
+      {
+        crd: [180, 181, 182, 183, 184, 185, 186, 187, 188, 189],
+        color: "red"
+      }
+    ]
 };
 
 const store = createStore(
