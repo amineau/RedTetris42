@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import  Board  from '../components/board'
+import  Shadow  from '../components/shadow'
 import * as allActions from '../actions'
 
 let flag = 0;
@@ -28,8 +29,7 @@ const App = ({ tetro, structure, actions }) => {
       <Board tetro={tetro} structure={structure} actions={actions.fall}/>
       <button onClick={actions.fall}>FALL</button>
       <button onClick={actions.dive}>DIVE</button>
-      <button onClick={actions.left}>LEFT</button>
-      <button onClick={actions.right}>RIGHT</button>
+      <Shadow structure={structure} />
     </div>
   )
 }
