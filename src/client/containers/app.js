@@ -6,8 +6,15 @@ import  Shadow  from '../components/shadow'
 import * as allActions from '../actions'
 
 let flag = 0;
+let start = 0;
 
 const App = ({ tetro, structure, actions }) => {
+
+  if (start == 0) {
+    setInterval(() => actions.fall(), 1000);
+    start = 1;
+  }
+
   window.addEventListener("keydown",(e) => {
     switch (e.keyCode) {
       case 37:
@@ -24,6 +31,7 @@ const App = ({ tetro, structure, actions }) => {
         break;
     }
   });
+
   return (
     <div>
       <Board tetro={tetro} structure={structure} actions={actions.fall}/>
