@@ -1,4 +1,4 @@
-import { FALL, DIVE, LEFT, RIGHT } from '../constants/ActionTypes'
+import { FALL, DIVE, LEFT, RIGHT, ROTATE} from '../constants/ActionTypes'
 
 var array = require('lodash/array');
 

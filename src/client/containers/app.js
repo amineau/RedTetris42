@@ -16,27 +16,32 @@ const App = ({ tetro, structure, actions }) => {
   }
 
   window.addEventListener("keydown",(e) => {
-    switch (e.keyCode) {
-      case 37:
-        if (flag == 0)
+    if (flag == 0) {
+      switch (e.keyCode) {
+        case 37:
           actions.left();
-        flag = 1;
-        setTimeout(() => {flag = 0}, 500)
-        break;
-      case 39:
-        if (flag == 0)
+          break;
+        case 39:
           actions.right();
-        flag = 1;
-        setTimeout(() => {flag = 0}, 500)
-        break;
+          break;
+        case 40:
+          actions.fall();
+          break;
+        case 38:
+          actions.rotate();
+          break;
+        case 40:
+          actions.dive();
+          break;
+      }
+      flag = 1;
+      setTimeout(() => {flag = 0}, 500)
     }
   });
 
   return (
     <div>
       <Board tetro={tetro} structure={structure} actions={actions.fall}/>
-      <button onClick={actions.fall}>FALL</button>
-      <button onClick={actions.dive}>DIVE</button>
       <Shadow structure={structure} />
     </div>
   )

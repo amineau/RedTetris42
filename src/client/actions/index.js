@@ -23,3 +23,9 @@ export const right = () => {
         type: types.RIGHT,
     }
 }
+
+export const rotate = () => {
+    return {
+        type: types.ROTATE,
+    }
+}
