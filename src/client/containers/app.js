@@ -4,20 +4,17 @@ import { bindActionCreators } from 'redux'
 import  Board  from '../components/board'
 import  Shadow  from '../components/shadow'
 import * as allActions from '../actions'
-import ping from '../actions/server'
-import io from 'socket.io-client'
+import { ping } from '../actions/server'
 
 let flag = 0;
 let start = 0;
 
-const App = ({ tetro, structure, actions }) => {
+const App = ({ socket, currentTetro, nextTetro, structure, actions }) => {
 
   if (start == 0) {
     setInterval(() => actions.fall(), 1000);
     start = 1;
   }
-  
-  const socket = io.connect('http://localhost:3004');
 
   window.addEventListener("keydown",(e) => {
     if (flag == 0) {
@@ -38,7 +35,8 @@ const App = ({ tetro, structure, actions }) => {
           actions.dive();
           break;
         case 8:
-          ping();
+          console.log(ping())
+          socket.emit('action', ping());
           break;
       }
       flag = 1;
@@ -48,7 +46,7 @@ const App = ({ tetro, structure, actions }) => {
 
   return (
     <div>
-      <Board tetro={tetro} structure={structure} actions={actions.fall}/>
+      <Board tetro={currentTetro} structure={structure} actions={actions.fall}/>
       <Shadow structure={structure} />
     </div>
   )
@@ -56,7 +54,9 @@ const App = ({ tetro, structure, actions }) => {
 
 const mapStateToProps = (state) => {
   return {
-    tetro: state.currentTetro,
+    socket: state.socket,
+    currentTetro: state.currentTetro,
+    nextTetro: state.nextTetro,
     structure: state.oldTetros,
   }
 }
@@ -66,5 +66,3 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(App)
-
-

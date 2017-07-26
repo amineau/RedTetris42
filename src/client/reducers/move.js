@@ -11,7 +11,7 @@ function isOnRightSide(e) {
 }
 
 function addLine(n) {
-    return n += 10; 
+    return n += 10;
 }
 
 function concatCrdStruct(e) {
@@ -45,15 +45,25 @@ const move = (state = {}, action) => {
             }
             else {
                 const newOld = [...state.oldTetros.concat([{...state.currentTetro}])];
+                const currentTetro = state.nextTetro
+                state.socket.emit('action', {type: 'nextTetro', index: 1})
+                state.socket.on('action', (action) => {
+                  if (action.type === 'nextTetro'){
+                     state.nextTetro = action.tetro
+                     console.log('return', state.nextTetro)
+                  }
+                })
                 return {
-                    ...state, 
+                    ...state,
                     currentTetro: {
-                        crd: pickRandom([[81, 82, 91, 71], [81, 82, 83, 84], [81, 82, 83, 93]]),
+                        crd: currentTetro.crd,
+                        type: currentTetro.type,
                         color: pickRandom(["red", "blue", "green", "yellow"])
                     },
                     oldTetros: newOld
-
                 }
+
+
             }
         // case ROTATE:
         //     return state
