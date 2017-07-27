@@ -1,10 +1,9 @@
 const params = {
   server:{
-     host: '0.0.0.0'
+     host: '127.0.0.1'
    , port: 3004
-   , get url(){ return 'http://' + this.host + ':' + this.port } 
+   , get url(){ return 'http://' + this.host + ':' + this.port }
   },
 }
 
 module.exports = params
-

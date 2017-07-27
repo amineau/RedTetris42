@@ -16,6 +16,7 @@ const App = ({ socket, currentTetro, nextTetro, structure, actions }) => {
     start = 1;
   }
 
+
   window.addEventListener("keydown",(e) => {
     if (flag == 0) {
       switch (e.keyCode) {
