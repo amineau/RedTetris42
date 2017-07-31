@@ -95,8 +95,9 @@ export class StackTetros {
 
   _getTetroRandom () {
     const index = Math.floor(Math.random()*this._tetros.length)
+    const size = this._tetros[index].matrix.size()[1] - 1
     this._tetros[index].crd = {
-      x: 3,
+      x: size + Math.floor(Math.random()* (9 - size)),
       y: 15,
     }
     return this._tetros[index]
