@@ -1,98 +1,77 @@
 import { FALL, DIVE, LEFT, RIGHT, ROTATE} from '../constants/ActionTypes'
+import math from 'mathjs'
 
 var array = require('lodash/array');
-
-function isOnLeftSide(e) {
-    return e % 10 == 0;
-}
-
-function isOnRightSide(e) {
-    return e % 10 == 9;
-}
-
-function addLine(n) {
-    return n += 10; 
-}
-
-function concatCrdStruct(e) {
-    let res = [];
-    e.forEach((el) => {
-        res = res.concat(el.crd);
-    });
-    return res;
-}
 
 function pickRandom(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
+const moveCheck = (state, move = FALL) => {
+    return true
+}
+
 const move = (state = {}, action) => {
+    let newState = {...state}
     switch(action.type){
         case FALL:
-            const nextMove = [...state.currentTetro.crd.map(addLine)];
-            const struct = concatCrdStruct([...state.oldTetros]);
-            const res = array.intersection(nextMove, struct)
-            if (res.length == 0) {
+            if (moveCheck(state.tetro)){
                 return {
                     ...state,
-                    currentTetro: {
-                        ...state.currentTetro,
-                        crd: [...state.currentTetro.crd.map((n) => {
-                            return n += 10;
-                        })]
+                    tetro: {
+                        ...state.tetro,
+                        crd: {
+                            ...state.tetro.crd,
+                            y: state.tetro.crd.y - 1                        
+                        }
                     }
                 }
             }
-            else {
-                const newOld = [...state.oldTetros.concat([{...state.currentTetro}])];
-                return {
-                    ...state, 
-                    currentTetro: {
-                        crd: pickRandom([[81, 82, 91, 71], [81, 82, 83, 84], [81, 82, 83, 93]]),
-                        color: pickRandom(["red", "blue", "green", "yellow"])
-                    },
-                    oldTetros: newOld
 
+        case ROTATE:
+            const identity = math.matrix([
+                [0,0,1],
+                [0,1,0],
+                [1,0,0],
+                ])
+            return {
+                ...state,
+                tetro: {
+                    ...state.tetro,
+                    matrix: math.multiply(state.tetro.matrix, identity)
                 }
             }
-        // case ROTATE:
-        //     return state
         case LEFT:
-            if (!state.currentTetro.crd.find(isOnLeftSide)) {
+            if (state.tetro.crd.x < 9) {
                 return {
-                    ...state,
-                    currentTetro: {
-                        ...state.currentTetro,
-                        crd: [...state.currentTetro.crd.map((n) => {
-                            return n -= 1;
-                        })]
+                ...state,
+                tetro: {
+                    ...state.tetro,
+                    crd: {
+                        ...state.tetro.crd,
+                        x: state.tetro.crd.x + 1                        
                     }
                 }
+            }
             }
             else return {...state}
         case RIGHT:
-            if (!state.currentTetro.crd.find(isOnRightSide)) {
+            if (state.tetro.crd.x > state.tetro.matrix.size()[1] - 1) {
                 return {
-                    ...state,
-                    currentTetro: {
-                        ...state.currentTetro,
-                        crd: [...state.currentTetro.crd.map((n) => {
-                            return n += 1;
-                        })]
+                ...state,
+                tetro: {
+                    ...state.tetro,
+                    crd: {
+                        ...state.tetro.crd,
+                        x: state.tetro.crd.x - 1                        
                     }
                 }
+            }
             }
             else return {...state}
         case DIVE:
             return {
                 ...state,
-                currentTetro: {
-                    ...state.currentTetro,
-                    crd: [...state.currentTetro.crd.map((n) => {
-                        if (state.oldTetro.find(n+10))
-                            return n += 10;
-                    })]
-                }
             }
         default:
             return state

@@ -7,21 +7,20 @@ import { Provider } from 'react-redux'
 import {storeStateMiddleWare} from './middleware/storeStateMiddleWare'
 import move from './reducers'
 import App from './containers/app'
+import math from 'mathjs'
+
+let boardInit = [];
+boardInit.length = 200;
+boardInit.fill(0);
 
 const initialState = 
 {
-  currentTetro: {
-      crd: [81, 82, 91, 71],
-      color: "blue",
-      type: "t",
-      position: 0
+  tetro: {
+      type: 3,
+      matrix: math.matrix([[1, 1, 0], [1, 0, 0], [0, 0, 0]]),
+      crd: {x: 9, y: 15},
     },
-  oldTetros: [
-      {
-        crd: [200, 201, 202, 203, 204, 205, 206, 207, 208, 209],
-        color: "blue"
-      },
-    ]
+  board: boardInit,
 };
 
 const store = createStore(

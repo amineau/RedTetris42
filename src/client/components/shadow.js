@@ -1,14 +1,6 @@
 import React from 'react'
 import Cell from './cell'
 
-function concatCrdStruct(e) {
-    let res = [];
-    e.forEach((el) => {
-        res = res.concat(el.crd);
-    });
-    return res;
-}
-
 function findHighestCell(e) {
     let res = [];
     for(let i = 0; i <= 9; i++) {
@@ -32,18 +24,20 @@ function getShadow(e) {
     return res;
 }
 
-const Shadow = ({structure}) => {
-    const crd = concatCrdStruct(structure);
-    const high = findHighestCell(crd);
-    const shadow = getShadow(high);
+const Shadow = ({board}) => {
+    const color = 4
+    const high = findHighestCell(board);
+    let shadow = getShadow(high);
+    shadow.forEach((e) => {
+        e != 0 ? e = color : e = 0;
+    })
+
     const cells = [];
     for (let i = 0; i < 200; i++) {
         cells.push(
             <Cell
                 key={i}
-                nbr={i}
-                tetro={{crd: [-1]}}
-                structure={[{crd :shadow, color: "red"}]} />
+                type={shadow[i]} />
         )
     }
     return (

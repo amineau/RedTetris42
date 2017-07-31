@@ -10,54 +10,46 @@ import io from 'socket.io-client'
 let flag = 0;
 let start = 0;
 
-const App = ({ tetro, structure, actions }) => {
+const App = ({ tetro, board, actions }) => {
 
   if (start == 0) {
     setInterval(() => actions.fall(), 1000);
     start = 1;
   }
-  
-  const socket = io.connect('http://localhost:3004');
 
   window.addEventListener("keydown",(e) => {
     if (flag == 0) {
       switch (e.keyCode) {
         case 37:
-          actions.left();
-          break;
+          actions.left(); break;
         case 39:
-          actions.right();
-          break;
+          actions.right(); break;
         case 40:
-          actions.fall();
-          break;
+          actions.fall(); break;
         case 38:
-          actions.rotate();
-          break;
+          actions.rotate(); break;
         case 40:
-          actions.dive();
-          break;
-        case 8:
-          ping();
-          break;
+          actions.dive(); break;
       }
       flag = 1;
       setTimeout(() => {flag = 0}, 500)
     }
   });
 
+  console.log(tetro)
+
   return (
     <div>
-      <Board tetro={tetro} structure={structure} actions={actions.fall}/>
-      <Shadow structure={structure} />
+      <Board tetro={tetro} board={board} actions={actions.fall}/>
+      <Shadow board={board} />
     </div>
   )
 }
 
 const mapStateToProps = (state) => {
   return {
-    tetro: state.currentTetro,
-    structure: state.oldTetros,
+    tetro: state.tetro,
+    board: state.board,
   }
 }
 
