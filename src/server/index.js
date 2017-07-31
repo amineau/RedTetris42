@@ -1,5 +1,7 @@
 import fs  from 'fs'
 import debug from 'debug'
+import Player from './player'
+import Room from './room'
 
 const logerror = debug('tetris:error')
   , loginfo = debug('tetris:info')
@@ -30,10 +32,10 @@ const initApp = (app, params, cb) => {
 const initEngine = io => {
   io.on('connection', function(socket){
     loginfo("Socket connected: " + socket.id)
-    socket.on('action', (action) => {
-      if(action.type === 'server/ping'){
-        socket.emit('action', {type: 'pong'})
-      }
+    socket.on('init', () => {
+      let player = new Player(socket.id)
+      let room = new Room('test', player)
+      socket.emit('init', {type: 'start', initStack: room.stack})
     })
   })
 }

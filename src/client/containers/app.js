@@ -5,7 +5,6 @@ import  Board  from '../components/board'
 import  Shadow  from '../components/shadow'
 import * as allActions from '../actions'
 import ping from '../actions/server'
-import io from 'socket.io-client'
 
 let flag = 0;
 let start = 0;
@@ -16,8 +15,7 @@ const App = ({ tetro, structure, actions }) => {
     setInterval(() => actions.fall(), 1000);
     start = 1;
   }
-  
-  const socket = io.connect('http://localhost:3004');
+
 
   window.addEventListener("keydown",(e) => {
     if (flag == 0) {

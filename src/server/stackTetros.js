@@ -8,49 +8,49 @@ import math from 'mathjs'
 
 const tetros = [
   {
-    type: "t",
-    crd: math.matrix([
+    type: 1,
+    matrix: math.matrix([
         [ 0, 1, 0 ],
         [ 1, 1, 1 ],
     ])
   },
   {
-    type: "L",
-    crd: math.matrix([
+    type: 2,
+    matrix: math.matrix([
         [ 1, 1, 1 ],
         [ 1, 0, 0 ],
     ])
   },
   {
-    type: "L-inv",
-    crd: math.matrix([
+    type: 3,
+    matrix: math.matrix([
         [ 1, 1, 1 ],
         [ 0, 0, 1 ],
     ])
   },
   {
-    type: "i",
-    crd: math.matrix([
+    type: 4,
+    matrix: math.matrix([
         [ 1, 1, 1, 1 ],
     ])
   },
   {
-    type: "s",
-    crd: math.matrix([
+    type: 5,
+    matrix: math.matrix([
         [ 1, 1, 0 ],
         [ 0, 1, 1 ],
     ])
   },
   {
-    type: "s-inv",
-    crd: math.matrix([
+    type: 6,
+    matrix: math.matrix([
         [ 0, 1, 1 ],
         [ 1, 1, 0 ],
     ])
   },
   {
-    type: "square",
-    crd: math.matrix([
+    type: 7,
+    matrix: math.matrix([
         [ 1, 1 ],
         [ 1, 1 ],
     ])
@@ -94,7 +94,12 @@ export class StackTetros {
   }
 
   _getTetroRandom () {
-    return this._tetros[Math.floor(Math.random()*this._tetros.length)]
+    const index = Math.floor(Math.random()*this._tetros.length)
+    this._tetros[index].crd = {
+      x: 3,
+      y: 15,
+    }
+    return this._tetros[index]
   }
 
   _getNewTetro () {
