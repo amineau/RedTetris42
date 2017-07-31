@@ -7,30 +7,39 @@ import { Provider } from 'react-redux'
 import {storeStateMiddleWare} from './middleware/storeStateMiddleWare'
 import move from './reducers'
 import App from './containers/app'
-import math from 'mathjs'
+import io from 'socket.io-client'
 
 let boardInit = [];
 boardInit.length = 200;
 boardInit.fill(0);
 
-const initialState = 
-{
-  tetro: {
-      type: 3,
-      matrix: math.matrix([[1, 1, 0], [1, 0, 0], [0, 0, 0]]),
-      crd: {x: 9, y: 15},
-    },
-  board: boardInit,
-};
+const socket = io.connect('http://localhost:3004');
 
-const store = createStore(
-  move,
-  initialState,
-  applyMiddleware(thunk, createLogger())
-)
+socket.on('init', action => {
+  if(action.type === 'start'){
+    console.log('ping-pong ok')
+    const initStack = action.initStack
+    const initialState = 
+    {
+      tetro: initStack[0],
+      nextTetro: initStack[1],
+      board: boardInit,
+    };
 
-ReactDom.render((
-  <Provider store={store}>
-    <App />
-  </Provider>
-), document.getElementById('tetris'))
+    console.log(initialState)
+
+    const store = createStore(
+      move,
+      initialState,
+      applyMiddleware(thunk, createLogger())
+    )
+
+    ReactDom.render((
+      <Provider store={store}>
+        <App />
+      </Provider>
+    ), document.getElementById('tetris'))
+  }
+})
+
+socket.emit('init')

@@ -1,4 +1,4 @@
-export class Player {
+export default class Player {
 
   constructor (socketId, name = 'guest') {
     console.log(`Player construct with socketId ${socketId}`)

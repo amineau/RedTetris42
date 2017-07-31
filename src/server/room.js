@@ -1,7 +1,7 @@
 import { StackTetros } from './stackTetros'
 import { Player } from './player'
 
-export class Room {
+export default class Room {
 
   constructor (room, player) {
     this._name = room
