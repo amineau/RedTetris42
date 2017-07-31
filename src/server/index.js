@@ -40,16 +40,15 @@ const initApp = (app, params, cb) => {
     // let room = new Room('toto', player)
 
 
-    // const file = req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../index.html'
-    // const file = '/../../build/bundle.js'
-    // loginfo('file', file)
-    // fs.readFile(__dirname + file, (err, data) => {
-    //   if (err) {
-    //     logerror(err)
-    //     res.writeHead(500)
-    //     return res.end('Error loading index.html')
-    //   }
-      // res.writeHead(200)
+    const file = req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../index.html'
+    loginfo('file', file)
+    fs.readFile(__dirname + file, (err, data) => {
+      if (err) {
+        logerror(err)
+        res.writeHead(500)
+        return res.end('Error loading index.html')
+      }
+      res.writeHead(200)
 
 
 
@@ -80,8 +79,8 @@ const initApp = (app, params, cb) => {
         applyMiddleware(thunk, createLogger())
       )
       const preloadedState = store.getState()
-      res.render('../index.ejs', {preloadedState})
-    // })
+      res.render(file, {preloadedState})
+    })
   }
 
   // app.on('request', handler)
@@ -117,6 +116,9 @@ const initEngine = io => {
 export function create(params){
   const promise = new Promise( (resolve, reject) => {
     const app = Express()
+    // app.use(express.static('public'));
+    // app.use(express.static('files'));
+    // app.use('/static', express.static('public'));
     initApp(app, params, () => {
       const server = require('http').createServer(app)
       let io = require('socket.io')(server)
