@@ -10,6 +10,14 @@ body {
     height: 400px;
 }
 
+.preview {
+    display: flex;
+    border: solid;
+    flex-wrap: wrap;
+    width: 80px;
+    height: 80px;
+}
+
 .cell {
     width: 20px;
     height: 20px;
