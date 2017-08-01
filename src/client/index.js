@@ -25,6 +25,8 @@ socket.on('init', action => {
       tetro: initStack[0],
       nextTetro: initStack[1],
       board: boardInit,
+      index: 0,
+      socket
     };
 
     console.log(initialState)
