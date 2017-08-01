@@ -3,13 +3,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import  Board  from '../components/board'
 import  Shadow  from '../components/shadow'
+import  Preview  from '../components/preview'
 import * as allActions from '../actions'
 import ping from '../actions/server'
 
 let flag = 0;
 let start = 0;
 
-const App = ({ tetro, board, actions }) => {
+const App = ({ tetro, nextTetro, board, actions }) => {
 
   if (start == 0) {
     setInterval(() => actions.fall(), 1000);
@@ -31,14 +32,15 @@ const App = ({ tetro, board, actions }) => {
           actions.dive(); break;
       }
       flag = 1;
-      setTimeout(() => {flag = 0}, 500)
+      setTimeout(() => {flag = 0}, 10)
     }
   });
 
-  console.log(tetro)
+  // console.log(tetro)
 
   return (
     <div>
+      <Preview tetro={nextTetro} />
       <Board tetro={tetro} board={board} actions={actions.fall}/>
       <Shadow board={board} />
     </div>
@@ -49,6 +51,7 @@ const mapStateToProps = (state) => {
   return {
     tetro: state.tetro,
     board: state.board,
+    nextTetro: state.nextTetro
   }
 }
 

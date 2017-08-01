@@ -2,36 +2,39 @@ import React from 'react'
 import Cell from './cell'
 
 function findHighestCell(e) {
-    let res = [];
-    for(let i = 0; i <= 9; i++) {
-        let ret = e.filter((el) => {
-            return el % 10 === i
-        });
-        res = res.concat(Math.min(...ret)); 
+    let crds = [];
+    for(let i = 0; i < 200; i++) {
+        if (e[i] != 0)
+            crds.push(i);
     }
-    return res;
+    let tmp = [10]
+    tmp.fill(0)
+    for(let i = 0; i < 10; i++) {
+        for (let j = 0; j < crds.length; j++) {
+            if (crds[j] % i === 0 && crds[j] > tmp[i])
+                tmp[i] = crds[j]
+        }
+    }
+    return tmp;
 }
 
-function getShadow(e) {
-    let res = [];
-    e.forEach((el) => {
-        let ret = [el];
-        while (Math.max(...ret) < 200) {
-            ret.push(Math.max(...ret) + 10);
+function getShadow(tab, color) {
+    for (let i = 9; i >= 0; i--) {
+        let flag = false;
+        for (let j = 190 + i; j >= 0; j -= 10) {
+            if (tab[j] !== 0 || flag === true) {
+                tab[j] = color
+                flag = true
+            }
         }
-        res = res.concat(ret);
-    });
-    return res;
+    }
+    return tab
 }
 
 const Shadow = ({board}) => {
     const color = 4
-    const high = findHighestCell(board);
-    let shadow = getShadow(high);
-    shadow.forEach((e) => {
-        e != 0 ? e = color : e = 0;
-    })
-
+    let shadow = getShadow([...board], color)
+    shadow.reverse()
     const cells = [];
     for (let i = 0; i < 200; i++) {
         cells.push(
