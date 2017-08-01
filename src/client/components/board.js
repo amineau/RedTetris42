@@ -3,7 +3,7 @@ import Cell from './cell'
 
 const translateTetro = (tetro) => {
     let ret = []
-    const mat = tetro.matrix.data
+    const mat = tetro.matrix.valueOf()
     // console.log(mat);
     mat.forEach((index, y) => {
                 // console.log({index,y});

@@ -19,6 +19,7 @@
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
+    "redux-socket.io": "^1.4.0",
     "redux-thunk": "^2.0.1",
     "socket.io": "^1.4.6"
   },

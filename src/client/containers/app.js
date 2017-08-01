@@ -9,7 +9,7 @@ import ping from '../actions/server'
 let flag = 0;
 let start = 0;
 
-const App = ({ tetro, board, actions }) => {
+const App = ({ tetro, nextTetro, board, actions }) => {
 
   if (start == 0) {
     setInterval(() => actions.fall(), 1000);
@@ -35,8 +35,6 @@ const App = ({ tetro, board, actions }) => {
     }
   });
 
-  console.log(tetro)
-
   return (
     <div>
       <Board tetro={tetro} board={board} actions={actions.fall}/>
@@ -48,6 +46,7 @@ const App = ({ tetro, board, actions }) => {
 const mapStateToProps = (state) => {
   return {
     tetro: state.tetro,
+    nextTetro: state.nextTetro,
     board: state.board,
   }
 }

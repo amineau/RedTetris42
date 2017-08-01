@@ -3,35 +3,44 @@ import ReactDom from 'react-dom'
 import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
+import createSocketIoMiddleware from 'redux-socket.io';
 import { Provider } from 'react-redux'                                                                                                                                                    
 import {storeStateMiddleWare} from './middleware/storeStateMiddleWare'
 import move from './reducers'
 import App from './containers/app'
 import io from 'socket.io-client'
+import math from 'mathjs'
 
 let boardInit = [];
 boardInit.length = 200;
 boardInit.fill(0);
 
-const socket = io.connect('http://localhost:3004');
+let socket = io.connect('http://localhost:3004');
+
+let socketIoMiddleware = createSocketIoMiddleware(socket, (type, action) => {
+  console.log({type, action})
+});
 
 socket.on('init', action => {
   if(action.type === 'start'){
-    console.log('ping-pong ok')
     const initStack = action.initStack
-    console.log('coucou', initStack[0].matrix.size)
+    console.log('ping-pong ok')
     const initialState = 
     {
-      tetro: initStack[0],
-      nextTetro: initStack[1],
+      tetro: {
+        ...initStack[0],
+        matrix: math.matrix(initStack[0].matrix.data)
+      },
+      nextTetro: {
+        ...initStack[1],
+        matrix: math.matrix(initStack[1].matrix.data)
+      },
       board: boardInit,
       index: 0,
       socket
     };
 
-    console.log(initialState)
-
-    const store = createStore(
+    let store = applyMiddleware(socketIoMiddleware)(createStore)(
       move,
       initialState,
       applyMiddleware(thunk, createLogger())

@@ -1,4 +1,4 @@
-import { FALL, DIVE, LEFT, RIGHT, ROTATE} from '../constants/ActionTypes'
+import { FALL, DIVE, LEFT, RIGHT, ROTATE, NEWTETRO } from '../constants/ActionTypes'
 import math from 'mathjs'
 
 var array = require('lodash/array');
@@ -8,15 +8,39 @@ function pickRandom(array) {
 }
 
 const moveCheck = (state, move = FALL) => {
-    
-    return true
+    return state.tetro.crd.y > 0
+}
+
+const matriceRotate = (matrix) => {
+    const size = matrix.size()
+    let newMatrix = math.zeros(size[1], size[0])
+    matrix.valueOf().forEach((index, y) => {
+        index.forEach((ind, x) => {
+            if (ind) {
+                newMatrix.subset(math.index(x,y), 1)
+            }
+        })
+    })
+    console.log({newMatrix, size})
+    return newMatrix
 }
 
 const move = (state = {}, action) => {
     let newState = {...state}
     switch(action.type){
+        case NEWTETRO:
+            console.log('new Tetroo ask', action.tetro)
+            return {
+                ...state,
+                nextTetro: {
+                    ...action.tetro,
+                    matrix: math.matrix(action.tetro.matrix.data)
+                },
+                index: state.index + 1
+            }
+                
         case FALL:
-            if (moveCheck(state.tetro)){
+            if (moveCheck(state)){
                 return {
                     ...state,
                     tetro: {
@@ -28,23 +52,19 @@ const move = (state = {}, action) => {
                     }
                 }  
             } else {
-                state.socket.emit('newTetro', {index: state.index + 1})
-                state.socket.on('newTetro', tetro => {
-
-                })
+                state.socket.emit('action', {index: state.index + 1})
                 return {
                     ...state,
-                    tetro: state.nextTetro,
-                    index: state.index + 1
-                    }
+                    tetro: state.nextTetro
                 }
+            }
 
         case ROTATE:
             return {
                 ...state,
                 tetro: {
                     ...state.tetro,
-                    matrix: state.tetro.matrix
+                    matrix: matriceRotate(state.tetro.matrix)
                 }
             }
         case LEFT:

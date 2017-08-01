@@ -73,17 +73,18 @@ export class StackTetros {
   tetroByIndex (index) {
     return new Promise((resolve, reject) => {
       const keys = Object.keys(this._pool).map(x => Number(x))
-      if (keys.indexOf(index) === -1) {
-        if (keys.indexOf(index - 1) === -1) {
+      if (keys.indexOf(index + 1) === -1) {
+        if (keys.indexOf(index) === -1) {
           return reject({error: "Index non conforme ou hors zone, sorry", index, keys})
         }
         this._getNewTetro()
           .then(newTetro => {
-            this._pool[index] = newTetro
+            this._pool[index + 1] = newTetro
+            console.log(this._pool[index + 1])
             return resolve(newTetro)
           })
       } else {
-        resolve(this._pool[index])
+        resolve(this._pool[index + 1])
       }
     })
   }
