@@ -82,7 +82,7 @@ const move = (state = {}, action) => {
             }
             else return {...state}
         case RIGHT:
-            if (state.tetro.crd.x > state.tetro.matrix.size[1] - 1) {
+            if (state.tetro.crd.x > state.tetro.matrix.size()[1] - 1) {
                 return {
                 ...state,
                 tetro: {
