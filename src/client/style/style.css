@@ -14,8 +14,8 @@ body {
     display: flex;
     border: solid;
     flex-wrap: wrap;
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
 }
 
 .cell {

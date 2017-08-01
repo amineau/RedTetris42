@@ -2,16 +2,46 @@ import React from 'react'
 import Cell from './cell'
 
 const Preview = ({tetro}) => {
-    let next = []
-    next.length = 36
-    next.fill(0)
-    next[7] = 2
-    next[8] = 2
-    next[9] = 2
-    next[13] = 2
-// next.reverse()
+    const type = [
+        [0,0,0,0,
+        1,1,1,0,
+        0,1,0,0,
+        0,0,0,0],
+
+        [0,0,0,0,
+        2,2,2,0,
+        2,0,0,0,
+        0,0,0,0],
+
+        [0,0,0,0,
+        2,2,2,0,
+        0,0,2,0,
+        0,0,0,0],
+
+        [0,0,0,0,
+        4,4,4,4,
+        0,0,0,0,
+        0,0,0,0],
+
+        [0,0,0,0,
+        5,5,0,0,
+        0,5,5,0,
+        0,0,0,0],
+
+        [0,0,0,0,
+        0,6,6,0,
+        6,6,0,0,
+        0,0,0,0],
+
+        [0,0,0,0,
+        0,7,7,0,
+        0,7,7,0,
+        0,0,0,0]
+    ]
+    const next = type[tetro.type - 1]
+
     let cells = [];
-    for (let i = 0; i < 36; i++) {
+    for (let i = 0; i < 16; i++) {
         cells.push(
             <Cell
                 key={i}
