@@ -38,7 +38,6 @@ const initEngine = io => {
       let player = new Player(socket.id)
       let room = new Room('test', player)
       list_rooms.push(room)
-      console.log(room.stack[0].matrix.size())
       socket.emit('init', {type: 'start', initStack: room.stack})
     })
     socket.on('action', action => {
@@ -46,7 +45,6 @@ const initEngine = io => {
       room.sendTetro(action.index)
         .then(tetro => {
           socket.emit('action', {type: 'NEWTETRO', tetro})
-          console.log({action, stack: room.stack})
         })
     })
   })

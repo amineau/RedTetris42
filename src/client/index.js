@@ -4,7 +4,7 @@ import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
 import createSocketIoMiddleware from 'redux-socket.io';
-import { Provider } from 'react-redux'                                                                                                                                                    
+import { Provider } from 'react-redux'
 import {storeStateMiddleWare} from './middleware/storeStateMiddleWare'
 import move from './reducers'
 import App from './containers/app'
@@ -25,15 +25,17 @@ socket.on('init', action => {
   if(action.type === 'start'){
     const initStack = action.initStack
     console.log('ping-pong ok')
-    const initialState = 
+    const initialState =
     {
       tetro: {
         ...initStack[0],
-        matrix: math.matrix(initStack[0].matrix.data)
+        matrix: initStack[0].matrix,
+        position: 0
       },
       nextTetro: {
         ...initStack[1],
-        matrix: math.matrix(initStack[1].matrix.data)
+        matrix: initStack[1].matrix,
+        position: 0
       },
       board: boardInit,
       index: 0,
