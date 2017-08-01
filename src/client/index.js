@@ -19,6 +19,7 @@ socket.on('init', action => {
   if(action.type === 'start'){
     console.log('ping-pong ok')
     const initStack = action.initStack
+    console.log('coucou', initStack[0].matrix.size)
     const initialState = 
     {
       tetro: initStack[0],

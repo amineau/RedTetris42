@@ -8,6 +8,7 @@ function pickRandom(array) {
 }
 
 const moveCheck = (state, move = FALL) => {
+    
     return true
 }
 
@@ -25,20 +26,25 @@ const move = (state = {}, action) => {
                             y: state.tetro.crd.y - 1                        
                         }
                     }
+                }  
+            } else {
+                state.socket.emit('newTetro', {index: state.index + 1})
+                state.socket.on('newTetro', tetro => {
+
+                })
+                return {
+                    ...state,
+                    tetro: state.nextTetro,
+                    index: state.index + 1
+                    }
                 }
-            }
 
         case ROTATE:
-            const identity = math.matrix([
-                [0,0,1],
-                [0,1,0],
-                [1,0,0],
-                ])
             return {
                 ...state,
                 tetro: {
                     ...state.tetro,
-                    matrix: math.multiply(state.tetro.matrix, identity)
+                    matrix: state.tetro.matrix
                 }
             }
         case LEFT:
@@ -56,7 +62,7 @@ const move = (state = {}, action) => {
             }
             else return {...state}
         case RIGHT:
-            if (state.tetro.crd.x > state.tetro.matrix.size()[1] - 1) {
+            if (state.tetro.crd.x > state.tetro.matrix.size[1] - 1) {
                 return {
                 ...state,
                 tetro: {

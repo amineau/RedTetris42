@@ -35,6 +35,7 @@ const initEngine = io => {
     socket.on('init', () => {
       let player = new Player(socket.id)
       let room = new Room('test', player)
+      console.log(room.stack[0].matrix.size())
       socket.emit('init', {type: 'start', initStack: room.stack})
     })
   })
