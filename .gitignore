@@ -2,3 +2,4 @@
 .vscode/settings.json
 build
 package-lock.json
+npm-debug.log
