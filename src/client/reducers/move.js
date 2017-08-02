@@ -61,6 +61,33 @@ const writeTetroOnBoard = (state) => {
     return board
 }
 
+const completeLine = board => {
+    let lines = []
+    for(let y = 1; y <= 20; y++) {
+        let lineIsFull = true
+        for(let x = 1; x <= 10; x++) {
+            const cell = x + y * 12
+            if (!board[cell]) {
+                lineIsFull = false
+            }
+        }
+        if (lineIsFull) {
+            lines.push(y)
+        }
+    }
+    return lines
+}
+
+const deleteLine = board => {
+    const lines = completeLine(board).reverse()
+    lines.forEach(e => {
+        for(let cell = (e + 1) * 12; cell < 252; cell++) {
+            board[cell - 12] = board[cell]
+        }
+    })
+    return board
+}
+
 const move = (state = {}, action) => {
     let newState = {...state}
     switch(action.type){
@@ -90,12 +117,14 @@ const move = (state = {}, action) => {
                 }
             } else {
                 state.socket.emit('action', {index: state.index + 1})
-                const newBoard = writeTetroOnBoard(state);
+                let newBoard = writeTetroOnBoard(state)
+                newBoard = deleteLine(newBoard)
+                
                 console.log("newBoard", newBoard)
                 return {
                     ...state,
-                        tetro: state.nextTetro,
-                        board: newBoard
+                    tetro: state.nextTetro,
+                    board: newBoard
                 }
             }
 

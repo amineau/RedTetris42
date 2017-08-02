@@ -5,6 +5,9 @@ export default class Player {
     this._socketId = socketId
     this._name = name
     this._position = 0
+    this._lines = 0
+    this._score = 0
+    this._level = 0
     this._board = []
   }
 
