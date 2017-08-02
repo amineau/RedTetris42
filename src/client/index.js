@@ -12,8 +12,14 @@ import io from 'socket.io-client'
 import math from 'mathjs'
 
 let boardInit = [];
-boardInit.length = 200;
+boardInit.length = 252;
 boardInit.fill(0);
+boardInit.forEach((e, i) => {
+  if (i % 12 === 0 || i % 12 === 11 || i < 12)
+    boardInit[i] = 8
+})
+
+console.log(boardInit)
 
 let socket = io.connect('http://localhost:3004');
 

@@ -9,7 +9,8 @@ const Cell = ({type}) => {
         "yellow",
         "yellow",
         "yellow",
-        "yellow"]
+        "yellow",
+        "black"]
 
     return (
         <div className={colors[type] + " cell"}></div>

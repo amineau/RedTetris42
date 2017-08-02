@@ -9,7 +9,7 @@ const translateTetro = (tetro) => {
                 // console.log({index,y});
         index.forEach((ind, x) => {
             if (ind !== 0) {
-                ret.push(tetro.crd.x - x + 10 * (tetro.crd.y + y))
+                ret.push(tetro.crd.x - x + 12 * (tetro.crd.y + y))
             }
         })
     })
@@ -23,7 +23,7 @@ const Board = ({tetro, board, actions}) => {
         boardAndTetro[e] = tetro.type
     })
     let cells = [];
-    for (let i = 0; i < 200; i++) {
+    for (let i = 12; i < 252; i++) {
         cells.push(
             <Cell
                 key={i}

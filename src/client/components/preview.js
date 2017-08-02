@@ -3,6 +3,7 @@ import Cell from './cell'
 
 const Preview = ({tetro}) => {
     const type = [
+        [],
         [0,0,0,0,
         1,1,1,0,
         0,1,0,0,
@@ -14,8 +15,8 @@ const Preview = ({tetro}) => {
         0,0,0,0],
 
         [0,0,0,0,
-        2,2,2,0,
-        0,0,2,0,
+        3,3,3,0,
+        0,0,3,0,
         0,0,0,0],
 
         [0,0,0,0,
@@ -38,7 +39,7 @@ const Preview = ({tetro}) => {
         0,7,7,0,
         0,0,0,0]
     ]
-    const next = type[tetro.type - 1]
+    const next = type[tetro.type]
 
     let cells = [];
     for (let i = 0; i < 16; i++) {

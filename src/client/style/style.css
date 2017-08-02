@@ -6,7 +6,7 @@ body {
     display: flex;
     border: solid;
     flex-wrap: wrap;
-    width: 200px;
+    width: 240px;
     height: 400px;
 }
 
@@ -41,4 +41,8 @@ body {
 
 .white {
     background-color: floralwhite;
+}
+
+.black {
+    background-color: black;
 }
