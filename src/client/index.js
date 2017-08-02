@@ -36,12 +36,12 @@ socket.on('init', action => {
       tetro: {
         ...initStack[0],
         matrix: initStack[0].matrix,
-        position: 0
+        orientation: 0
       },
       nextTetro: {
         ...initStack[1],
         matrix: initStack[1].matrix,
-        position: 0
+        orientation: 0
       },
       board: boardInit,
       index: 0,

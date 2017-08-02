@@ -34,9 +34,13 @@ function getShadow(tab, color) {
 const Shadow = ({board}) => {
     const color = 4
     let shadow = getShadow([...board], color)
+    shadow.forEach((e, i) => {
+    if (i % 12 === 0 || i % 12 === 11 || i < 12)
+        shadow[i] = 8
+    })
     shadow.reverse()
     const cells = [];
-    for (let i = 0; i < 200; i++) {
+    for (let i = 12; i < 252; i++) {
         cells.push(
             <Cell
                 key={i}
