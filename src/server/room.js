@@ -18,7 +18,11 @@ export default class Room {
   get state ()      { return this._state }
   get stack ()      { return this._stack.pool }
 
-  sendTetro (index) {
+  sendTetro (index, socketId) {
+    const player = this._listPlayer.filter(e => {
+      return e.socketId === socketId
+    })[0]
+    player.position(index)
     return this._stack.tetroByIndex(index)
   }
 

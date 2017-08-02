@@ -43,7 +43,7 @@ const initEngine = io => {
     socket.on('action', action => {
       let room = list_rooms[0]
       if (room){
-        room.sendTetro(action.index)
+        room.sendTetro(action.index, socket.id)
           .then(tetro => {
             socket.emit('action', {type: 'NEWTETRO', tetro})
           })
