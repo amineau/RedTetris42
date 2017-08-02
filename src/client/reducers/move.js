@@ -13,7 +13,7 @@ const moveCheck = (state, move = FALL) => {
 
 const matriceRotate = (tetro) => {
     const nbrPosition = tetro.matrix.length
-    return (tetro.position + 1) % nbrPosition
+    return (tetro.orientation + 1) % nbrPosition
 }
 
 const move = (state = {}, action) => {
@@ -26,7 +26,7 @@ const move = (state = {}, action) => {
                 nextTetro: {
                     ...action.tetro,
                     matrix: action.tetro.matrix,
-                    position: 0
+                    orientation: 0
                 },
                 index: state.index + 1
             }
@@ -56,7 +56,7 @@ const move = (state = {}, action) => {
                 ...state,
                 tetro: {
                     ...state.tetro,
-                    position: matriceRotate(state.tetro)
+                    orientation: matriceRotate(state.tetro)
                 }
             }
         case LEFT:
