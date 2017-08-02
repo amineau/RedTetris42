@@ -44,6 +44,20 @@ const matriceRotate = (tetro) => {
     return (tetro.orientation + 1) % nbrPosition
 }
 
+const writeTetroOnBoard = (state) => {
+    let board = [...state.board]
+    const tetro = state.tetro
+    console.log(tetro)
+    tetro.matrix[tetro.orientation].forEach((index, y) => {
+        index.forEach((ind, x) => {
+            if (ind !== 0) {
+                board[tetro.crd.x - x + 12 * (tetro.crd.y + y)] = tetro.type
+            }
+        })
+    })
+    return board
+}
+
 const move = (state = {}, action) => {
     let newState = {...state}
     switch(action.type){
@@ -73,9 +87,12 @@ const move = (state = {}, action) => {
                 }
             } else {
                 state.socket.emit('action', {index: state.index + 1})
+                const newBoard = writeTetroOnBoard(state);
+                console.log("newBoard", newBoard)
                 return {
                     ...state,
-                    tetro: state.nextTetro
+                        tetro: state.nextTetro,
+                        board: newBoard
                 }
             }
 
