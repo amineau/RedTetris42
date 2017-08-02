@@ -10,7 +10,7 @@ function pickRandom(array) {
 const moveCheck = (state, move = FALL) => {
     const board = state.board
     const tetro = state.tetro
-    const mat = tetro.matrix[tetro.orientation]
+    let mat = tetro.matrix[tetro.orientation]
     let moveX = 0
     let moveY = 0
 
@@ -23,6 +23,9 @@ const moveCheck = (state, move = FALL) => {
             break
         case LEFT:
             moveX = 1
+            break
+        case ROTATE:
+            mat = tetro.matrix[matriceRotate(tetro)]
             break
     }
     let flag = true
@@ -97,12 +100,16 @@ const move = (state = {}, action) => {
             }
 
         case ROTATE:
-            return {
-                ...state,
-                tetro: {
-                    ...state.tetro,
-                    orientation: matriceRotate(state.tetro)
+            if (moveCheck(state, ROTATE)){
+                return {
+                    ...state,
+                    tetro: {
+                        ...state.tetro,
+                        orientation: matriceRotate(state.tetro)
+                    }
                 }
+            } else {
+                return state                
             }
         case LEFT:
             if (moveCheck(state, LEFT)){
