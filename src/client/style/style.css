@@ -21,10 +21,23 @@ body {
 .cell {
     width: 20px;
     height: 20px;
+    display: flex;
+    flex-direction: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .red {
     background-color: darkred;
+}
+.yellow:after {
+    content: "";
+    background-color: #8d9A64; 
+    width: 5px;
+    height: 5px;
+    border: 3px solid #363636;
+    border-top-color: #cdd6a7;
+    border-left-color: #cdd6a7;
 }
 
 .blue {
@@ -36,7 +49,10 @@ body {
 }
 
 .yellow {
-    background-color: yellow;
+    background-color: #8d9A64;
+    width: 14px;
+    height: 14px;
+    border: 3px solid #363636
 }
 
 .white {
