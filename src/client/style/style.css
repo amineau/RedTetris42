@@ -54,8 +54,18 @@ body {
     background-size: cover;
 }
 
+.square {
+    background-image: url('./square.png');
+    background-size: cover;
+}
+
 .Linv {
     background-image: url('./Linv.png');
+    background-size: cover;
+}
+
+.S {
+    background-image: url('./S.png');
     background-size: cover;
 }
 

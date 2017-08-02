@@ -3,13 +3,13 @@ import React from 'react'
 const Cell = ({type}) => {
     const colors = [
         "white",
-        "tetroT",
+        "T",
         "L",
         "Linv",
         "yellow",
         "Sinv",
-        "yellow",
-        "yellow",
+        "S",
+        "square",
         "brick"]
 
     return (
