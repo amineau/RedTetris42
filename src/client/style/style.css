@@ -6,25 +6,31 @@ body {
     display: flex;
     border: solid;
     flex-wrap: wrap;
-    width: 240px;
-    height: 400px;
+    width: 480px;
+    height: 800px;
 }
 
 .preview {
     display: flex;
     border: solid;
     flex-wrap: wrap;
-    width: 80px;
-    height: 80px;
+    width: 160px;
+    height: 160px;
 }
 
 .cell {
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 40px;
 }
 
-.red {
-    background-color: darkred;
+/* .subCell {
+    width: 5px;
+    height: 5px;
+} */
+
+.tetroT {
+    background-image: url('./tetroT.png');
+    background-size: cover;
 }
 
 .blue {
@@ -40,9 +46,10 @@ body {
 }
 
 .white {
-    background-color: floralwhite;
+    background-color: #cdd6a7;
 }
 
 .black {
     background-color: black;
 }
+

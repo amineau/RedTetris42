@@ -3,7 +3,7 @@ import React from 'react'
 const Cell = ({type}) => {
     const colors = [
         "white",
-        "red",
+        "tetroT",
         "blue",
         "green",
         "yellow",
@@ -13,7 +13,7 @@ const Cell = ({type}) => {
         "black"]
 
     return (
-        <div className={colors[type] + " cell"}></div>
+        <div className={"cell " + colors[type]}></div>
     )
 };
 
