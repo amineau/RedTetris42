@@ -28,8 +28,8 @@ body {
     height: 5px;
 } */
 
-.tetroT {
-    background-image: url('./tetroT.png');
+.T {
+    background-image: url('./T.png');
     background-size: cover;
 }
 
@@ -49,7 +49,27 @@ body {
     background-color: #cdd6a7;
 }
 
-.black {
-    background-color: black;
+.L {
+    background-image: url('./L.png');
+    background-size: cover;
 }
 
+.Linv {
+    background-image: url('./Linv.png');
+    background-size: cover;
+}
+
+.Sinv {
+    background-image: url('./Sinv.png');
+    background-size: cover;
+}
+
+.brick {
+    background-image: url('./brick.png');
+    background-size: cover;
+}
+
+/* #cdd6a7
+#8d9a64
+#666e47
+#363636 */

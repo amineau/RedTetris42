@@ -4,13 +4,13 @@ const Cell = ({type}) => {
     const colors = [
         "white",
         "tetroT",
-        "blue",
-        "green",
+        "L",
+        "Linv",
+        "yellow",
+        "Sinv",
         "yellow",
         "yellow",
-        "yellow",
-        "yellow",
-        "black"]
+        "brick"]
 
     return (
         <div className={"cell " + colors[type]}></div>
