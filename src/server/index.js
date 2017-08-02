@@ -42,10 +42,12 @@ const initEngine = io => {
     })
     socket.on('action', action => {
       let room = list_rooms[0]
-      room.sendTetro(action.index)
-        .then(tetro => {
-          socket.emit('action', {type: 'NEWTETRO', tetro})
-        })
+      if (room){
+        room.sendTetro(action.index)
+          .then(tetro => {
+            socket.emit('action', {type: 'NEWTETRO', tetro})
+          })
+      }
     })
   })
 }
