@@ -1,16 +1,24 @@
 import React from 'react'
 
-const Cell = ({type}) => {
+const Cell = ({type, orientation}) => {
+
     const colors = [
         "white",
         "T",
         "L",
         "Linv",
-        "yellow",
+        "barTop",
         "Sinv",
         "S",
         "square",
-        "brick"]
+        "brick",
+        "barMidV",
+        "barBot",
+        "block",
+        "barLeft",
+        "barMidH",
+        "barRight"
+    ]
 
     return (
         <div className={"cell " + colors[type]}></div>

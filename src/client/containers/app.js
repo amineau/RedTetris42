@@ -38,6 +38,7 @@ const App = ({ tetro, nextTetro, board, actions }) => {
   
   return (
     <div>
+      <p>bite</p>
       <Preview tetro={nextTetro} />
       <Board tetro={tetro} board={board} actions={actions.fall}/>
       <br/>

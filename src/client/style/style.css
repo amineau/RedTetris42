@@ -29,7 +29,7 @@ body {
 } */
 
 .T {
-    background-image: url('./T.png');
+    background-image: url('./images/T.png');
     background-size: cover;
 }
 
@@ -50,35 +50,78 @@ body {
 }
 
 .L {
-    background-image: url('./L.png');
+    background-image: url('./images/L.png');
     background-size: cover;
 }
 
 .square {
-    background-image: url('./square.png');
+    background-image: url('./images/square.png');
     background-size: cover;
 }
 
 .Linv {
-    background-image: url('./Linv.png');
+    background-image: url('./images/Linv.png');
     background-size: cover;
 }
 
 .S {
-    background-image: url('./S.png');
+    background-image: url('./images/S.png');
     background-size: cover;
 }
 
 .Sinv {
-    background-image: url('./Sinv.png');
+    background-image: url('./images/Sinv.png');
     background-size: cover;
 }
 
 .brick {
-    background-image: url('./brick.png');
+    background-image: url('./images/brick.png');
     background-size: cover;
 }
 
+.block {
+    background-image: url('./images/block.png');
+    background-size: cover;
+}
+
+.barTop {
+    background-image: url('./images/barTop.png');
+    background-size: cover;
+}
+
+.barMidV {
+    background-image: url('./images/barMidV.png');
+    background-size: cover;
+}
+
+.barBot {
+    background-image: url('./images/barBot.png');
+    background-size: cover;
+}
+
+.barLeft {
+    background-image: url('./images/barLeft.png');
+    background-size: cover;
+}
+
+.barMidH {
+    background-image: url('./images/barMidH.png');
+    background-size: cover;
+}
+
+.barRight {
+    background-image: url('./images/barRight.png');
+    background-size: cover;
+}
+
+@font-face {
+    font-family: 'Super Mario Land (Game Boy)';
+    src: url('./gameBoyFont.ttf');
+}
+
+* {
+    font-family: 'Super Mario Land (Game Boy)';
+}
 /* #cdd6a7
 #8d9a64
 #666e47

@@ -21,8 +21,10 @@ export default class Room {
   sendTetro (index, socketId) {
     const player = this._listPlayer.filter(e => {
       return e.socketId === socketId
-    })[0]
-    player.position(index)
+    })
+    console.log(player)
+    // const player = this._listPlayer[0]
+    player._position = index
     return this._stack.tetroByIndex(index)
   }
 

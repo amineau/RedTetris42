@@ -32,7 +32,7 @@ function getShadow(tab, color) {
 }
 
 const Shadow = ({board}) => {
-    const color = 4
+    const color = 11
     let shadow = getShadow([...board], color)
     shadow.forEach((e, i) => {
     if (i % 12 === 0 || i % 12 === 11 || i > 240)
