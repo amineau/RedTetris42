@@ -203,16 +203,6 @@ const move = (state = {}, action) => {
                 tetro: state.nextTetro,
                 board: newBoard
             }
-            // return {
-            //     ...state,
-            //     tetro: {
-            //         ...state.tetro,
-            //         crd: {
-            //             ...state.tetro.crd,
-            //             y: state.tetro.crd.y - count
-            //         }
-            //     }
-            // }
         default:
             return state
     }

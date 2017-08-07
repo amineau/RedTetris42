@@ -38,7 +38,7 @@ const App = ({ tetro, nextTetro, board, actions }) => {
   
   return (
     <div>
-      <p>bite</p>
+      <div className={"score"}><h1 style={{textAlign: "center"}}>score</h1></div>
       <Preview tetro={nextTetro} />
       <Board tetro={tetro} board={board} actions={actions.fall}/>
       <br/>
