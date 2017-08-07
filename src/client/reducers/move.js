@@ -194,16 +194,25 @@ const move = (state = {}, action) => {
                     }
                 }
             }
+            state.socket.emit('action', {index: state.index + 1})
+            let newBoard = writeTetroOnBoard(stateCopy)
+            newBoard = deleteLine(newBoard)
+            
             return {
                 ...state,
-                tetro: {
-                    ...state.tetro,
-                    crd: {
-                        ...state.tetro.crd,
-                        y: state.tetro.crd.y - count
-                    }
-                }
+                tetro: state.nextTetro,
+                board: newBoard
             }
+            // return {
+            //     ...state,
+            //     tetro: {
+            //         ...state.tetro,
+            //         crd: {
+            //             ...state.tetro.crd,
+            //             y: state.tetro.crd.y - count
+            //         }
+            //     }
+            // }
         default:
             return state
     }
