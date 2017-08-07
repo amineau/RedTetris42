@@ -35,7 +35,7 @@ const Shadow = ({board}) => {
     const color = 11
     let shadow = getShadow([...board], color)
     shadow.forEach((e, i) => {
-    if (i % 12 === 0 || i % 12 === 11 || i > 240)
+    if (i % 12 === 0 || i % 12 === 11)
         shadow[i] = 8
     })
     shadow.reverse()
@@ -44,11 +44,12 @@ const Shadow = ({board}) => {
         cells.push(
             <Cell
                 key={i}
-                type={shadow[i]} />
+                type={shadow[i]}
+                shadow={true} />
         )
     }
     return (
-        <div className="board">
+        <div className="shadowBoard">
             {cells}
         </div>
     )

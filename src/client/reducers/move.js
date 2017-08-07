@@ -16,17 +16,15 @@ const moveCheck = (state, move = FALL) => {
 
     switch(move){
         case FALL:
-            moveY = -1
-            break
+            moveY = -1; break
+        case DIVE:
+            moveY = -1; break
         case RIGHT:
-            moveX = -1
-            break
+            moveX = -1; break
         case LEFT:
-            moveX = 1
-            break
+            moveX = 1; break
         case ROTATE:
-            mat = tetro.matrix[matriceRotate(tetro)]
-            break
+            mat = tetro.matrix[matriceRotate(tetro)]; break
     }
     let flag = true
     mat.forEach((index, y) => {
@@ -53,19 +51,20 @@ const writeTetroOnBoard = (state) => {
     let flag = 0
     tetro.matrix[tetro.orientation].forEach((index, y) => {
         index.forEach((ind, x) => {
+            const index = tetro.crd.x - x + 12 * (tetro.crd.y + y)
             if (ind !== 0) {
                 if (tetro.type === 4 && flag === 0) {
-                    board[tetro.crd.x - x + 12 * (tetro.crd.y + y)] = 10
+                    tetro.orientation ? board[index] = 10 : board[index] = 12
                     flag++
                 }
                 else if (tetro.type === 4 && (flag === 1 || flag == 2)) {
-                    board[tetro.crd.x - x + 12 * (tetro.crd.y + y)] = 9
+                    tetro.orientation ? board[index] = 9 : board[index] = 13
                     flag++
                 }
                 else if (tetro.type === 4 && flag === 3)
-                    board[tetro.crd.x - x + 12 * (tetro.crd.y + y)] = 4
+                    tetro.orientation ? board[index] = 4 : board[index] = 14
                 else
-                    board[tetro.crd.x - x + 12 * (tetro.crd.y + y)] = tetro.type
+                    board[index] = tetro.type
             }
         })
     })
@@ -131,7 +130,6 @@ const move = (state = {}, action) => {
                 let newBoard = writeTetroOnBoard(state)
                 newBoard = deleteLine(newBoard)
                 
-                // console.log("newBoard", newBoard)
                 return {
                     ...state,
                     tetro: state.nextTetro,
@@ -182,8 +180,29 @@ const move = (state = {}, action) => {
                 return state
             }
         case DIVE:
+            let stateCopy = {...state}
+            let count = 0
+            while ( moveCheck(stateCopy)) {
+                count++
+                stateCopy = {...stateCopy,
+                    tetro: {
+                        ...stateCopy.tetro,
+                        crd: {
+                            ...stateCopy.tetro.crd,
+                            y: stateCopy.tetro.crd.y - 1
+                        }
+                    }
+                }
+            }
             return {
                 ...state,
+                tetro: {
+                    ...state.tetro,
+                    crd: {
+                        ...state.tetro.crd,
+                        y: state.tetro.crd.y - count
+                    }
+                }
             }
         default:
             return state

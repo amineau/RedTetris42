@@ -28,7 +28,7 @@ const App = ({ tetro, nextTetro, board, actions }) => {
           actions.fall(); break;
         case 38:
           actions.rotate(); break;
-        case 40:
+        case 32:
           actions.dive(); break;
       }
       flag = 1;

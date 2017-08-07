@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Cell = ({type, orientation}) => {
+const Cell = ({type, orientation, shadow}) => {
 
     const colors = [
         "white",
@@ -20,8 +20,11 @@ const Cell = ({type, orientation}) => {
         "barRight"
     ]
 
+    let cellType = ""
+    shadow ? cellType = "shadowCell " : cellType = "cell "
+
     return (
-        <div className={"cell " + colors[type]}></div>
+        <div className={cellType + colors[type]}></div>
     )
 };
 

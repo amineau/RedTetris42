@@ -1,13 +1,23 @@
 body {
-    background-color:darkolivegreen
+    background-color:#363636
 }
 
 .board {
     display: flex;
     border: solid;
+    border-color: #cdd6a7;
     flex-wrap: wrap;
     width: 480px;
     height: 800px;
+}
+
+.shadowBoard {
+    display: flex;
+    border: solid;
+    border-color: #cdd6a7;
+    flex-wrap: wrap;
+    width: 240px;
+    height: 400px;
 }
 
 .preview {
@@ -21,6 +31,11 @@ body {
 .cell {
     width: 40px;
     height: 40px;
+}
+
+.shadowCell {
+    width: 20px;
+    height: 20px;
 }
 
 /* .subCell {
