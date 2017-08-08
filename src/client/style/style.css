@@ -136,6 +136,28 @@ body {
     background-size: cover;
 }
 
+.home {
+    width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.copyright {
+    text-align: center;
+    vertical-align: bottom;
+}
+
+.homeImage {
+    height: 880px;
+    background-image: url('./images/home42Huge.png');
+    background-size: cover;
+}
+
+.homeMenu {
+    height: 300px;
+    background-color: #cdd6a7;    
+}
+
 @font-face {
     font-family: 'Super Mario Land (Game Boy)';
     src: url('./gameBoyFont.ttf');
@@ -143,6 +165,7 @@ body {
 
 * {
     font-family: 'Super Mario Land (Game Boy)';
+    color: #363636
 }
 /* #cdd6a7
 #8d9a64

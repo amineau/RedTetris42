@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import  Board  from '../components/board'
+import  Home  from '../components/home'
 import  Shadow  from '../components/shadow'
 import  Preview  from '../components/preview'
 import * as allActions from '../actions'
@@ -36,15 +37,20 @@ const App = ({ tetro, nextTetro, board, actions }) => {
     }
   });
   
-  return (
-    <div>
-      <div className={"score"}><h1 style={{textAlign: "center"}}>score</h1></div>
-      <Preview tetro={nextTetro} />
-      <Board tetro={tetro} board={board} actions={actions.fall}/>
-      <br/>
-      <Shadow board={board} />
-    </div>
-  )
+  // return (
+  //   <div>
+  //      <div className={"score"}><h1 style={{textAlign: "center"}}>score</h1></div>
+  //     <Preview tetro={nextTetro} />
+  //     <Board tetro={tetro} board={board} actions={actions.fall}/>
+  //     <br/>
+  //     <Shadow board={board} /> 
+  //   </div>
+  // )
+    return (
+      <div>
+        <Home />
+      </div>
+    )
 }
 
 const mapStateToProps = (state) => {
