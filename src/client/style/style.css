@@ -155,7 +155,51 @@ body {
 
 .homeMenu {
     height: 300px;
-    background-color: #cdd6a7;    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #cdd6a7;  
+}
+
+.homeButtonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.playerNameInput {
+    width: 100%;
+    font-size: 30px;
+    background-color: #cdd6a7;
+    border: none;
+    text-align: center;  
+}
+
+.cursor {
+    width: 20px; 
+    height: 28px; 
+    background-image: url('./images/cursor.png');
+    opacity: 0;
+    background-size: cover; 
+}
+
+.homeButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.homeButton > a {
+    text-decoration: none;
+}
+
+.homeButton > div {
+    margin-right: 10px; 
+}
+
+.homeButton:hover > .cursor{
+    opacity: 1;
 }
 
 @font-face {
