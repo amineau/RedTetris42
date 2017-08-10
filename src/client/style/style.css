@@ -18,6 +18,7 @@ body {
     flex-wrap: wrap;
     width: 240px;
     height: 400px;
+    margin: 50px;
 }
 
 .preview {
@@ -28,12 +29,36 @@ body {
     height: 160px;
 }
 
+.panel {
+    background-image: url('./images/panel.png');
+    background-size: 180px, 100px;
+    width: 180px;
+    height: 81px;
+    margin-left: 20px;
+}
+
+.panel > h1 {
+    text-align: center;
+    padding-top: 9px;
+    padding-left: 6px
+}
+
 .score {
     background-image: url('./images/score.png');
     background-size: cover;
     width: 220px;
     height: 120px;
 }
+
+ .score > h1:first-of-type {
+    text-align: center;
+    padding-top: 10px; 
+} 
+
+ .score > h1 {
+    text-align: right;
+    padding-top: 12px;
+} 
 
 .cell {
     width: 40px;
@@ -201,6 +226,27 @@ body {
 .homeButton:hover > .cursor{
     opacity: 1;
 }
+
+.mainView {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 100px;
+}
+
+.boardMainPart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+/* .shadowLeftPart {
+    flex-direction: column;
+    justify-content: space-around;
+    
+} */
 
 @font-face {
     font-family: 'Super Mario Land (Game Boy)';

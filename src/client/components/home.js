@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Home = () => {
+const Home = (tetro, board, actions) => {
     return (
         <div className={"home"}>
             <div className={"homeImage"}></div>

@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import  Board  from '../components/board'
-import  Home  from '../components/home'
-import  Shadow  from '../components/shadow'
-import  Preview  from '../components/preview'
+// import  Board  from '../components/board'
+// import  Home  from '../components/home'
+// import  Shadow  from '../components/shadow'
+// import  Preview  from '../components/preview'
+import  MainView  from './mainView'
 import * as allActions from '../actions'
 import ping from '../actions/server'
 
@@ -46,9 +47,17 @@ const App = ({ tetro, nextTetro, board, actions }) => {
   //     <Shadow board={board} /> 
   //   </div>
   // )
+    // return (
+    //   <div>
+    //     <Home />
+    //   </div>
+    // )
     return (
       <div>
-        <Home />
+        <MainView tetro={tetro}
+                  nextTetro={nextTetro}
+                  board={board}
+                  actions={actions.fall}/>
       </div>
     )
 }
@@ -58,7 +67,7 @@ const mapStateToProps = (state) => {
     tetro: state.tetro,
     nextTetro: state.nextTetro,
     board: state.board,
-    nextTetro: state.nextTetro
+    // nextTetro: state.nextTetro
   }
 }
 
