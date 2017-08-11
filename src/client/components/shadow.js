@@ -1,5 +1,6 @@
 import React from 'react'
 import Cell from './cell'
+import Panel from './panel'
 
 function findHighestCell(e) {
     let crds = [];
@@ -31,7 +32,7 @@ function getShadow(tab, color) {
     return tab
 }
 
-const Shadow = ({board}) => {
+const Shadow = ({board, side}) => {
     const color = 11
     let shadow = getShadow([...board], color)
     shadow.forEach((e, i) => {
@@ -48,9 +49,16 @@ const Shadow = ({board}) => {
                 shadow={true} />
         )
     }
+    let order = []
+    order[0] = <Panel name={"jimmy"} info={""}/>
+    order[1] =  <div className="shadowBoard">
+                    {cells}
+                </div>
+    if (side === "right")
+        order.reverse()
     return (
-        <div className="shadowBoard">
-            {cells}
+        <div className={"shadowPart"}>
+            {order}
         </div>
     )
 };

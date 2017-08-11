@@ -81,6 +81,13 @@ body {
     height: 20px;
 }
 
+.shadowPart {
+    display: flex;
+    flex-direction: row;
+     align-items: center; 
+    /* justify-content: space-around; */
+}
+
 /* .subCell {
     width: 5px;
     height: 5px;

@@ -10,8 +10,8 @@ const MainView = ({tetro, nextTetro, board, actions}) => {
     return (
         <div className={"mainView"}>
             <div className={"shadowLeftPart"}>
-                <Shadow board={board} /> 
-                <Shadow board={board} /> 
+                <Shadow board={board} side={"left"} /> 
+                <Shadow board={board} side={"left"} /> 
             </div>
             <div className={"boardMainPart"}>
                 <Board tetro={tetro} board={board} actions={actions.fall}/>
@@ -22,8 +22,8 @@ const MainView = ({tetro, nextTetro, board, actions}) => {
                 </div>
             </div>
             <div className={"shadowRightPart"}>
-                <Shadow board={board} /> 
-                <Shadow board={board} /> 
+                <Shadow board={board} side={"right"}/> 
+                <Shadow board={board} side={"right"}/> 
             </div>
         </div>
     )
