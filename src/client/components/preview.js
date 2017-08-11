@@ -50,8 +50,10 @@ const Preview = ({tetro}) => {
         )
     }
     return (
-        <div className="preview">
-            {cells}
+        <div className={"previewContainer"}>
+            <div className="preview">
+                {cells}
+            </div>
         </div>
     )
 };

@@ -21,12 +21,23 @@ body {
     margin: 50px;
 }
 
+.previewContainer {
+    background-image: url('./images/preview.png');
+    background-size: 200px, 200px;
+    width: 200px;
+    height: 200px;
+    margin-left: 20px;
+    margin-top: 20px;
+    padding-top: 1px;
+}
+
 .preview {
     display: flex;
-    border: solid;
     flex-wrap: wrap;
     width: 160px;
     height: 160px;
+    margin-left: 20px;
+    margin-top: 18px;
 }
 
 .panel {
