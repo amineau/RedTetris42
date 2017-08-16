@@ -34,6 +34,15 @@ let list_rooms = []
 const initEngine = io => {
   io.on('connection', function(socket){
     loginfo("Socket connected: " + socket.id)
+    socket.on('join_game', () => {
+      socket.emit('list_game', {
+        type: 'game',
+        rooms: Object.assign(...list_rooms.map(r => ({
+          name: d.name,
+          player: d.listPlayer
+        })))
+      })
+    })
     socket.on('init', () => {
       let player = new Player(socket.id)
       let room = new Room('test', player)

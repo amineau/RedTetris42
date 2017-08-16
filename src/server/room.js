@@ -4,22 +4,18 @@ import { Player } from './player'
 export default class Room {
 
   constructor (room, player) {
-    this._name = room
+    this.name = room
     this._leader = player
-    this._listPlayer = [player]
+    this.listPlayer = [player]
     this._state = "waiting"
     this._stack = new StackTetros()
     this._position = 0
   }
 
-  toString () { return this._name }
-
-  get players ()    { return this._listPlayer }
-  get state ()      { return this._state }
   get stack ()      { return this._stack.pool }
 
   sendTetro (index, socketId) {
-    const player = this._listPlayer.filter(e => {
+    const player = this.listPlayer.filter(e => {
       return e.socketId === socketId
     })
     console.log(player)
@@ -29,14 +25,14 @@ export default class Room {
   }
 
   add (player) {
-    this._listPlayer.push(player)
+    this.listPlayer.push(player)
   }
 
   remove (player) {
-    const index = this._listPlayer.indexOf(player)
-    this._listPlayer.splice(index, 1)
+    const index = this.listPlayer.indexOf(player)
+    this.listPlayer.splice(index, 1)
     if (this._leader === player) {
-      this._leader = this._listPlayer[0]
+      this._leader = this.listPlayer[0]
     }
   }
 
