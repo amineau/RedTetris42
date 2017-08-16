@@ -1,0 +1,15 @@
+export const WHITE = 0
+export const T = 1
+export const LINV = 2
+export const L = 3
+export const BARTOP = 4
+export const S = 5
+export const SINV = 6
+export const SQUARE = 7
+export const BRICK = 8
+export const BARMIDV = 9
+export const BARBOT = 10
+export const BLOCK = 11
+export const BARLEFT = 12
+export const BARMIDH = 13
+export const BARRIGHT = 14

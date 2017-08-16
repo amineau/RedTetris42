@@ -1,5 +1,6 @@
 import React from 'react'
 import Cell from './cell'
+import * as tetrosType from '../constants/tetrosTypes'
 
 const translateTetro = (tetro) => {
     let ret = []
@@ -19,16 +20,16 @@ const translateTetro = (tetro) => {
 const manageBarTetro = (boardAndTetro, translatedTetro, tetro) => {
     let flag = 0;
     translatedTetro.forEach((e) => {
-        if (tetro.type === 4 && flag === 0) {
-            tetro.orientation ? boardAndTetro[e] = 10 : boardAndTetro[e] = 12;
+        if (tetro.type === tetrosType.BARTOP && flag === 0) {
+            tetro.orientation ? boardAndTetro[e] = tetrosType.BARBOT : boardAndTetro[e] = tetrosType.BARLEFT;
             flag++
         }
-        else if (tetro.type === 4 && (flag === 1 || flag == 2)) {
-            tetro.orientation ? boardAndTetro[e] = 9 : boardAndTetro[e] = 13;
+        else if (tetro.type === tetrosType.BARTOP && (flag === 1 || flag == 2)) {
+            tetro.orientation ? boardAndTetro[e] = tetrosType.BARMIDV : boardAndTetro[e] = tetrosType.BARMIDH;
             flag++
         }
-        else if (tetro.type === 4 && flag === 3)
-            tetro.orientation ? boardAndTetro[e] = 4 : boardAndTetro[e] = 14;
+        else if (tetro.type === tetrosType.BARTOP && flag === 3)
+            tetro.orientation ? boardAndTetro[e] = tetrosType.BARTOP : boardAndTetro[e] = tetrosType.BARRIGHT;
         else
             boardAndTetro[e] = tetro.type
     })

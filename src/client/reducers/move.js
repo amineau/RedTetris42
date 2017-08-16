@@ -1,4 +1,5 @@
 import { FALL, DIVE, LEFT, RIGHT, ROTATE, NEWTETRO } from '../constants/ActionTypes'
+import * as tetrosTypes from '../constants/tetrosTypes'
 import math from 'mathjs'
 
 var array = require('lodash/array');
@@ -53,16 +54,16 @@ const writeTetroOnBoard = (state) => {
         index.forEach((ind, x) => {
             const index = tetro.crd.x - x + 12 * (tetro.crd.y + y)
             if (ind !== 0) {
-                if (tetro.type === 4 && flag === 0) {
-                    tetro.orientation ? board[index] = 10 : board[index] = 12
+                if (tetro.type === tetrosTypes.BARTOP && flag === 0) {
+                    tetro.orientation ? board[index] = tetrosTypes.BARBOT : board[index] = tetrosTypes.BARLEFT
                     flag++
                 }
-                else if (tetro.type === 4 && (flag === 1 || flag == 2)) {
-                    tetro.orientation ? board[index] = 9 : board[index] = 13
+                else if (tetro.type === tetrosTypes.BARTOP && (flag === 1 || flag == 2)) {
+                    tetro.orientation ? board[index] = tetrosTypes.BARMIDV : board[index] = tetrosTypes.BARMIDH
                     flag++
                 }
-                else if (tetro.type === 4 && flag === 3)
-                    tetro.orientation ? board[index] = 4 : board[index] = 14
+                else if (tetro.type === tetrosTypes.BARTOP && flag === 3)
+                    tetro.orientation ? board[index] = tetrosTypes.BARTOP : board[index] = tetrosTypes.BARRIGHT
                 else
                     board[index] = tetro.type
             }
