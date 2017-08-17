@@ -1,4 +1,6 @@
- import { WHITE, T, L, LINV, BARTOP, SINV, S, SQUARE, BRICK, BARMIDV, BARBOT, BLOCK, BARLEFT, BARMIDH, BARRIGHT } from './tetrosTypes'
+ import { WHITE, T, L, LINV, BARTOP, SINV, S,
+        SQUARE, BRICK, BARMIDV, BARBOT, BLOCK,
+        BARLEFT, BARMIDH, BARRIGHT } from './tetrosTypes'
 
  export const TYPESMATRICES = [
         [],

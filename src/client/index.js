@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
@@ -8,6 +9,7 @@ import { Provider } from 'react-redux'
 import {storeStateMiddleWare} from './middleware/storeStateMiddleWare'
 import move from './reducers'
 import App from './containers/app'
+// import Home from './components/home'
 import io from 'socket.io-client'
 import math from 'mathjs'
 
@@ -56,7 +58,9 @@ socket.on('init', action => {
 
     ReactDom.render((
       <Provider store={store}>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </Provider>
     ), document.getElementById('tetris'))
   }

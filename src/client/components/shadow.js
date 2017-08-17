@@ -50,8 +50,8 @@ const Shadow = ({board, side}) => {
         )
     }
     let order = []
-    order[0] = <Panel name={"jimmy"} info={""}/>
-    order[1] =  <div className="shadowBoard">
+    order[0] = <Panel name={"jimmy"} info={""} key={0}/>
+    order[1] =  <div className="shadowBoard" key={1}>
                     {cells}
                 </div>
     if (side === "right")

@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Route } from 'react-router-dom'
 // import  Board  from '../components/board'
-// import  Home  from '../components/home'
+import  Home  from '../components/home'
 // import  Shadow  from '../components/shadow'
 // import  Preview  from '../components/preview'
 import  MainView  from './mainView'
@@ -54,10 +55,13 @@ const App = ({ tetro, nextTetro, board, actions }) => {
     // )
     return (
       <div>
-        <MainView tetro={tetro}
+        <Route exact path='/' component={Home}/> 
+        <Route path='/game' render={(props) => (
+          <MainView tetro={tetro}
                   nextTetro={nextTetro}
                   board={board}
                   actions={actions.fall}/>
+        )} />
       </div>
     )
 }
