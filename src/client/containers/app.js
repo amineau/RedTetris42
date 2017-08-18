@@ -2,10 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Route } from 'react-router-dom'
-// import  Board  from '../components/board'
 import  Home  from '../components/home'
-// import  Shadow  from '../components/shadow'
-// import  Preview  from '../components/preview'
 import  MainView  from './mainView'
 import * as allActions from '../actions'
 import ping from '../actions/server'
@@ -13,7 +10,7 @@ import ping from '../actions/server'
 let flag = 0;
 let start = 0;
 
-const App = ({ tetro, nextTetro, board, actions }) => {
+const App = ({ tetro, nextTetro, board, actions, players }) => {
 
   if (start == 0) {
     setInterval(() => actions.fall(), 1000);
@@ -39,31 +36,19 @@ const App = ({ tetro, nextTetro, board, actions }) => {
     }
   });
   
-  // return (
-  //   <div>
-  //      <div className={"score"}><h1 style={{textAlign: "center"}}>score</h1></div>
-  //     <Preview tetro={nextTetro} />
-  //     <Board tetro={tetro} board={board} actions={actions.fall}/>
-  //     <br/>
-  //     <Shadow board={board} /> 
-  //   </div>
-  // )
-    // return (
-    //   <div>
-    //     <Home />
-    //   </div>
-    // )
-    return (
-      <div>
-        <Route exact path='/' component={Home}/> 
-        <Route path='/game' render={(props) => (
-          <MainView tetro={tetro}
-                  nextTetro={nextTetro}
-                  board={board}
-                  actions={actions.fall}/>
-        )} />
-      </div>
-    )
+  return (
+    <div>
+      <Route exact path='/' render={(props) => (
+        <Home players={players}/>
+      )} />
+      <Route path='/game' render={(props) => (
+        <MainView tetro={tetro}
+                nextTetro={nextTetro}
+                board={board}
+                actions={actions.fall}/>
+      )} />
+    </div>
+  )
 }
 
 const mapStateToProps = (state) => {
@@ -71,7 +56,7 @@ const mapStateToProps = (state) => {
     tetro: state.tetro,
     nextTetro: state.nextTetro,
     board: state.board,
-    // nextTetro: state.nextTetro
+    players: state.players
   }
 }
 

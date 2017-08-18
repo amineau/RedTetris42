@@ -47,6 +47,7 @@ socket.on('init', action => {
       },
       board: boardInit,
       index: 0,
+      players: ["bob", "jimmy", "alfre"],
       socket
     };
 
