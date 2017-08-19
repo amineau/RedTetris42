@@ -204,6 +204,10 @@ body {
     background-color: #cdd6a7;  
 }
 
+.homeMenu > form {
+    text-align: center;
+}
+
 .homeButtonContainer {
     display: flex;
     flex-direction: row;
@@ -211,11 +215,11 @@ body {
 }
 
 .playerNameInput {
-    width: 100%;
+     width: 150px; 
     font-size: 30px;
     background-color: #cdd6a7;
     border: none;
-    text-align: center;  
+    /* text-align: center;   */
 }
 
 .cursor {
