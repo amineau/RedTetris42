@@ -22,7 +22,7 @@ class Home extends React.Component {
             this.setState({playerNameChecked: true})
         else
             this.setState({playerNameChecked: false})
-        event.preventDefault()      
+        event.preventDefault()
     }
 
     render() {
@@ -30,11 +30,11 @@ class Home extends React.Component {
                     <div className={"homeButtonContainer"}>
                         <div className={"homeButton"}>
                             <div className={"cursor"}></div>
-                            <Link to='/game'><h1>create game</h1></Link>
+                            <Link to="/game"><h1>create game</h1></Link>
                         </div>
                         <div className={"homeButton"}>
                             <div className={"cursor"}></div>
-                            <Link to='/game'><h1>join game</h1></Link>
+                            <Link to="/game"><h1>join game</h1></Link>
                         </div>
                     </div>
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
+// import { BrowserRouter } from 'react-router-dom'
 import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
@@ -59,9 +59,7 @@ socket.on('init', action => {
 
     ReactDom.render((
       <Provider store={store}>
-        <BrowserRouter>
           <App />
-        </BrowserRouter>
       </Provider>
     ), document.getElementById('tetris'))
   }
