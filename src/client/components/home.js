@@ -15,13 +15,14 @@ class Home extends React.Component {
     }
 
     handleNameSubmit(event) {
-        const cmp = this.props.players.find((e) => {
-            return this.state.name === e
-        })
+        const cmp = undefined //this.props.players.find((e) => {
+        //     return this.state.name === e
+        // })
         if (cmp === undefined && this.state.name !== "playr" && this.state.name !== "")
             this.setState({playerNameChecked: true})
         else
             this.setState({playerNameChecked: false})
+        console.log({state: this.state, cmp})
         event.preventDefault()
     }
 

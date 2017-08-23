@@ -7,33 +7,29 @@ import  MainView  from './mainView'
 import * as allActions from '../actions'
 import ping from '../actions/server'
 
-const App = ({ tetro, nextTetro, board, actions, players }) => {
-  
+const App = ({ tetro, nextTetro, board, actions, socket }) => {
+  console.log('############  APP #############')
+  console.log({tetro, nextTetro})
   return (
     <BrowserRouter>
       <div>
         <Route exact path="/" render={(props) => (
-          <Home players={players}/>
+          <Home players={[]}/>
         )} />
         <Route path="/game" render={(props) => (
-          <MainView tetro={tetro}
+          <MainView 
+                  tetro={tetro}
                   nextTetro={nextTetro}
                   board={board}
-                  actions={actions}/>
+                  actions={actions}
+                  socket={socket}/>
         )} />
       </div>
     </BrowserRouter>
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    tetro: state.tetro,
-    nextTetro: state.nextTetro,
-    board: state.board,
-    players: state.players
-  }
-}
+const mapStateToProps = state => ({...state})
 
 const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(allActions, dispatch)

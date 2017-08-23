@@ -47,9 +47,13 @@ const initEngine = io => {
       let player = new Player(socket.id)
       let room = new Room('test', player)
       list_rooms.push(room)
-      socket.emit('init', {type: 'start', initStack: room.stack})
+      socket.emit('action', {
+        type: 'INIT',
+        initStack: room.stack,
+        players: room.listPlayer,
+      })
     })
-    socket.on('action', action => {
+    socket.on('ask newtetro', action => {
       let room = list_rooms[0]
       if (room){
         room.sendTetro(action.index, socket.id)

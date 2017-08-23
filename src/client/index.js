@@ -29,40 +29,20 @@ let socketIoMiddleware = createSocketIoMiddleware(socket, (type, action) => {
   console.log({type, action})
 });
 
-socket.on('init', action => {
-  if(action.type === 'start'){
-    const initStack = action.initStack
-    console.log('ping-pong ok')
-    const initialState =
-    {
-      tetro: {
-        ...initStack[0],
-        matrix: initStack[0].matrix,
-        orientation: 0
-      },
-      nextTetro: {
-        ...initStack[1],
-        matrix: initStack[1].matrix,
-        orientation: 0
-      },
-      board: boardInit,
-      index: 0,
-      players: ["bob", "jimmy", "alfre"],
-      socket
-    };
+const initialState =
+{
+  board: boardInit,
+  socket
+};
 
-    let store = applyMiddleware(socketIoMiddleware)(createStore)(
-      move,
-      initialState,
-      applyMiddleware(thunk, createLogger())
-    )
+let store = applyMiddleware(socketIoMiddleware)(createStore)(
+  move,
+  initialState,
+  applyMiddleware(thunk, createLogger())
+)
 
-    ReactDom.render((
-      <Provider store={store}>
-          <App />
-      </Provider>
-    ), document.getElementById('tetris'))
-  }
-})
-
-socket.emit('init')
+ReactDom.render((
+  <Provider store={store}>
+      <App />
+  </Provider>
+), document.getElementById('tetris'))

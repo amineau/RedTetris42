@@ -5,10 +5,27 @@ import Preview from '../components/preview'
 import Score from '../components/score'
 import Panel from '../components/panel'
 
+
+const boardInit = () => {
+    let board = [];
+    board.length = 252;
+    board.fill(0);
+    board.forEach((e, i) => {
+    if (i % 12 === 0 || i % 12 === 11 || i < 12)
+        board[i] = 8
+    })
+    return board
+}
+
 class MainView extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {pause: true, antiRepeatFlag: false}
+        // console.log({props})
+        this.state = {
+            pause: true,
+            antiRepeatFlag: false,
+        }
+        this.socket = props.socket
         window.addEventListener("keydown",(e) => {
             if (e.keyCode === 13)
                 this.handlePause()
@@ -24,7 +41,17 @@ class MainView extends React.Component {
                 setTimeout(() => {this.setState({antiRepeatFlag: false})}, 10)
             }
         });
+        // this.socket.on('init', action => {
+        //     if (action.type === 'start'){
+        //         this.props.actions.init(action.initStack)
+        //     }
+        // })
     }
+
+    componentDidMount() {
+        this.socket.emit('init')
+    }
+
 
     handlePause() {
         if (this.state.pause === true) {
@@ -35,7 +62,9 @@ class MainView extends React.Component {
             clearInterval(this.state.intervalID);
             this.setState({pause: true})
         }
+        console.log({pause: this.state.pause})
     }
+
 
     render() {
         return (

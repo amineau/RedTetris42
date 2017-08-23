@@ -1,4 +1,4 @@
-import { FALL, DIVE, LEFT, RIGHT, ROTATE, NEWTETRO } from '../constants/ActionTypes'
+import { FALL, DIVE, LEFT, RIGHT, ROTATE, NEWTETRO, INIT } from '../constants/ActionTypes'
 import * as tetrosTypes from '../constants/tetrosTypes'
 import math from 'mathjs'
 
@@ -101,9 +101,28 @@ const deleteLine = board => {
 
 const move = (state = {}, action) => {
     let newState = {...state}
+    // console.log(state)
     switch(action.type){
+        case INIT:
+            console.log({action})
+            const initStack = action.initStack
+            return {
+                ...state,
+                tetro: {
+                    ...initStack[0],
+                    matrix: initStack[0].matrix,
+                    orientation: 0
+                },
+                nextTetro: {
+                    ...initStack[1],
+                    matrix: initStack[1].matrix,
+                    orientation: 0
+                },
+                players: ["bob", "jimmy", "alfre"],
+                index: 0,
+            }
+
         case NEWTETRO:
-            // console.log('new Tetroo ask', action.tetro)
             return {
                 ...state,
                 nextTetro: {
@@ -127,7 +146,7 @@ const move = (state = {}, action) => {
                     }
                 }
             } else {
-                state.socket.emit('action', {index: state.index + 1})
+                state.socket.emit('ask newtetro', {index: state.index + 1})
                 let newBoard = writeTetroOnBoard(state)
                 newBoard = deleteLine(newBoard)
                 
@@ -195,7 +214,7 @@ const move = (state = {}, action) => {
                     }
                 }
             }
-            state.socket.emit('action', {index: state.index + 1})
+            state.socket.emit('ask newtetro', {index: state.index + 1})
             let newBoard = writeTetroOnBoard(stateCopy)
             newBoard = deleteLine(newBoard)
             
