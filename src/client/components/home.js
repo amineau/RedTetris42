@@ -4,10 +4,21 @@ import { Link } from 'react-router-dom'
 class Home extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {name: "playr",
-                    playerNameChecked: false}
+        this.state = this.initState(props.playerName)
         this.handleNameChange = this.handleNameChange.bind(this)
         this.handleNameSubmit = this.handleNameSubmit.bind(this)
+        this.actions = props.actions
+        console.log('props', props)
+    }
+
+    initState(name) {
+        return (name && name !== 'playr') ? {
+            name,
+            playerNameChecked: true,
+        } : {
+            name: 'playr',
+            playerNameChecked: false
+        }
     }
 
     handleNameChange(event) {
@@ -15,15 +26,17 @@ class Home extends React.Component {
     }
 
     handleNameSubmit(event) {
+        event.preventDefault()        
         const cmp = undefined //this.props.players.find((e) => {
         //     return this.state.name === e
         // })
-        if (cmp === undefined && this.state.name !== "playr" && this.state.name !== "")
+        if (cmp === undefined && this.state.name !== "playr" && this.state.name !== ""){
             this.setState({playerNameChecked: true})
-        else
+            this.actions.playerName(this.state.name)
+        } else {
             this.setState({playerNameChecked: false})
-        console.log({state: this.state, cmp})
-        event.preventDefault()
+            this.actions.playerName()
+        }
     }
 
     render() {
@@ -31,11 +44,11 @@ class Home extends React.Component {
                     <div className={"homeButtonContainer"}>
                         <div className={"homeButton"}>
                             <div className={"cursor"}></div>
-                            <Link to="/game"><h1>create game</h1></Link>
+                            <Link to={`/game/test[${this.state.name}]`}><h1>create game</h1></Link>
                         </div>
                         <div className={"homeButton"}>
                             <div className={"cursor"}></div>
-                            <Link to="/game"><h1>join game</h1></Link>
+                            <Link to='/join'><h1>join game</h1></Link>
                         </div>
                     </div>
 

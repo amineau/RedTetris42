@@ -6,8 +6,8 @@ import thunk from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
 import createSocketIoMiddleware from 'redux-socket.io';
 import { Provider } from 'react-redux'
-import {storeStateMiddleWare} from './middleware/storeStateMiddleWare'
-import move from './reducers'
+import { storeStateMiddleWare } from './middleware/storeStateMiddleWare'
+import reducers from './reducers'
 import App from './containers/app'
 // import Home from './components/home'
 import io from 'socket.io-client'
@@ -31,12 +31,12 @@ let socketIoMiddleware = createSocketIoMiddleware(socket, (type, action) => {
 
 const initialState =
 {
-  board: boardInit,
+  playerName: null,
   socket
 };
 
 let store = applyMiddleware(socketIoMiddleware)(createStore)(
-  move,
+  reducers,
   initialState,
   applyMiddleware(thunk, createLogger())
 )

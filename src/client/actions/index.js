@@ -29,3 +29,10 @@ export const rotate = () => {
         type: types.ROTATE,
     }
 }
+
+export const playerName = (name = null) => {
+    return {
+        type: types.PLAYER_NAME,
+        name
+    }
+}

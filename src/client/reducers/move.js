@@ -1,4 +1,4 @@
-import { FALL, DIVE, LEFT, RIGHT, ROTATE, NEWTETRO, INIT } from '../constants/ActionTypes'
+import { FALL, DIVE, LEFT, RIGHT, ROTATE, NEWTETRO, INIT, LIST_ROOMS, PLAYER_NAME } from '../constants/ActionTypes'
 import * as tetrosTypes from '../constants/tetrosTypes'
 import math from 'mathjs'
 
@@ -99,12 +99,33 @@ const deleteLine = board => {
     return board
 }
 
+const boardInit = () => {
+    let board = [];
+    board.length = 252;
+    board.fill(0);
+    board.forEach((e, i) => {
+    if (i % 12 === 0 || i % 12 === 11 || i < 12)
+        board[i] = 8
+    })
+    return board
+}
+
 const move = (state = {}, action) => {
-    let newState = {...state}
-    // console.log(state)
+
     switch(action.type){
+        case PLAYER_NAME:
+            return {
+                ...state,
+                playerName: action.name
+            }
+
+        case LIST_ROOMS:
+            return {
+                ...state,
+                list_rooms: action.list_rooms
+            }
+
         case INIT:
-            console.log({action})
             const initStack = action.initStack
             return {
                 ...state,
@@ -120,6 +141,7 @@ const move = (state = {}, action) => {
                 },
                 players: ["bob", "jimmy", "alfre"],
                 index: 0,
+                board: boardInit(),
             }
 
         case NEWTETRO:

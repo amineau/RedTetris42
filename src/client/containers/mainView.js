@@ -6,17 +6,6 @@ import Score from '../components/score'
 import Panel from '../components/panel'
 
 
-const boardInit = () => {
-    let board = [];
-    board.length = 252;
-    board.fill(0);
-    board.forEach((e, i) => {
-    if (i % 12 === 0 || i % 12 === 11 || i < 12)
-        board[i] = 8
-    })
-    return board
-}
-
 class MainView extends React.Component {
     constructor(props) {
         super(props)
@@ -41,11 +30,6 @@ class MainView extends React.Component {
                 setTimeout(() => {this.setState({antiRepeatFlag: false})}, 10)
             }
         });
-        // this.socket.on('init', action => {
-        //     if (action.type === 'start'){
-        //         this.props.actions.init(action.initStack)
-        //     }
-        // })
     }
 
     componentDidMount() {
@@ -67,26 +51,30 @@ class MainView extends React.Component {
 
 
     render() {
-        return (
-            <div className={"mainView"}>
-                <div className={"shadowLeftPart"}>
-                    <Shadow board={this.props.board} side={"left"} /> 
-                    <Shadow board={this.props.board} side={"left"} /> 
-                </div>
-                <div className={"boardMainPart"}>
-                    <Board tetro={this.props.tetro} board={this.props.board} actions={this.props.actions.fall}/>
-                    <div className={"boardInfoPart"}>
-                        <Score score={"4242"}/>
-                        <Panel name={"lines"} info={"42"}/>
-                        <Preview tetro={this.props.nextTetro} />
+        if (this.props.board) {
+            return (
+                <div className={"mainView"}>
+                    <div className={"shadowLeftPart"}>
+                        <Shadow board={this.props.board} side={"left"} /> 
+                        <Shadow board={this.props.board} side={"left"} /> 
+                    </div>
+                    <div className={"boardMainPart"}>
+                        <Board tetro={this.props.tetro} board={this.props.board} actions={this.props.actions.fall}/>
+                        <div className={"boardInfoPart"}>
+                            <Score score={"4242"}/>
+                            <Panel name={"lines"} info={"42"}/>
+                            <Preview tetro={this.props.nextTetro} />
+                        </div>
+                    </div>
+                    <div className={"shadowRightPart"}>
+                        <Shadow board={this.props.board} side={"right"}/> 
+                        <Shadow board={this.props.board} side={"right"}/> 
                     </div>
                 </div>
-                <div className={"shadowRightPart"}>
-                    <Shadow board={this.props.board} side={"right"}/> 
-                    <Shadow board={this.props.board} side={"right"}/> 
-                </div>
-            </div>
-        )
+            )
+        } else {
+            return (<div></div>)
+        }
     }
 }
 

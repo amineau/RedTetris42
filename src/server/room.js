@@ -7,7 +7,7 @@ export default class Room {
     this.name = room
     this._leader = player
     this.listPlayer = [player]
-    this._state = "waiting"
+    this.state = 0
     this._stack = new StackTetros()
     this._position = 0
   }
@@ -36,14 +36,14 @@ export default class Room {
   }
 
   start () {
-    if (this._state === "waiting" || this._state === "finish") {
-      this._state = "playing"
+    if (this.state === 0 || this.state === 2) {
+      this.state = 1
     }
   }
 
   finish () {
-    if (this._state === "playing") {
-      this._state = "finish"
+    if (this.state === 1) {
+      this.state = 2
     }
   }
 
