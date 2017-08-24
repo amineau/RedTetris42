@@ -7,13 +7,7 @@ class Join extends React.Component {
     constructor(props) {
         super(props)
         this.playerName = props.playerName
-        window.addEventListener("keydown",(e) => {
-            switch (e.keyCode) {
-                case 40: this.props.actions.cursorDown(); break;
-                case 38: this.props.actions.cursorUp(); break;
-                case 13: this.props.actions.select(); break;
-            }
-        });
+       
         props.socket.emit('join game')
     }
 
