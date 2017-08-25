@@ -9,14 +9,14 @@ import Panel from '../components/panel'
 class MainView extends React.Component {
     constructor(props) {
         super(props)
-        // console.log({props})
+        console.log("MAINVIEWWWWWWWWWWWWWWWWWWWW", {props})
         this.state = {
             pause: true,
             antiRepeatFlag: false,
         }
         this.socket = props.socket
         window.addEventListener("keydown",(e) => {
-            if (e.keyCode === 13)
+            if (e.keyCode === 13  && this.props.room.state === 1)
                 this.handlePause()
             if (this.state.pause === false && this.state.antiRepeatFlag === false) {
                 switch (e.keyCode) {
@@ -29,11 +29,20 @@ class MainView extends React.Component {
                 this.setState({antiRepeatFlag: true})
                 setTimeout(() => {this.setState({antiRepeatFlag: false})}, 10)
             }
-        });
+        })
+        this.gameStartSubmit = this.gameStartSubmit.bind(this)
     }
 
     componentDidMount() {
-        this.socket.emit('init')
+        this.socket.emit('room', {
+            type: 'createOrJoin',
+            room: {
+                name: this.props.room.name,
+            },
+            player: {
+                name: this.props.player.name,
+            },
+        })
     }
 
 
@@ -49,31 +58,70 @@ class MainView extends React.Component {
         console.log({pause: this.state.pause})
     }
 
+    gameStartSubmit(event) {
+        event.preventDefault()
+        this.socket.emit('room', {
+            type: "start",
+            room: {
+                name: this.props.room.name
+            }
+        })
+    }
+
 
     render() {
-        if (this.props.board) {
-            return (
-                <div className={"mainView"}>
-                    <div className={"shadowLeftPart"}>
-                        <Shadow board={this.props.board} side={"left"} /> 
-                        <Shadow board={this.props.board} side={"left"} /> 
+        switch (this.props.room.state) {
+            case 0:
+                const list_players = this.props.room.players.map( item => {
+                    let classPlayer = item === this.props.player.name ? "green-text" : ""
+                    return (
+                        <div className={"homeButton"}>
+                            <h1 className={classPlayer}>{item}{item === this.props.room.leader ? " (L)" : ""}</h1>
+                        </div>
+                    )
+                })
+                const button = this.props.room.leader === this.props.player.name ? (
+                    <form onSubmit={this.gameStartSubmit}>
+                        <div className={"homeButton"}>
+                            <input type="submit" value="Start Game"/>
+                        </div>
+                    </form>
+                ) : (
+                    <h1>waiting for start game</h1>
+                )
+                return (<div className={"mainView"}>
+                     <div className={"homeMenu"}>                    
+                        <div className={"joinButtonContainer"}>
+                            {list_players}
+                        </div>
+                        {button}
                     </div>
-                    <div className={"boardMainPart"}>
-                        <Board tetro={this.props.tetro} board={this.props.board} actions={this.props.actions.fall}/>
-                        <div className={"boardInfoPart"}>
-                            <Score score={"4242"}/>
-                            <Panel name={"lines"} info={"42"}/>
-                            <Preview tetro={this.props.nextTetro} />
+                </div>)
+            case 1:
+                return (
+                    <div className={"mainView"}>
+                        <div className={"shadowLeftPart"}>
+                            <Shadow board={this.props.board} side={"left"} /> 
+                            <Shadow board={this.props.board} side={"left"} /> 
+                        </div>
+                        <div className={"boardMainPart"}>
+                            <Board tetro={this.props.tetro} board={this.props.board} actions={this.props.actions.fall}/>
+                            <div className={"boardInfoPart"}>
+                                <Score score={"4242"}/>
+                                <Panel name={"lines"} info={"42"}/>
+                                <Preview tetro={this.props.nextTetro} />
+                            </div>
+                        </div>
+                        <div className={"shadowRightPart"}>
+                            <Shadow board={this.props.board} side={"right"}/> 
+                            <Shadow board={this.props.board} side={"right"}/> 
                         </div>
                     </div>
-                    <div className={"shadowRightPart"}>
-                        <Shadow board={this.props.board} side={"right"}/> 
-                        <Shadow board={this.props.board} side={"right"}/> 
-                    </div>
-                </div>
-            )
-        } else {
-            return (<div></div>)
+                )
+            case 2:
+                return (<div className={"mainView"}>END</div>)
+            default:
+                return (<div className={"mainView"}>default</div>)
         }
     }
 }

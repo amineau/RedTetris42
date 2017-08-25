@@ -4,11 +4,13 @@ import { bindActionCreators } from 'redux'
 import { BrowserRouter, Route } from 'react-router-dom'
 import  Home  from '../components/home'
 import  Join  from '../components/join'
+import  Create  from '../components/create'
 import  MainView  from './mainView'
+import _ from 'lodash'
 import * as allActions from '../actions'
 import ping from '../actions/server'
 
-const App = ({ tetro, nextTetro, board, actions, list_rooms, playerName, socket }) => {
+const App = ({ tetro, nextTetro, board, actions, list_rooms, playerName, player, room, socket }) => {
   console.log('############  APP #############')
   console.log({tetro, nextTetro})
   return (
@@ -19,12 +21,19 @@ const App = ({ tetro, nextTetro, board, actions, list_rooms, playerName, socket 
         )} />
         <Route path="/game/:room[:player]" render={ props => (
           <MainView 
-                  playerName={playerName}
+                  player={_.merge(player, {name: props.match.params.player})}
+                  room={_.merge(room, {name: props.match.params.room})}
                   tetro={tetro}
                   nextTetro={nextTetro}
                   board={board}
                   actions={actions}
                   socket={socket}/>
+        )} />
+        <Route path="/create" render={ props =>  (
+          <Create 
+                  socket={socket}
+                  list_rooms={list_rooms}
+                  playerName={playerName}/>
         )} />
         <Route path="/join" render={ props =>  (
           <Join 

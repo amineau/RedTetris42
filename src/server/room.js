@@ -5,7 +5,7 @@ export default class Room {
 
   constructor (room, player) {
     this.name = room
-    this._leader = player
+    this.leader = player
     this.listPlayer = [player]
     this.state = 0
     this._stack = new StackTetros()
@@ -30,8 +30,8 @@ export default class Room {
   remove (player) {
     const index = this.listPlayer.indexOf(player)
     this.listPlayer.splice(index, 1)
-    if (this._leader === player) {
-      this._leader = this.listPlayer[0]
+    if (this.leader === player) {
+      this.leader = this.listPlayer[0]
     }
   }
 

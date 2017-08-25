@@ -42,20 +42,40 @@ const initEngine = io => {
         player: d.listPlayer,
       }))
     }))
-    socket.on('join game', () => {
-      console.log(list_rooms)
+    socket.on('list game', () => {
       emitListRooms()
     })
-    socket.on('init', () => {
-      let player = new Player(socket.id)
-      let room = new Room('test', player)
-      list_rooms.push(room)
-      emitListRooms()
-      socket.emit('action', {
-        type: 'INIT',
-        initStack: room.stack,
-        players: room.listPlayer,
-      })
+    socket.on('room', action => {
+      if (action.type === "createOrJoin") {
+        let player = new Player(socket.id, action.player.name)
+        let room = list_rooms.find(elem => elem.name === action.room.name)
+        if (!room) {
+          room = new Room(action.room.name, player)
+          list_rooms.push(room)
+        } else {
+          room.add(player)
+        }
+        socket.join(room.name)
+        socket.broadcast.to(room.name).emit('action', {
+          type: 'ROOM ADD PLAYER',
+          player: player.name
+        })
+        socket.emit('action', {
+          type: 'ROOM INIT',
+          players: room.listPlayer.map(d => d.name),
+          leader: room.leader.name,
+          state: room.state,
+        })
+      } else if (action.type === "start") {
+        let room = list_rooms.filter( room => room.name === action.room.name)[0]
+        room.start()
+        io.sockets.in(room.name).emit('action', {
+          type: 'ROOM START',
+          initStack: room.stack,
+          state: room.state,
+        })
+      }
+      // emitListRooms()
     })
     socket.on('ask newtetro', action => {
       let room = list_rooms[0]
