@@ -1,12 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Join from './join'
+import Create from './create'
 
 class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = this.initState(props.playerName)
         this.handleNameChange = this.handleNameChange.bind(this)
-        this.handleNameSubmit = this.handleNameSubmit.bind(this)
+        this.createGame = this.createGame.bind(this)
+        this.joinGame = this.joinGame.bind(this)
+        this.menuComponent = null
         this.actions = props.actions
         console.log('props', props)
     }
@@ -23,59 +27,80 @@ class Home extends React.Component {
 
     handleNameChange(event) {
         this.setState({name: event.target.value})
+        if (this.comparePlayersName(event.target.value))
+            this.setState({playerNameChecked: true})
+        else
+            this.setState({playerNameChecked: false})
     }
 
-    handleNameSubmit(event) {
-        event.preventDefault()        
+    comparePlayersName(name) {
         const cmp = this.props.list.player.find((e) => {
-            return this.state.name === e
+            return name === e
         })
-        if (cmp === undefined && this.state.name !== "playr" && this.state.name !== ""){
-            this.setState({playerNameChecked: true})
+        console.log({nameCompare:!cmp && name !== "playr" && name !== ""})
+        return !cmp && name !== "playr" && name !== ""
+
+    }
+
+    createGame(event) {
+        console.log('create')
+        if (this.comparePlayersName(this.state.name)) {
             this.actions.playerName(this.state.name)
+            this.menuComponent = (
+                <Create
+                    socket={this.props.socket}
+                    list={this.props.list}
+                    playerName={this.state.name}/>
+            )
         } else {
-            this.setState({playerNameChecked: false})
-            this.actions.playerName()
+            this.menuComponent = null
         }
+        this.forceUpdate()
+    }
+
+    joinGame(event) {
+        console.log('join')
+        if (this.comparePlayersName(this.state.name)) {
+            this.actions.playerName(this.state.name)
+            this.menuComponent = (
+                <Join
+                    socket={this.props.socket}
+                    list={this.props.list}
+                    playerName={this.state.name}/>
+            )
+        } else {
+            this.menuComponent = null
+        }
+        this.forceUpdate()
     }
 
     render() {
-        const enabledButtons = 
-                    <div className={"homeButtonContainer"}>
-                        <div className={"homeButton"}>
-                            <div className={"cursor"}></div>
-                            <Link to='/create'><h1>create game</h1></Link>
-                        </div>
-                        <div className={"homeButton"}>
-                            <div className={"cursor"}></div>
-                            <Link to='/join'><h1>join game</h1></Link>
-                        </div>
-                    </div>
-
-        const disabledButtons = 
-                    <div className={"homeButtonContainer"}>
-                        <div className={"homeButton"}>
-                            <h1 className={"disabledButton"}>create game</h1>
-                        </div>
-                        <div className={"homeButton"}>
-                            <h1 className={"disabledButton"}>join game</h1>
-                        </div>
-                    </div>
-        const buttons = this.state.playerNameChecked ? enabledButtons : disabledButtons
+        const buttonsClass = this.state.playerNameChecked ? "" : "disabledButtons"
         let inputClass = "playerNameInput"
+        let menu
         !this.state.playerNameChecked ? inputClass += " disabledButton" : 0
 
         return (
             <div className={"home"}>
                 <div className={"homeImage"}></div>
                 <div className={"homeMenu"}>
-                    <form onSubmit={this.handleNameSubmit}>
+                    <form onSubmit={(e) => {e.preventDefault()}}>
                         <label style={{ fontSize: "30px" }}>
                             Player name:
                             <input className={inputClass} type="text" value={this.state.name} onChange={this.handleNameChange} maxLength="5"/>
                         </label>
                     </form>
-                    { buttons }
+                        <div className={"homeButtonContainer"}>
+                            <div className={"homeButton"}>
+                                <div className={"cursor"}></div>
+                                <button className={buttonsClass} value='create game' onClick={this.createGame}>create game</button>
+                            </div>
+                            <div className={"homeButton"}>
+                                <div className={"cursor"}></div>
+                                <button className={buttonsClass} value='join game' onClick={this.joinGame}>join game</button>
+                            </div>
+                        </div>
+                    {this.menuComponent}
                     <h1 className={"copyright"}>&copy;2017 amineau tpierron</h1>
                 </div>
             </div>

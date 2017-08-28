@@ -17,7 +17,7 @@ const App = ({ tetro, nextTetro, board, actions, list, playerName, player, room,
     <BrowserRouter>
       <div>
         <Route exact path="/" render={ props => (
-          <Home actions={actions} playerName={playerName} list={list}/>
+          <Home actions={actions} playerName={playerName} list={list} socket={socket}/>
         )} />
         <Route path="/game/:room[:player]" render={ props => (
           <MainView 
