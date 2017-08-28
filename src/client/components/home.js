@@ -27,7 +27,7 @@ class Home extends React.Component {
 
     handleNameChange(event) {
         this.setState({name: event.target.value})
-        if (this.comparePlayersName(event.target.value))
+        if (this.comparePlayersName(event.target.value.toLowerCase()))
             this.setState({playerNameChecked: true})
         else
             this.setState({playerNameChecked: false})
@@ -35,9 +35,9 @@ class Home extends React.Component {
 
     comparePlayersName(name) {
         const cmp = this.props.list.player.find((e) => {
-            return name === e
+            return name === e.toLowerCase()
         })
-        console.log({nameCompare:!cmp && name !== "playr" && name !== ""})
+        console.log({nameCompare:!cmp && name.toLowerCase() !== "playr" && name !== ""})
         return !cmp && name !== "playr" && name !== ""
 
     }
@@ -45,7 +45,7 @@ class Home extends React.Component {
     createGame(event) {
         console.log('create')
         if (this.comparePlayersName(this.state.name)) {
-            this.actions.playerName(this.state.name)
+            this.actions.playerName(this.state.name.toLowerCase())
             this.menuComponent = (
                 <Create
                     socket={this.props.socket}
@@ -75,10 +75,7 @@ class Home extends React.Component {
     }
 
     render() {
-        const buttonsClass = this.state.playerNameChecked ? "" : "disabledButtons"
-        let inputClass = "playerNameInput"
-        let menu
-        !this.state.playerNameChecked ? inputClass += " disabledButton" : 0
+        const disabledClass = this.state.playerNameChecked ? "" : " disabledButton"
 
         return (
             <div className={"home"}>
@@ -87,17 +84,15 @@ class Home extends React.Component {
                     <form onSubmit={(e) => {e.preventDefault()}}>
                         <label style={{ fontSize: "30px" }}>
                             Player name:
-                            <input className={inputClass} type="text" value={this.state.name} onChange={this.handleNameChange} maxLength="5"/>
+                            <input className={"playerNameInput" + disabledClass} type="text" value={this.state.name} onChange={this.handleNameChange} maxLength="5"/>
                         </label>
                     </form>
                         <div className={"homeButtonContainer"}>
                             <div className={"homeButton"}>
-                                <div className={"cursor"}></div>
-                                <button className={buttonsClass} value='create game' onClick={this.createGame}>create game</button>
+                                <span className={disabledClass} onClick={this.createGame}>create game</span>
                             </div>
                             <div className={"homeButton"}>
-                                <div className={"cursor"}></div>
-                                <button className={buttonsClass} value='join game' onClick={this.joinGame}>join game</button>
+                                <span className={disabledClass} onClick={this.joinGame}>join game</span>
                             </div>
                         </div>
                     {this.menuComponent}
