@@ -43,7 +43,7 @@ class Create extends React.Component {
                     <div className={"homeButtonContainer"}>
                     <div className={"homeButton"}>
                         <div className={"cursor" + disabledClass}></div>
-                        <Link to={`/game/${this.state.name}[${this.props.playerName}]`} className={linkClass}>
+                        <Link to={`/${this.state.name}[${this.props.playerName}]`} className={linkClass}>
                             <h1 className={disabledClass}>ok</h1>
                         </Link>
                     </div>

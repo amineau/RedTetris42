@@ -2,6 +2,10 @@ body {
     background-color:#363636
 }
 
+a {
+    text-decoration: none;
+}
+
 .board {
     display: flex;
     border: solid;
@@ -220,7 +224,7 @@ body {
     background-color: #cdd6a7;  
 }
 
-.homeMenu > form {
+.homeMenu form {
     text-align: center;
 }
 
@@ -272,14 +276,13 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
     /*border: 4px solid rgba(0,0,0,0);*/
     flex: 1;
 }
 
  .homeButton > span:not(.disabledButton) {
     cursor: pointer;
-    text-decoration: none;
 }
 
 .homeButton.notActive {

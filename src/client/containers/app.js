@@ -19,7 +19,7 @@ const App = ({ tetro, nextTetro, board, actions, list, playerName, player, room,
         <Route exact path="/" render={ props => (
           <Home actions={actions} playerName={playerName} list={list} socket={socket}/>
         )} />
-        <Route path="/game/:room[:player]" render={ props => (
+        <Route path="/:room[:player]" render={ props => (
           <MainView 
                   player={_.merge(player, {name: props.match.params.player})}
                   room={_.merge(room, {name: props.match.params.room})}
@@ -28,18 +28,6 @@ const App = ({ tetro, nextTetro, board, actions, list, playerName, player, room,
                   board={board}
                   actions={actions}
                   socket={socket}/>
-        )} />
-        <Route path="/create" render={ props =>  (
-          <Create 
-                  socket={socket}
-                  list={list}
-                  playerName={playerName}/>
-        )} />
-        <Route path="/join" render={ props =>  (
-          <Join 
-                  socket={socket}
-                  list={list}
-                  playerName={playerName}/>
         )} />
       </div>
     </BrowserRouter>

@@ -17,12 +17,12 @@ class Join extends React.Component {
         )
 
         console.log({props: this.props})
-
-        if (!_.isEmpty(this.props.list.room)) {
-            room_list = this.props.list.room.map((item, index) => (
+        const listRoomFilter = this.props.list.room.filter(item => item.state !== 1)
+        if (!_.isEmpty(listRoomFilter)) {
+            room_list = listRoomFilter.map((item, index) => (
                 <div className={"homeButton"}>
                     <div className={"cursor"}></div>
-                    <Link to={`/game/${item.name}[${this.playerName}]`}>
+                    <Link to={`/${item.name}[${this.playerName}]`}>
                         <h1>{item.name} - {item.player.length} player{item.player.length > 1 ? "s" : ""}</h1>
                     </Link>
                 </div>

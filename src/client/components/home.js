@@ -29,8 +29,10 @@ class Home extends React.Component {
         this.setState({name: event.target.value})
         if (this.comparePlayersName(event.target.value.toLowerCase()))
             this.setState({playerNameChecked: true})
-        else
+        else {
+            this.menuComponent = {}
             this.setState({playerNameChecked: false})
+        }
     }
 
     comparePlayersName(name) {
