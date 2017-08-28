@@ -10,14 +10,14 @@ import _ from 'lodash'
 import * as allActions from '../actions'
 import ping from '../actions/server'
 
-const App = ({ tetro, nextTetro, board, actions, list_rooms, playerName, player, room, socket }) => {
+const App = ({ tetro, nextTetro, board, actions, list, playerName, player, room, socket }) => {
   console.log('############  APP #############')
-  console.log({tetro, nextTetro})
+  console.log(list)
   return (
     <BrowserRouter>
       <div>
         <Route exact path="/" render={ props => (
-          <Home actions={actions} playerName={playerName} players={[]}/>
+          <Home actions={actions} playerName={playerName} list={list}/>
         )} />
         <Route path="/game/:room[:player]" render={ props => (
           <MainView 
@@ -32,13 +32,13 @@ const App = ({ tetro, nextTetro, board, actions, list_rooms, playerName, player,
         <Route path="/create" render={ props =>  (
           <Create 
                   socket={socket}
-                  list_rooms={list_rooms}
+                  list={list}
                   playerName={playerName}/>
         )} />
         <Route path="/join" render={ props =>  (
           <Join 
                   socket={socket}
-                  list_rooms={list_rooms}
+                  list={list}
                   playerName={playerName}/>
         )} />
       </div>

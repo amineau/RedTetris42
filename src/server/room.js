@@ -29,6 +29,8 @@ export default class Room {
 
   remove (player) {
     const index = this.listPlayer.indexOf(player)
+    if (index === -1)
+      return;
     this.listPlayer.splice(index, 1)
     if (this.leader === player) {
       this.leader = this.listPlayer[0]

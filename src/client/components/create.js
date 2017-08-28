@@ -18,9 +18,9 @@ class Create extends React.Component {
 
     handleNameSubmit(event) {
         event.preventDefault()        
-        const cmp = undefined //this.props.players.find((e) => {
-        //     return this.state.name === e
-        // })
+        const cmp = this.props.list.room.find((e) => {
+            return this.state.name === e.name
+        })
         if (cmp === undefined && this.state.name !== ""){
             this.setState({roomNameChecked: true})
         } else {

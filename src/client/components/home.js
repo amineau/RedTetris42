@@ -27,9 +27,9 @@ class Home extends React.Component {
 
     handleNameSubmit(event) {
         event.preventDefault()        
-        const cmp = undefined //this.props.players.find((e) => {
-        //     return this.state.name === e
-        // })
+        const cmp = this.props.list.player.find((e) => {
+            return this.state.name === e
+        })
         if (cmp === undefined && this.state.name !== "playr" && this.state.name !== ""){
             this.setState({playerNameChecked: true})
             this.actions.playerName(this.state.name)

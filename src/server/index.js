@@ -29,56 +29,81 @@ const initApp = (app, params, cb) => {
   })
 }
 
-let list_rooms = []
+
+let room_list = []
+let player_list = []
 
 const initEngine = io => {
   io.on('connection', function(socket){
     loginfo("Socket connected: " + socket.id)
-    const emitListRooms = () => (socket.emit('action', {
-      type: 'LIST_ROOMS',
-      list_rooms: list_rooms.map(d => ({
-        name: d.name,
-        state: d.state,
-        player: d.listPlayer,
-      }))
-    }))
-    socket.on('list game', () => {
-      emitListRooms()
+    
+    let player = new Player(socket.id)
+    
+    const list = () => ({
+      type: 'LIST',
+      list: {
+        room: room_list.map(d => ({
+          name: d.name,
+          state: d.state,
+          player: d.listPlayer,
+        })),
+        player: player_list,
+      }
     })
+
+    socket.emit('action', list())
     socket.on('room', action => {
+      let room = room_list.find( room => room.name === action.room.name)
       if (action.type === "createOrJoin") {
-        let player = new Player(socket.id, action.player.name)
-        let room = list_rooms.find(elem => elem.name === action.room.name)
+        if (//room_list.find(e => e.name === action.room.name) ||
+             player_list.find(e => e === action.player.name)) {
+          return socket.emit('action', {
+            type: 'ERROR',
+            message: 'Name already exists',
+          })
+        }
+        player.name = action.player.name
         if (!room) {
           room = new Room(action.room.name, player)
-          list_rooms.push(room)
+          room_list.push(room)
         } else {
           room.add(player)
         }
+        player_list.push(player.name)
         socket.join(room.name)
-        socket.broadcast.to(room.name).emit('action', {
-          type: 'ROOM ADD PLAYER',
-          player: player.name
+        io.emit('action', {
+          type: 'PLAYER LIST',
+          player_list
         })
-        socket.emit('action', {
+        io.sockets.in(room.name).emit('action', {
           type: 'ROOM INIT',
           players: room.listPlayer.map(d => d.name),
           leader: room.leader.name,
           state: room.state,
         })
       } else if (action.type === "start") {
-        let room = list_rooms.filter( room => room.name === action.room.name)[0]
         room.start()
         io.sockets.in(room.name).emit('action', {
           type: 'ROOM START',
           initStack: room.stack,
           state: room.state,
         })
+      } else if (action.type === "exit") {
+        socket.leave(action.room.name)
+        room.remove(player)
+        player_list.slice(player_list.indexOf(player.name), 1)
+        io.sockets.in(room.name).emit('action', {
+          type: 'ROOM INIT',
+          players: room.listPlayer.map(d => d.name),
+          leader: room.leader.name,
+          state: room.state,
+        })
       }
-      // emitListRooms()
+      console.log({player_list, room_list})
+      io.sockets.emit('action', list())
     })
     socket.on('ask newtetro', action => {
-      let room = list_rooms[0]
+      let room = room_list[0]
       if (room){
         room.sendTetro(action.index, socket.id)
           .then(tetro => {

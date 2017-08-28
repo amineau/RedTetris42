@@ -26,13 +26,17 @@ console.log(boardInit)
 let socket = io.connect('http://localhost:3004');
 
 let socketIoMiddleware = createSocketIoMiddleware(socket, (type, action) => {
-  console.log({type, action})
+  console.log('socket', {type, action})
 });
 
 const initialState =
 {
   playerName: null,
-  socket
+  list: {
+    room: [],
+    player: [],
+  },
+  socket,
 };
 
 let store = applyMiddleware(socketIoMiddleware)(createStore)(

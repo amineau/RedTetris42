@@ -1,4 +1,4 @@
-import { FALL, DIVE, LEFT, RIGHT, ROTATE, NEWTETRO, ROOM_INIT, ROOM_START, ROOM_ADD_PLAYER, ROOM_DELETE_PLAYER, LIST_ROOMS, PLAYER_NAME } from '../constants/ActionTypes'
+import { FALL, DIVE, LEFT, RIGHT, ROTATE, NEWTETRO, ROOM_INIT, ROOM_START, LIST, PLAYER_NAME } from '../constants/ActionTypes'
 import * as tetrosTypes from '../constants/tetrosTypes'
 import math from 'mathjs'
 
@@ -112,12 +112,14 @@ const boardInit = () => {
 
 const move = (state = {}, action) => {
 
+    console.log(action.type, {action})
     switch(action.type){
+        
+        case LIST:
+            return { ...state, list: action.list }
+
         case PLAYER_NAME:
             return { ...state, playerName: action.name }
-
-        case LIST_ROOMS:
-            return { ...state, list_rooms: action.list_rooms }
 
         case ROOM_INIT:
             console.log("ROOM INIT", action)
@@ -129,16 +131,6 @@ const move = (state = {}, action) => {
                     leader: action.leader,
                     state: action.state,
                 },
-                board: boardInit(),
-            }
-
-        case ROOM_ADD_PLAYER:
-            return {
-                ...state,
-                room: {
-                    ...state.room,
-                    players: state.room.players.concat(action.player)
-                }
             }
             
         case ROOM_START:
@@ -157,9 +149,9 @@ const move = (state = {}, action) => {
                     orientation: 0
                 },
                 index: 0,
-                room: {...state.room, state: action.state}
+                room: {...state.room, state: action.state},
+                board: boardInit(),
             }
-
 
         case NEWTETRO:
             return {

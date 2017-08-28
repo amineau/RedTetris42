@@ -45,6 +45,15 @@ class MainView extends React.Component {
         })
     }
 
+    componentWillUnmount() {
+        this.socket.emit('room', {
+            type: 'exit',
+            room: {
+                name: this.props.room.name,
+            },
+        })
+    }
+
 
     handlePause() {
         if (this.state.pause === true) {
@@ -55,7 +64,6 @@ class MainView extends React.Component {
             clearInterval(this.state.intervalID);
             this.setState({pause: true})
         }
-        console.log({pause: this.state.pause})
     }
 
     gameStartSubmit(event) {
@@ -90,7 +98,7 @@ class MainView extends React.Component {
                     <h1>waiting for start game</h1>
                 )
                 return (<div className={"mainView"}>
-                     <div className={"homeMenu"}>                    
+                     <div className={"homeMenu"}>   
                         <div className={"joinButtonContainer"}>
                             {list_players}
                         </div>
