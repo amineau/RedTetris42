@@ -28,12 +28,10 @@ class Join extends React.Component {
                 </div>
             ))
         }
-        return (
-            <div className={"homeMenu"}>                    
-                <div className={"joinButtonContainer"}>
+        return (                   
+                <div className={"joinButtonContainer menu"}>
                     {room_list}
                 </div>
-            </div>
         )
     }
 }

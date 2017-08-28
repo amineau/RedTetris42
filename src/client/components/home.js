@@ -10,7 +10,7 @@ class Home extends React.Component {
         this.handleNameChange = this.handleNameChange.bind(this)
         this.createGame = this.createGame.bind(this)
         this.joinGame = this.joinGame.bind(this)
-        this.menuComponent = null
+        this.menuComponent = {}
         this.actions = props.actions
         console.log('props', props)
     }
@@ -46,14 +46,17 @@ class Home extends React.Component {
         console.log('create')
         if (this.comparePlayersName(this.state.name)) {
             this.actions.playerName(this.state.name.toLowerCase())
-            this.menuComponent = (
-                <Create
-                    socket={this.props.socket}
-                    list={this.props.list}
-                    playerName={this.state.name}/>
-            )
+            this.menuComponent = {
+                name: 'create',
+                component: (
+                    <Create
+                        socket={this.props.socket}
+                        list={this.props.list}
+                        playerName={this.state.name}/>
+                )
+            }
         } else {
-            this.menuComponent = null
+            this.menuComponent = {}
         }
         this.forceUpdate()
     }
@@ -62,20 +65,33 @@ class Home extends React.Component {
         console.log('join')
         if (this.comparePlayersName(this.state.name)) {
             this.actions.playerName(this.state.name)
-            this.menuComponent = (
-                <Join
-                    socket={this.props.socket}
-                    list={this.props.list}
-                    playerName={this.state.name}/>
-            )
+            this.menuComponent = {
+                name: 'join',
+                component: (
+                    <Join
+                        socket={this.props.socket}
+                        list={this.props.list}
+                        playerName={this.state.name}/>
+                )
+            }
         } else {
-            this.menuComponent = null
+            this.menuComponent = {}
         }
         this.forceUpdate()
     }
 
     render() {
         const disabledClass = this.state.playerNameChecked ? "" : " disabledButton"
+        let createClass = ''
+        let joinClass = ''
+        console.log({join: this.menuComponent.name})
+        if (this.menuComponent.name === 'create') {
+            createClass = ' active'
+            joinClass = ' notActive'
+        } else if (this.menuComponent.name === 'join') {
+            createClass = ' notActive'
+            joinClass = ' active'
+        }
 
         return (
             <div className={"home"}>
@@ -88,14 +104,14 @@ class Home extends React.Component {
                         </label>
                     </form>
                         <div className={"homeButtonContainer"}>
-                            <div className={"homeButton"}>
+                            <div className={"homeButton" + createClass}>
                                 <span className={disabledClass} onClick={this.createGame}>create game</span>
                             </div>
-                            <div className={"homeButton"}>
+                            <div className={"homeButton" + joinClass}>
                                 <span className={disabledClass} onClick={this.joinGame}>join game</span>
                             </div>
                         </div>
-                    {this.menuComponent}
+                    {this.menuComponent.component}
                     <h1 className={"copyright"}>&copy;2017 amineau tpierron</h1>
                 </div>
             </div>
