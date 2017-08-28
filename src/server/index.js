@@ -45,7 +45,7 @@ const initEngine = io => {
         room: room_list.map(d => ({
           name: d.name,
           state: d.state,
-          player: d.listPlayer,
+          player: d.listPlayer.map(e => e.name),
         })),
         player: player_list,
       }
@@ -71,10 +71,10 @@ const initEngine = io => {
         }
         player_list.push(player.name)
         socket.join(room.name)
-        io.emit('action', {
-          type: 'PLAYER LIST',
-          player_list
-        })
+        // io.emit('action', {
+        //   type: 'PLAYER LIST',
+        //   player_list
+        // })
         io.sockets.in(room.name).emit('action', {
           type: 'ROOM INIT',
           players: room.listPlayer.map(d => d.name),
@@ -99,7 +99,7 @@ const initEngine = io => {
           state: room.state,
         })
       }
-      console.log({player_list, room_list})
+      console.log({player_list, room_player_list: room_list[0].listPlayer})
       io.sockets.emit('action', list())
     })
     socket.on('ask newtetro', action => {
