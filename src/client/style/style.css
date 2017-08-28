@@ -282,7 +282,7 @@ body {
     margin-right: 10px; 
 }
 
-.homeButton:hover > .cursor{
+.homeButton:hover > .cursor:not(.disabledButton){
     opacity: 1;
 }
 

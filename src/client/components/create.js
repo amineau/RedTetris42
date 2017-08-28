@@ -29,10 +29,8 @@ class Create extends React.Component {
     }
 
     render() {
-        const buttonClass = this.state.roomNameChecked ? "" : "disabledLink"
-        const titleClass = this.state.roomNameChecked ? "" : "disabledButton"
-        let inputClass = "roomNameInput"
-        !this.state.roomNameChecked ? inputClass += " disabledButton" : 0
+        const linkClass = this.state.roomNameChecked ? "" : "disabledLink"
+        const disabledClass = this.state.roomNameChecked ? "" : " disabledButton"
 
         return (
             <div className={"home"}>
@@ -40,14 +38,14 @@ class Create extends React.Component {
                     <form  onSubmit={(e) => {e.preventDefault()}}>
                         <label style={{ fontSize: "30px" }}>
                             Room name:
-                            <input className={inputClass} type="text" value={this.state.name} onChange={this.handleNameChange} maxLength="50"/>
+                            <input className={"roomNameInput" + disabledClass} type="text" value={this.state.name} onChange={this.handleNameChange} maxLength="50"/>
                         </label>
                     </form>
                      <div className={"homeButtonContainer"}>
                         <div className={"homeButton"}>
-                            <div className={"cursor"}></div>
-                            <Link to={`/game/${this.state.name}[${this.props.playerName}]`} className={buttonClass}>
-                                <h1 className={titleClass}>ok</h1>
+                            <div className={"cursor" + disabledClass}></div>
+                            <Link to={`/game/${this.state.name}[${this.props.playerName}]`} className={linkClass}>
+                                <h1 className={disabledClass}>ok</h1>
                             </Link>
                         </div>
                     </div>
