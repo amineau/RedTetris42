@@ -274,6 +274,10 @@ body {
     color: #666e47;
 }
 
+.disabledLink {
+  pointer-events: none;
+}
+
 .homeButton > div {
     margin-right: 10px; 
 }
