@@ -86,7 +86,6 @@ class Home extends React.Component {
         const disabledClass = this.state.playerNameChecked ? "" : " disabledButton"
         let createClass = ''
         let joinClass = ''
-        console.log({join: this.menuComponent.name})
         if (this.menuComponent.name === 'create') {
             createClass = ' active'
             joinClass = ' notActive'

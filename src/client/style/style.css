@@ -13,6 +13,15 @@ a {
     flex-wrap: wrap;
     width: 480px;
     height: 800px;
+    position: relative;
+}
+
+.statusGame {
+    position: absolute;
+    width: 400px;
+    padding: 40px;
+    text-align: center;
+    top: 300px;
 }
 
 .shadowBoard {

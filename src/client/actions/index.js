@@ -30,6 +30,12 @@ export const rotate = () => {
     }
 }
 
+export const room_exit = () => {
+    return {
+        type: types.ROOM_EXIT,
+    }
+}
+
 export const playerName = (name = null) => {
     return {
         type: types.PLAYER_NAME,

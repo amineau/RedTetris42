@@ -37,7 +37,7 @@ const manageBarTetro = (boardAndTetro, translatedTetro, tetro) => {
     return boardAndTetro
 }
 
-const Board = ({tetro, board, actions, linesDeleted}) => {
+const Board = ({tetro, board, actions, linesDeleted, message}) => {
     let boardAndTetro = [...board]
     let cells = []
 
@@ -61,6 +61,7 @@ const Board = ({tetro, board, actions, linesDeleted}) => {
     return (
         <div className="board">
             {cells}
+            {message}
         </div>
     )
 };

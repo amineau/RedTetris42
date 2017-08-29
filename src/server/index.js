@@ -87,16 +87,21 @@ const initEngine = io => {
           state: room.state,
         })
       } else if (action.type === "exit") {
+        console.log('exit')
         socket.leave(action.room.name)
         room.remove(player)
-        player_list.slice(player_list.indexOf(player.name), 1)
-        io.sockets.in(room.name).emit('action', room_init(room))
+        player_list.splice(player_list.indexOf(player.name), 1)
+        player.boardInit()
+        if (room.listPlayer.length) {
+          io.sockets.in(room.name).emit('action', room_init(room))
+        } else {
+          room_list.splice(room_list.indexOf(room), 1)
+        }
       }
-      // console.log({player_list, room_player_list: room_list[0].listPlayer})
       io.sockets.emit('action', list())
     })
     socket.on('ask newtetro', action => {
-      let room = room_list.find(e => e === action.room)
+      let room = room_list.find(e => e.name === action.room.name)
       room.sendTetro(action, player)
         .then(tetro => {
           socket.emit('action', {type: 'NEWTETRO', tetro})

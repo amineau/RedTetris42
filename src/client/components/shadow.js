@@ -20,6 +20,7 @@ function findHighestCell(e) {
 }
 
 function getShadow(tab, color) {
+    console.log({tab})
     for (let i = 11; i >= 0; i--) {
         let flag = false;
         for (let j = 240 + i; j >= 0; j -= 12) {
@@ -34,13 +35,15 @@ function getShadow(tab, color) {
 
 const Shadow = ({board, name, side}) => {
     const color = 11
+    console.log('shadow-0 tab', board, [...board])
     let shadow = getShadow([...board], color)
+    console.log('shadow-1 tab', {shadow, board})
     shadow.forEach((e, i) => {
     if (i % 12 === 0 || i % 12 === 11)
         shadow[i] = 8
     })
     shadow.reverse()
-    console.log({shadow})
+    console.log('shadow-2 tab', {shadow})
     const cells = [];
     for (let i = 0; i < 240; i++) {
         cells.push(

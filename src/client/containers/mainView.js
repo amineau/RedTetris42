@@ -11,28 +11,42 @@ class MainView extends React.Component {
         super(props)
         this.state = {
             pause: true,
+            state: props.room.state,
             antiRepeatFlag: false,
         }
         this.socket = props.socket
-        window.addEventListener("keydown",(e) => {
-            if (e.keyCode === 13  && this.props.room.state === 1)
-                this.handlePause()
-            if (this.state.pause === false && this.state.antiRepeatFlag === false) {
-                switch (e.keyCode) {
-                    case 37: this.props.actions.left(); break;
-                    case 39: this.props.actions.right(); break;
-                    case 40: this.props.actions.fall(); break;
-                    case 38: this.props.actions.rotate(); break;
-                    case 32: this.props.actions.dive(); break;
-                }
-                this.setState({antiRepeatFlag: true})
-                setTimeout(() => {this.setState({antiRepeatFlag: false})}, 10)
-            }
-        })
         this.gameStartSubmit = this.gameStartSubmit.bind(this)
     }
 
+    onKeydown (e) {
+        // if (e.keyCode === 13  && this.props.room.state === 1)
+        //     this.handlePause()
+        // if (this.state.pause === false && this.state.antiRepeatFlag === false) {
+        if (this.state.antiRepeatFlag === false) {
+            switch (e.keyCode) {
+                case 37: this.props.actions.left(); break;
+                case 39: this.props.actions.right(); break;
+                case 40: this.props.actions.fall(); break;
+                case 38: this.props.actions.rotate(); break;
+                case 32: this.props.actions.dive(); break;
+            }
+            this.setState({antiRepeatFlag: true})
+            setTimeout(() => {this.setState({antiRepeatFlag: false})}, 10)
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.room.state === 1 && this.props.room.state !== 1) {
+            const intervalID = setInterval(() => this.props.actions.fall(), 1000);
+            this.setState({pause: false, intervalID })
+        } else if (nextProps.room.state !== 1 && this.props.room.state === 1) {
+            clearInterval(this.state.intervalID);            
+        }
+    }
+
     componentDidMount() {
+        console.log('MainView componentDidMount')
+        window.addEventListener("keydown", this.onKeydown.bind(this))
         this.socket.emit('room', {
             type: 'createOrJoin',
             room: {
@@ -45,6 +59,10 @@ class MainView extends React.Component {
     }
 
     componentWillUnmount() {
+        console.log('MainView componentWillUnmount')
+        window.removeEventListener("keydown", this.onKeydown.bind(this))
+        clearInterval(this.state.intervalID);
+        this.props.actions.room_exit()
         this.socket.emit('room', {
             type: 'exit',
             room: {
@@ -54,16 +72,16 @@ class MainView extends React.Component {
     }
 
 
-    handlePause() {
-        if (this.state.pause === true) {
-            const intervalID = setInterval(() => this.props.actions.fall(), 1000);
-            this.setState({pause: false, intervalID })
-        }
-        else {
-            clearInterval(this.state.intervalID);
-            this.setState({pause: true})
-        }
-    }
+    // handlePause() {
+    //     if (this.state.pause === true) {
+    //         const intervalID = setInterval(() => this.props.actions.fall(), 1000);
+    //         this.setState({pause: false, intervalID })
+    //     }
+    //     else {
+    //         clearInterval(this.state.intervalID);
+    //         this.setState({pause: true})
+    //     }
+    // }
 
     gameStartSubmit(event) {
         event.preventDefault()
@@ -75,26 +93,68 @@ class MainView extends React.Component {
         })
     }
 
+    statusGame () {
+        switch (this.props.room.state) {
+            case 0:
+                if (this.props.room.leader === this.props.player.name)
+                    return (
+                        <div className={"statusGame"}>
+                            <div className={"cursor"}></div>
+                            <h1 onClick={this.gameStartSubmit}>start game</h1>
+                        </div>
+                    )
+                else
+                    return (
+                        <div className={"statusGame"}>
+                           <h1>waiting for start game</h1>
+                        </div>
+                    )
+            case 2:
+                if (this.props.room.leader === this.props.player.name)
+                    return (
+                        <div className={"statusGame"}>
+                            <div className={"cursor"}></div>
+                            <h1 onClick={this.gameStartSubmit}>restart game</h1>
+                        </div>
+                    )
+                else
+                    return (
+                        <div className={"statusGame"}>
+                            <h1>waiting for restart game</h1>
+                        </div>
+                    )
+            default:
+                return null
+        }
+    }
+
 
     render() {
         console.log({propsroom: this.props.room.state})
         if (this.props.room.state !== undefined) {
-            console.log("ca passe")
+            console.log("ca passe", this.props.room.players)
             const list_shadows = this.props.room.players
-                .filter(e => e.name === this.props.player.name)
+                .filter(e => e.name !== this.props.player.name)
                 .map( item => <Shadow board={item.board} name={item.name} side={"left"} />)
+            let statusGame = null
+
             return (
                 <div className={"mainView"}>
                     <div className={"shadowLeftPart"}>
                         {list_shadows}
                     </div>
                     <div className={"boardMainPart"}>
-                        <Board tetro={this.props.tetro} board={this.props.board} actions={this.props.actions.fall} linesDeleted={this.props.linesDeleted}/>
+                        <Board 
+                            tetro={this.props.tetro}
+                            board={this.props.board}
+                            actions={this.props.actions.fall}
+                            linesDeleted={this.props.linesDeleted}
+                            message={this.statusGame()}
+                        />
                         <div className={"boardInfoPart"}>
                             <Score score={"4242"}/>
                             <Panel name={"lines"} info={"42"}/>
                             <Preview tetro={this.props.nextTetro} />
-
                         </div>
                     </div>
                     <div className={"shadowRightPart"}>

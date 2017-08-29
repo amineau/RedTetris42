@@ -8,7 +8,18 @@ export default class Player {
     this.lines = 0
     this.score = 0
     this.level = 0
-    this.board = []
+    this.board = null 
+    this.boardInit()
+  }
+
+  boardInit () {
+    this.board = [];
+    this.board.length = 252;
+    this.board.fill(0);
+    this.board.forEach((e, i) => {
+    if (i % 12 === 0 || i % 12 === 11 || i < 12)
+        this.board[i] = 8
+    })
   }
 
   incrementPosition () { this._position++ }
