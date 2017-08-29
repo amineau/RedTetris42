@@ -14,12 +14,13 @@ export default class Room {
 
   get stack ()      { return this._stack.pool }
 
-  sendTetro (index, socketId) {
-    const player = this.listPlayer.filter(e => {
-      return e.socketId === socketId
-    })
+  sendTetro ({index, board}, player) {
+    // const player = this.listPlayer.filter(e => {
+    //   return e.socketId === socketId
+    // })
     // const player = this._listPlayer[0]
-    player._position = index
+    player.position = index
+    player.board = board
     return this._stack.tetroByIndex(index)
   }
 

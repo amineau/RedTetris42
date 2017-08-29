@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Cell = ({type, orientation, shadow}) => {
+const Cell = ({type, shadow}) => {
 
     const colors = [
         "white",

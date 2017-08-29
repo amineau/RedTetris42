@@ -107,6 +107,7 @@ const boardInit = () => {
     if (i % 12 === 0 || i % 12 === 11 || i < 12)
         board[i] = 8
     })
+    console.log({board})
     return board
 }
 
@@ -131,6 +132,7 @@ const move = (state = {}, action) => {
                     leader: action.leader,
                     state: action.state,
                 },
+                board: boardInit(),
             }
             
         case ROOM_START:
@@ -150,7 +152,6 @@ const move = (state = {}, action) => {
                 },
                 index: 0,
                 room: {...state.room, state: action.state},
-                board: boardInit(),
             }
 
         case NEWTETRO:
@@ -161,7 +162,7 @@ const move = (state = {}, action) => {
                     matrix: action.tetro.matrix,
                     orientation: 0
                 },
-                index: state.index + 1
+                index: state.index + 1,
             }
 
         case FALL:
@@ -177,9 +178,13 @@ const move = (state = {}, action) => {
                     }
                 }
             } else {
-                state.socket.emit('ask newtetro', {index: state.index + 1})
                 let newBoard = writeTetroOnBoard(state)
                 newBoard = deleteLine(newBoard)
+                state.socket.emit('ask newtetro', {
+                    index: state.index + 1,
+                    board: newBoard,
+                    room: state.room.name,
+                })
                 
                 return {
                     ...state,

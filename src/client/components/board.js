@@ -44,17 +44,15 @@ const Board = ({tetro, board, actions}) => {
     if (!_.isEmpty(tetro)) {
         const translatedTetro = translateTetro(tetro);
         boardAndTetro = manageBarTetro(boardAndTetro, translatedTetro, tetro)
-
+    }
         for (let i = 12; i < 252; i++) {
             cells.push(
                 <Cell
                     key={i}
-                    type={boardAndTetro[i]}
-                    orientation={tetro.orientation} />
+                    type={boardAndTetro[i]} />
             )
         }
         cells.reverse();
-    }
 
     return (
         <div className="board">

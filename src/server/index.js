@@ -51,6 +51,13 @@ const initEngine = io => {
       }
     })
 
+    const room_init = (room) => ({
+      type: 'ROOM INIT',
+      players: room.listPlayer,
+      leader: room.leader.name,
+      state: room.state,
+    })
+
     socket.emit('action', list())
     socket.on('room', action => {
       let room = room_list.find( room => room.name === action.room.name)
@@ -71,16 +78,7 @@ const initEngine = io => {
         }
         player_list.push(player.name)
         socket.join(room.name)
-        // io.emit('action', {
-        //   type: 'PLAYER LIST',
-        //   player_list
-        // })
-        io.sockets.in(room.name).emit('action', {
-          type: 'ROOM INIT',
-          players: room.listPlayer.map(d => d.name),
-          leader: room.leader.name,
-          state: room.state,
-        })
+        io.sockets.in(room.name).emit('action', room_init(room))
       } else if (action.type === "start") {
         room.start()
         io.sockets.in(room.name).emit('action', {
@@ -92,24 +90,18 @@ const initEngine = io => {
         socket.leave(action.room.name)
         room.remove(player)
         player_list.slice(player_list.indexOf(player.name), 1)
-        io.sockets.in(room.name).emit('action', {
-          type: 'ROOM INIT',
-          players: room.listPlayer.map(d => d.name),
-          leader: room.leader.name,
-          state: room.state,
-        })
+        io.sockets.in(room.name).emit('action', room_init(room))
       }
-      console.log({player_list, room_player_list: room_list[0].listPlayer})
+      // console.log({player_list, room_player_list: room_list[0].listPlayer})
       io.sockets.emit('action', list())
     })
     socket.on('ask newtetro', action => {
-      let room = room_list[0]
-      if (room){
-        room.sendTetro(action.index, socket.id)
-          .then(tetro => {
-            socket.emit('action', {type: 'NEWTETRO', tetro})
-          })
-      }
+      let room = room_list.find(e => e === action.room)
+      room.sendTetro(action, player)
+        .then(tetro => {
+          socket.emit('action', {type: 'NEWTETRO', tetro})
+          io.sockets.in(room.name).emit('action', room_init(room))
+        })
     })
   })
 }

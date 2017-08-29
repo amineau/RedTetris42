@@ -78,59 +78,65 @@ class MainView extends React.Component {
 
 
     render() {
-        switch (this.props.room.state) {
-            case 0:
-                const list_players = this.props.room.players.map( item => {
-                    let classPlayer = item === this.props.player.name ? "green-text" : ""
-                    return (
-                        <div className={"homeButton"}>
-                            <h1 className={classPlayer}>{item}{item === this.props.room.leader ? " (L)" : ""}</h1>
-                        </div>
-                    )
-                })
-                const button = this.props.room.leader === this.props.player.name ? (
-                    <form onSubmit={this.gameStartSubmit}>
-                        <div className={"homeButton"}>
-                            <input type="submit" value="Start Game"/>
-                        </div>
-                    </form>
-                ) : (
-                    <h1>waiting for start game</h1>
-                )
-                return (<div className={"mainView"}>
-                     <div className={"homeMenu"}>   
-                        <div className={"joinButtonContainer"}>
-                            {list_players}
-                        </div>
-                        {button}
+        console.log({propsroom: this.props.room.state})
+        if (this.props.room.state !== undefined) {
+            console.log("ca passe")
+            const list_shadows = this.props.room.players
+                .filter(e => e.name === this.props.player.name)
+                .map( item => <Shadow board={item.board} name={item.name} side={"left"} />)
+            return (
+                <div className={"mainView"}>
+                    <div className={"shadowLeftPart"}>
+                        {list_shadows}
                     </div>
-                </div>)
-            case 1:
-                return (
-                    <div className={"mainView"}>
-                        <div className={"shadowLeftPart"}>
-                            <Shadow board={this.props.board} side={"left"} /> 
-                            <Shadow board={this.props.board} side={"left"} /> 
-                        </div>
-                        <div className={"boardMainPart"}>
-                            <Board tetro={this.props.tetro} board={this.props.board} actions={this.props.actions.fall}/>
-                            <div className={"boardInfoPart"}>
-                                <Score score={"4242"}/>
-                                <Panel name={"lines"} info={"42"}/>
-                                <Preview tetro={this.props.nextTetro} />
-                            </div>
-                        </div>
-                        <div className={"shadowRightPart"}>
-                            <Shadow board={this.props.board} side={"right"}/> 
-                            <Shadow board={this.props.board} side={"right"}/> 
+                    <div className={"boardMainPart"}>
+                        <Board tetro={this.props.tetro} board={this.props.board} actions={this.props.actions.fall}/>
+                        <div className={"boardInfoPart"}>
+                            <Score score={"4242"}/>
+                            <Panel name={"lines"} info={"42"}/>
+                            <Preview tetro={this.props.nextTetro} />
                         </div>
                     </div>
-                )
-            case 2:
-                return (<div className={"mainView"}>END</div>)
-            default:
-                return (<div className={"mainView"}>default</div>)
+                    <div className={"shadowRightPart"}>
+                    
+                    </div>
+                </div>
+            )
         }
+        return null
+        // switch (this.props.room.state) {
+        //     case 2:
+        //         return (<div className={"mainView"}>END</div>)
+        //     case 0:
+        //         const list_players = this.props.room.players.map( item => {
+        //             const name = item.name
+        //             let classPlayer = name === this.props.player.name ? "green-text" : ""
+        //             return (
+        //                 <div className={"homeButton"}>
+        //                     <h1 className={classPlayer}>{name}{name === this.props.room.leader ? " (L)" : ""}</h1>
+        //                 </div>
+        //             )
+        //         })
+        //         const button = this.props.room.leader === this.props.player.name ? (
+        //             <form onSubmit={this.gameStartSubmit}>
+        //                 <div className={"homeButton"}>
+        //                     <input type="submit" value="Start Game"/>
+        //                 </div>
+        //             </form>
+        //         ) : (
+        //             <h1>waiting for start game</h1>
+        //         )
+        //         return (<div className={"mainView"}>
+        //              <div className={"homeMenu"}>   
+        //                 <div className={"joinButtonContainer"}>
+        //                     {list_players}
+        //                 </div>
+        //                 {button}
+        //             </div>
+        //         </div>)
+        //     default:
+        //         return (<div className={"mainView"}>default</div>)
+        // }
     }
 }
 

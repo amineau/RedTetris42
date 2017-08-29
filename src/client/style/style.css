@@ -220,6 +220,7 @@ a {
     /*height: 300px;*/
     display: flex;
     flex-direction: column;
+    padding: 0 20px 0 -10px;
     /*justify-content: space-between;*/
     background-color: #cdd6a7;  
 }
@@ -250,7 +251,7 @@ a {
 
 .playerNameInput {
      width: 150px; 
-    font-size: 30px;
+     font-size: 30px; 
     background-color: #cdd6a7;
     border: none;
     /* text-align: center;   */
@@ -286,19 +287,19 @@ a {
 }
 
 .homeButton.notActive {
-    border-bottom: 4px solid #545454; 
+    border-bottom: 4px solid #363636; 
 }
 
 .homeButton.active {
-    border-top: 4px solid #545454; 
-    border-right: 4px solid #545454; 
-    border-left: 4px solid #545454; 
+    border-top: 4px solid #363636; 
+    border-right: 4px solid #363636; 
+    border-left: 4px solid #363636; 
 }
 
 .menu {
-    border-bottom: 4px solid #545454; 
-    border-right: 4px solid #545454; 
-    border-left: 4px solid #545454; 
+    border-bottom: 4px solid #363636; 
+    border-right: 4px solid #363636; 
+    border-left: 4px solid #363636; 
 }
 
 .disabledButton {
@@ -345,7 +346,7 @@ a {
 
 * {
     font-family: 'Super Mario Land (Game Boy)';
-    font-size: 30px;
+     font-size: 30px; 
     color: #363636
 }
 /* #cdd6a7

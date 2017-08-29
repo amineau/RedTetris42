@@ -147,7 +147,6 @@ export class StackTetros {
         this._getNewTetro()
           .then(newTetro => {
             this._pool[index + 1] = newTetro
-            console.log(this._pool[index + 1])
             return resolve(newTetro)
           })
       } else {
