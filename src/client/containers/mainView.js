@@ -9,7 +9,6 @@ import Panel from '../components/panel'
 class MainView extends React.Component {
     constructor(props) {
         super(props)
-        console.log("MAINVIEWWWWWWWWWWWWWWWWWWWW", {props})
         this.state = {
             pause: true,
             antiRepeatFlag: false,
@@ -90,11 +89,12 @@ class MainView extends React.Component {
                         {list_shadows}
                     </div>
                     <div className={"boardMainPart"}>
-                        <Board tetro={this.props.tetro} board={this.props.board} actions={this.props.actions.fall}/>
+                        <Board tetro={this.props.tetro} board={this.props.board} actions={this.props.actions.fall} linesDeleted={this.props.linesDeleted}/>
                         <div className={"boardInfoPart"}>
                             <Score score={"4242"}/>
                             <Panel name={"lines"} info={"42"}/>
                             <Preview tetro={this.props.nextTetro} />
+
                         </div>
                     </div>
                     <div className={"shadowRightPart"}>

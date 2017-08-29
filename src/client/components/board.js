@@ -37,9 +37,13 @@ const manageBarTetro = (boardAndTetro, translatedTetro, tetro) => {
     return boardAndTetro
 }
 
-const Board = ({tetro, board, actions}) => {
-    let boardAndTetro = [...board];
-    let cells = [];
+const Board = ({tetro, board, actions, linesDeleted}) => {
+    let boardAndTetro = [...board]
+    let cells = []
+
+        console.log("qqqqqqqqq", linesDeleted)
+    if (linesDeleted)
+        console.log("aaaaaaaaa", linesDeleted)
 
     if (!_.isEmpty(tetro)) {
         const translatedTetro = translateTetro(tetro);
