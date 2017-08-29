@@ -96,7 +96,7 @@ const deleteLine = board => {
             board[cell - 12] = board[cell]
         }
     })
-    return board
+    return {board, linesDeleted: lines}
 }
 
 const boardInit = () => {
@@ -184,7 +184,8 @@ const move = (state = {}, action) => {
                 return {
                     ...state,
                     tetro: state.nextTetro,
-                    board: newBoard
+                    board: newBoard.board,
+                    linesDeleted: newBoard.linesDeleted
                 }
             }
 
@@ -252,7 +253,8 @@ const move = (state = {}, action) => {
             return {
                 ...state,
                 tetro: state.nextTetro,
-                board: newBoard
+                board: newBoard.board,
+                linesDeleted: newBoard.linesDeleted
             }
         default:
             return state
