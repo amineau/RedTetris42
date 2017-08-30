@@ -10,7 +10,7 @@ import _ from 'lodash'
 import * as allActions from '../actions'
 import ping from '../actions/server'
 
-const App = ({ tetro, nextTetro, board, actions, list, playerName, player, room, socket }) => {
+const App = ({ tetro, nextTetro, board, actions, list, playerName, player, score, room, socket }) => {
   console.log('############  APP #############')
   console.log(list)
   return (
@@ -27,6 +27,7 @@ const App = ({ tetro, nextTetro, board, actions, list, playerName, player, room,
                   nextTetro={nextTetro}
                   board={board}
                   actions={actions}
+                  score={score}
                   socket={socket}/>
         )} />
       </div>

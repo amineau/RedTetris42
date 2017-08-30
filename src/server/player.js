@@ -5,9 +5,7 @@ export default class Player {
     this._socketId = socketId
     this.name = name
     this.position = 0
-    this.lines = 0
     this.score = 0
-    this.level = 0
     this.board = null 
     this.boardInit()
   }
@@ -20,7 +18,13 @@ export default class Player {
     if (i % 12 === 0 || i % 12 === 11 || i < 12)
         this.board[i] = 8
     })
+    this.position = 0
+    this.score = 0
   }
 
   incrementPosition () { this._position++ }
+
+  scoring (nbLines) {
+    this.score += 42 * nbLines
+  }
 }

@@ -112,7 +112,6 @@ const boardInit = () => {
 
 const move = (state = {}, action) => {
 
-    console.log(action.type, {action})
     switch(action.type){
         
         case LIST:
@@ -132,6 +131,7 @@ const move = (state = {}, action) => {
                     leader: action.leader,
                     state: action.state,
                 },
+                score: action.score,
                 board,
             }
             
@@ -190,6 +190,7 @@ const move = (state = {}, action) => {
                 state.socket.emit('ask newtetro', {
                     index: state.index + 1,
                     board: newBoard.board,
+                    linesDeleted: newBoard.linesDeleted,
                     room: {
                         name: state.room.name,
                     },
@@ -264,6 +265,7 @@ const move = (state = {}, action) => {
             newBoard = deleteLine(newBoard)
             state.socket.emit('ask newtetro', {
                 index: state.index + 1,
+                linesDeleted: newBoard.linesDeleted,
                 board: newBoard.board,
                 room: {
                     name: state.room.name,

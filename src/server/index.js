@@ -56,6 +56,7 @@ const initEngine = io => {
       players: room.listPlayer,
       leader: room.leader.name,
       state: room.state,
+      score: player.score,
     })
 
     socket.emit('action', list())
@@ -102,6 +103,10 @@ const initEngine = io => {
     })
     socket.on('ask newtetro', action => {
       let room = room_list.find(e => e.name === action.room.name)
+      const linesDeleted = action.linesDeleted.length
+      if (linesDeleted) {
+        player.scoring(linesDeleted)
+      }
       room.sendTetro(action, player)
         .then(tetro => {
           socket.emit('action', {type: 'NEWTETRO', tetro})

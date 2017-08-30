@@ -132,7 +132,6 @@ class MainView extends React.Component {
     render() {
         console.log({propsroom: this.props.room.state})
         if (this.props.room.state !== undefined) {
-            console.log("ca passe", this.props.room.players)
             const list_shadows = this.props.room.players
                 .filter(e => e.name !== this.props.player.name)
                 .map( item => <Shadow board={item.board} name={item.name} side={"left"} />)
@@ -152,7 +151,7 @@ class MainView extends React.Component {
                             message={this.statusGame()}
                         />
                         <div className={"boardInfoPart"}>
-                            <Score score={"4242"}/>
+                            <Score score={this.props.score}/>
                             <Panel name={"lines"} info={"42"}/>
                             <Preview tetro={this.props.nextTetro} />
                         </div>
