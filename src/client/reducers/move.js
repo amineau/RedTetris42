@@ -159,6 +159,7 @@ const move = (state = {}, action) => {
                 ...state,
                 tetro: null,
                 nextTetro: null,
+                board: boardInit(),
             }
 
         case NEWTETRO:
