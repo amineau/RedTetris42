@@ -11,8 +11,6 @@ import * as allActions from '../actions'
 import ping from '../actions/server'
 
 const App = ({ tetro, nextTetro, board, actions, list, playerName, player, score, room, socket }) => {
-  console.log('############  APP #############')
-  console.log(list)
   return (
     <BrowserRouter>
       <div>

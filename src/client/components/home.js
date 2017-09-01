@@ -12,7 +12,6 @@ class Home extends React.Component {
         this.joinGame = this.joinGame.bind(this)
         this.menuComponent = {}
         this.actions = props.actions
-        console.log('props', props)
     }
 
     initState(name) {
@@ -39,13 +38,11 @@ class Home extends React.Component {
         const cmp = this.props.list.player.find((e) => {
             return name === e.toLowerCase()
         })
-        console.log({nameCompare:!cmp && name.toLowerCase() !== "playr" && name !== ""})
         return !cmp && name !== "playr" && name !== ""
 
     }
 
     createGame(event) {
-        console.log('create')
         if (this.comparePlayersName(this.state.name)) {
             this.actions.playerName(this.state.name.toLowerCase())
             this.menuComponent = {
@@ -64,7 +61,6 @@ class Home extends React.Component {
     }
 
     joinGame(event) {
-        console.log('join')
         if (this.comparePlayersName(this.state.name)) {
             this.actions.playerName(this.state.name)
             this.menuComponent = {

@@ -23,12 +23,14 @@ class MainView extends React.Component {
         //     this.handlePause()
         // if (this.state.pause === false && this.state.antiRepeatFlag === false) {
         if (this.state.antiRepeatFlag === false) {
+            console.log({keycode:e.keyCode})
             switch (e.keyCode) {
                 case 37: this.props.actions.left(); break;
                 case 39: this.props.actions.right(); break;
                 case 40: this.props.actions.fall(); break;
                 case 38: this.props.actions.rotate(); break;
                 case 32: this.props.actions.dive(); break;
+                case 53: this.props.actions.test(); break;
             }
             this.setState({antiRepeatFlag: true})
             setTimeout(() => {this.setState({antiRepeatFlag: false})}, 10)
@@ -60,8 +62,8 @@ class MainView extends React.Component {
 
     componentWillUnmount() {
         console.log('MainView componentWillUnmount')
-        window.removeEventListener("keydown", this.onKeydown.bind(this))
         clearInterval(this.state.intervalID);
+        window.removeEventListener("keydown", this.onKeydown.bind(this))
         this.props.actions.room_exit()
         this.socket.emit('room', {
             type: 'exit',
@@ -130,7 +132,6 @@ class MainView extends React.Component {
 
 
     render() {
-        console.log({propsroom: this.props.room.state})
         if (this.props.room.state !== undefined) {
             const list_shadows = this.props.room.players
                 .filter(e => e.name !== this.props.player.name)

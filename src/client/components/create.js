@@ -23,7 +23,6 @@ class Create extends React.Component {
         const cmp = this.props.list.room.find((e) => {
             return name === e
         })
-        console.log({nameRoomCompare:!cmp && name !== "playr" && name !== ""})
         return !cmp && name !== ""
 
     }

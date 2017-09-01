@@ -17,7 +17,8 @@ const Cell = ({type, shadow}) => {
         "block",
         "barLeft",
         "barMidH",
-        "barRight"
+        "barRight",
+        "block",
     ]
 
     let cellType = ""

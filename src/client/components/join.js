@@ -16,7 +16,6 @@ class Join extends React.Component {
             </div>
         )
 
-        console.log({props: this.props})
         const listRoomFilter = this.props.list.room.filter(item => item.state !== 1)
         if (!_.isEmpty(listRoomFilter)) {
             room_list = listRoomFilter.map((item, index) => (

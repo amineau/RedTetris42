@@ -1,4 +1,4 @@
-import { FALL, DIVE, LEFT, RIGHT, ROTATE, ROOM_EXIT, NEWTETRO, ROOM_INIT, ROOM_START, LIST, PLAYER_NAME } from '../constants/ActionTypes'
+import { FALL, DIVE, LEFT, RIGHT, ROTATE, ROOM_EXIT, NEWTETRO, ROOM_INIT, ROOM_START, LIST, ADD_LINE, PLAYER_NAME } from '../constants/ActionTypes'
 import * as tetrosTypes from '../constants/tetrosTypes'
 import math from 'mathjs'
 
@@ -8,9 +8,7 @@ function pickRandom(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-const moveCheck = (state, move = FALL) => {
-    const board = state.board
-    const tetro = state.tetro
+const moveCheck = ({board, tetro}, move = FALL) => {
     let mat = tetro.matrix[tetro.orientation]
     let moveX = 0
     let moveY = 0
@@ -68,7 +66,7 @@ const writeTetroOnBoard = (state) => {
                     board[index] = tetro.type
             }
         })
-    })
+    })   
     return board
 }
 
@@ -78,7 +76,7 @@ const completeLine = board => {
         let lineIsFull = true
         for(let x = 1; x <= 10; x++) {
             const cell = x + y * 12
-            if (!board[cell]) {
+            if (!board[cell] || board[cell] === 11) {
                 lineIsFull = false
             }
         }
@@ -89,14 +87,25 @@ const completeLine = board => {
     return lines
 }
 
-const deleteLine = board => {
+const deleteLine = oldBoard => {
+    let board = [...oldBoard]
     const lines = completeLine(board).reverse()
-    lines.forEach(e => {
-        for(let cell = (e + 1) * 12; cell < 252; cell++) {
+    lines.forEach(line => {
+        for(let cell = (line + 1) * 12; cell < 252; cell++) {
             board[cell - 12] = board[cell]
         }
     })
     return {board, linesDeleted: lines}
+}
+
+const addLine = (board, typeLineToAdd) => {
+    let newBoard = [...board]
+    let typeCell = typeLineToAdd === 4 ? 11 : 11
+    for(let cell = 252 - 12; cell >= 0; cell--) {
+        if (cell % 12 !== 0 && cell % 12 !== 11)
+            newBoard[cell] = (cell >= 24) ? newBoard[cell - 12] : typeCell
+    }
+    return newBoard
 }
 
 const boardInit = () => {
@@ -111,6 +120,7 @@ const boardInit = () => {
 }
 
 const move = (state = {}, action) => {
+    let board = []
 
     switch(action.type){
         
@@ -121,8 +131,7 @@ const move = (state = {}, action) => {
             return { ...state, playerName: action.name }
 
         case ROOM_INIT:
-            console.log("ROOM INIT", action)
-            const board = state.board || boardInit()
+            board = state.board || boardInit()
             return {
                 ...state,
                 room: {
@@ -136,7 +145,6 @@ const move = (state = {}, action) => {
             }
             
         case ROOM_START:
-            console.log("ROOM START", action)
             const initStack = action.initStack
             return {
                 ...state,
@@ -173,6 +181,26 @@ const move = (state = {}, action) => {
                 index: state.index + 1,
             }
 
+        case ADD_LINE:
+            board = addLine(state.board, action.typeLineToAdd)
+            state.socket.emit('board change', {
+                board,
+                room: {
+                    name: state.room.name,
+                },
+            })
+            return {
+                ...state,
+                board,
+                tetro: {
+                        ...state.tetro,
+                        crd: {
+                            ...state.tetro.crd,
+                            y: moveCheck(state) ? state.tetro.crd.y : state.tetro.crd.y + 1,
+                        }
+                    }
+            }
+
         case FALL:
             if (moveCheck(state)){
                 return {
@@ -190,8 +218,13 @@ const move = (state = {}, action) => {
                 newBoard = deleteLine(newBoard)
                 state.socket.emit('ask newtetro', {
                     index: state.index + 1,
-                    board: newBoard.board,
                     linesDeleted: newBoard.linesDeleted,
+                    room: {
+                        name: state.room.name,
+                    },
+                })
+                state.socket.emit('board change', {
+                    board: newBoard.board,
                     room: {
                         name: state.room.name,
                     },

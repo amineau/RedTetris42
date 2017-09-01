@@ -20,7 +20,6 @@ export default class Room {
     // })
     // const player = this._listPlayer[0]
     player.position = index
-    player.board = board
     return this._stack.tetroByIndex(index)
   }
 

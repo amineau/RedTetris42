@@ -42,3 +42,9 @@ export const playerName = (name = null) => {
         name
     }
 }
+
+export const test = () => {
+    return {
+        type: types.ADD_LINE,
+    }
+}

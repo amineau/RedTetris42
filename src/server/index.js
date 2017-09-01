@@ -80,14 +80,18 @@ const initEngine = io => {
         player_list.push(player.name)
         socket.join(room.name)
         io.sockets.in(room.name).emit('action', room_init(room))
-      } else if (action.type === "start") {
+      
+    } else if (action.type === "start") {
+    
         room.start()
         io.sockets.in(room.name).emit('action', {
           type: 'ROOM START',
           initStack: room.stack,
           state: room.state,
         })
-      } else if (action.type === "exit") {
+    
+    } else if (action.type === "exit") {
+  
         console.log('exit')
         socket.leave(action.room.name)
         room.remove(player)
@@ -106,12 +110,22 @@ const initEngine = io => {
       const linesDeleted = action.linesDeleted.length
       if (linesDeleted) {
         player.scoring(linesDeleted)
-      }
-      room.sendTetro(action, player)
-        .then(tetro => {
-          socket.emit('action', {type: 'NEWTETRO', tetro})
-          io.sockets.in(room.name).emit('action', room_init(room))
+        socket.broadcast.to(room.name).emit('action', {
+          type: "ADD LINE",
+          typeLineToAdd: linesDeleted,
         })
+      }
+      if (room) {
+        room.sendTetro(action, player)
+          .then(tetro => {
+            socket.emit('action', {type: 'NEWTETRO', tetro})
+          })
+      }
+    })
+    socket.on('board change', action => {
+      let room = room_list.find(e => e.name === action.room.name)
+      player.board = action.board
+      io.sockets.in(room.name).emit('action', room_init(room))
     })
   })
 }

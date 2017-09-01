@@ -6,9 +6,7 @@ import _ from 'lodash'
 const translateTetro = (tetro) => {
     let ret = []
     const mat = tetro.matrix[tetro.orientation]
-    // console.log(mat);
     mat.forEach((index, y) => {
-                // console.log({index,y});
         index.forEach((ind, x) => {
             if (ind !== 0) {
                 ret.push(tetro.crd.x - x + 12 * (tetro.crd.y + y))
@@ -40,10 +38,6 @@ const manageBarTetro = (boardAndTetro, translatedTetro, tetro) => {
 const Board = ({tetro, board, actions, linesDeleted, message}) => {
     let boardAndTetro = [...board]
     let cells = []
-
-        console.log("qqqqqqqqq", linesDeleted)
-    if (linesDeleted)
-        console.log("aaaaaaaaa", linesDeleted)
 
     if (!_.isEmpty(tetro)) {
         const translatedTetro = translateTetro(tetro);

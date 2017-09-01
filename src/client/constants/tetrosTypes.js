@@ -13,3 +13,4 @@ export const BLOCK = 11
 export const BARLEFT = 12
 export const BARMIDH = 13
 export const BARRIGHT = 14
+export const BLOCK_DELETABLE = 15

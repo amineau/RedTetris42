@@ -21,8 +21,6 @@ boardInit.forEach((e, i) => {
     boardInit[i] = 8
 })
 
-console.log(boardInit)
-
 let socket = io.connect('http://localhost:3004');
 
 let socketIoMiddleware = createSocketIoMiddleware(socket, (type, action) => {
