@@ -132,6 +132,7 @@ const move = (state = {}, action) => {
 
         case ROOM_INIT:
             board = state.board || boardInit()
+            console.log({score:action.score})
             return {
                 ...state,
                 room: {
@@ -305,12 +306,19 @@ const move = (state = {}, action) => {
                     name: state.room.name,
                 },
             })
+            state.socket.emit('board change', {
+                board: newBoard.board,
+                room: {
+                    name: state.room.name,
+                },
+            })
             return {
                 ...state,
                 tetro: state.nextTetro,
                 board: newBoard.board,
                 linesDeleted: newBoard.linesDeleted
             }
+
         default:
             return state
     }
