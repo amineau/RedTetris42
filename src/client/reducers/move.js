@@ -132,7 +132,6 @@ const move = (state = {}, action) => {
 
         case ROOM_INIT:
             board = state.board || boardInit()
-            console.log({score:action.score})
             return {
                 ...state,
                 room: {
@@ -147,18 +146,13 @@ const move = (state = {}, action) => {
             
         case ROOM_START:
             const initStack = action.initStack
+            const tetro = action.initStack[0]
+            const nextTetro = action.initStack[1]
+            console.log({ tetro, nextTetro })
             return {
                 ...state,
-                tetro: {
-                    ...initStack[0],
-                    matrix: initStack[0].matrix,
-                    orientation: 0
-                },
-                nextTetro: {
-                    ...initStack[1],
-                    matrix: initStack[1].matrix,
-                    orientation: 0
-                },
+                tetro,
+                nextTetro,
                 index: 0,
                 room: {...state.room, state: action.state},
             }
@@ -184,22 +178,17 @@ const move = (state = {}, action) => {
 
         case ADD_LINE:
             board = addLine(state.board, action.typeLineToAdd)
-            state.socket.emit('board change', {
-                board,
-                room: {
-                    name: state.room.name,
-                },
-            })
+            state.socket.emit('board change', { board })
             return {
                 ...state,
                 board,
                 tetro: {
-                        ...state.tetro,
-                        crd: {
-                            ...state.tetro.crd,
-                            y: moveCheck(state) ? state.tetro.crd.y : state.tetro.crd.y + 1,
-                        }
+                    ...state.tetro,
+                    crd: {
+                        ...state.tetro.crd,
+                        y: moveCheck(state) ? state.tetro.crd.y : state.tetro.crd.y + 1,
                     }
+                }
             }
 
         case FALL:
@@ -216,26 +205,16 @@ const move = (state = {}, action) => {
                 }
             } else {
                 let newBoard = writeTetroOnBoard(state)
-                newBoard = deleteLine(newBoard)
-                state.socket.emit('ask newtetro', {
-                    index: state.index + 1,
-                    linesDeleted: newBoard.linesDeleted,
-                    room: {
-                        name: state.room.name,
-                    },
-                })
-                state.socket.emit('board change', {
-                    board: newBoard.board,
-                    room: {
-                        name: state.room.name,
-                    },
-                })
+                let { board, linesDeleted } = deleteLine(newBoard)
+                const index = state.index + 1
+                state.socket.emit('ask newtetro', { index, linesDeleted })
+                state.socket.emit('board change', { board })
                 
                 return {
                     ...state,
                     tetro: state.nextTetro,
-                    board: newBoard.board,
-                    linesDeleted: newBoard.linesDeleted
+                    board,
+                    linesDeleted,
                 }
             }
 
@@ -283,40 +262,20 @@ const move = (state = {}, action) => {
             }
         case DIVE:
             let stateCopy = {...state}
-            let count = 0
             while ( moveCheck(stateCopy)) {
-                count++
-                stateCopy = {...stateCopy,
-                    tetro: {
-                        ...stateCopy.tetro,
-                        crd: {
-                            ...stateCopy.tetro.crd,
-                            y: stateCopy.tetro.crd.y - 1
-                        }
-                    }
-                }
+                stateCopy.tetro.crd.y = stateCopy.tetro.crd.y - 1
             }
             let newBoard = writeTetroOnBoard(stateCopy)
-            newBoard = deleteLine(newBoard)
-            state.socket.emit('ask newtetro', {
-                index: state.index + 1,
-                linesDeleted: newBoard.linesDeleted,
-                board: newBoard.board,
-                room: {
-                    name: state.room.name,
-                },
-            })
-            state.socket.emit('board change', {
-                board: newBoard.board,
-                room: {
-                    name: state.room.name,
-                },
-            })
+            let { board, linesDeleted } = deleteLine(newBoard)
+            const index = state.index + 1
+            state.socket.emit('ask newtetro', { index, linesDeleted })
+            state.socket.emit('board change', { board })
+            
             return {
                 ...state,
                 tetro: state.nextTetro,
-                board: newBoard.board,
-                linesDeleted: newBoard.linesDeleted
+                board,
+                linesDeleted
             }
 
         default:

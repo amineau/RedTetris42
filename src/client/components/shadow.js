@@ -32,7 +32,7 @@ function getShadow(tab, color) {
     return tab
 }
 
-const Shadow = ({board, name, side}) => {
+const Shadow = ({board, name}) => {
     const color = 11
     let shadow = getShadow([...board], color)
     shadow.forEach((e, i) => {
@@ -40,7 +40,7 @@ const Shadow = ({board, name, side}) => {
         shadow[i] = 8
     })
     shadow.reverse()
-    const cells = [];
+    let cells = [];
     for (let i = 0; i < 240; i++) {
         cells.push(
             <Cell
@@ -49,16 +49,13 @@ const Shadow = ({board, name, side}) => {
                 shadow={true} />
         )
     }
-    let order = []
-    order[0] = <Panel name={name} info={""} key={0}/>
-    order[1] =  <div className="shadowBoard" key={1}>
-                    {cells}
-                </div>
-    if (side === "right")
-        order.reverse()
+
     return (
         <div className={"shadowPart"}>
-            {order}
+            <Panel name={name} info={""} key={0}/>
+            <div className="shadowBoard" key={1}>
+                {cells}
+            </div>
         </div>
     )
 };

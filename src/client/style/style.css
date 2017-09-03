@@ -96,11 +96,17 @@ a {
 
 .shadowPart {
     display: flex;
-    flex-direction: row;
-     align-items: center; 
+    align-items: center; 
     /* justify-content: space-around; */
 }
 
+.shadowLeftPart .shadowPart {
+    flex-direction: row;
+}
+
+.shadowRightPart .shadowPart {
+    flex-direction: row-reverse;
+}
 /* .subCell {
     width: 5px;
     height: 5px;

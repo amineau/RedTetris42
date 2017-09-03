@@ -164,8 +164,9 @@ export class StackTetros {
     const index = Math.floor(Math.random()*this._tetros.length)
     this._tetros[index].crd = {
       x: 7,
-      y: 15,
+      y: 18,
     }
+    this._tetros[index].orientation = 0
     return this._tetros[index]
   }
 
