@@ -4,6 +4,7 @@ import Shadow from '../components/shadow'
 import Preview from '../components/preview'
 import Score from '../components/score'
 import Panel from '../components/panel'
+import math from 'mathjs'
 
 
 class MainView extends React.Component {
@@ -137,11 +138,17 @@ class MainView extends React.Component {
                 .filter(e => e.name !== this.props.player.name)
                 .map( item => <Shadow board={item.board} name={item.name} side={"left"} />)
             let statusGame = null
+            const len = list_shadows.length
+            const nbBySide = math.ceil(len / 2)
+            const sides = {
+                left: list_shadows.slice(0, nbBySide),
+                right: list_shadows.slice(nbBySide, len),
+            }
 
             return (
                 <div className={"mainView"}>
                     <div className={"shadowLeftPart"}>
-                        {list_shadows}
+                        {sides.left}
                     </div>
                     <div className={"boardMainPart"}>
                         <Board 
@@ -158,7 +165,7 @@ class MainView extends React.Component {
                         </div>
                     </div>
                     <div className={"shadowRightPart"}>
-                    
+                        {sides.right}                    
                     </div>
                 </div>
             )
