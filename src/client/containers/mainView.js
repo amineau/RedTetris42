@@ -19,7 +19,7 @@ class MainView extends React.Component {
         this.gameStartSubmit = this.gameStartSubmit.bind(this)
     }
 
-    onKeydown (e) {
+    onKeyDown (e) {
         if (this.state.antiRepeatFlag === false) {
             console.log({keycode:e.keyCode})
             switch (e.keyCode) {
@@ -45,8 +45,8 @@ class MainView extends React.Component {
     }
 
     componentDidMount() {
-        console.log('MainView componentDidMount')
-        window.addEventListener("keydown", this.onKeydown.bind(this))
+        this.listener = this.onKeyDown.bind(this)
+        window.addEventListener("keydown", this.listener)
         this.socket.emit('room', {
             type: 'createOrJoin',
             room: {
@@ -59,9 +59,8 @@ class MainView extends React.Component {
     }
 
     componentWillUnmount() {
-        console.log('MainView componentWillUnmount')
         clearInterval(this.state.intervalID);
-        window.removeEventListener("keydown", this.onKeydown.bind(this))
+        window.removeEventListener("keydown", this.listener)
         this.props.actions.room_exit()
         this.socket.emit('room', { type: 'exit' })
     }
