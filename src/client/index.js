@@ -13,13 +13,13 @@ import App from './containers/app'
 import io from 'socket.io-client'
 import math from 'mathjs'
 
-let boardInit = [];
-boardInit.length = 252;
-boardInit.fill(0);
-boardInit.forEach((e, i) => {
-  if (i % 12 === 0 || i % 12 === 11 || i < 12)
-    boardInit[i] = 8
-})
+// let boardInit = [];
+// boardInit.length = 252;
+// boardInit.fill(0);
+// boardInit.forEach((e, i) => {
+//   if (i % 12 === 0 || i % 12 === 11 || i < 12)
+//     boardInit[i] = 8
+// })
 
 let socket = io.connect('http://localhost:3004');
 

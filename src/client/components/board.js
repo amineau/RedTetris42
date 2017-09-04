@@ -3,7 +3,7 @@ import Cell from './cell'
 import * as tetrosType from '../constants/tetrosTypes'
 import _ from 'lodash'
 
-const translateTetro = (tetro) => {
+export const translateTetro = (tetro) => {
     let ret = []
     const mat = tetro.matrix[tetro.orientation]
     mat.forEach((index, y) => {
@@ -16,7 +16,7 @@ const translateTetro = (tetro) => {
     return ret
 }
 
-const manageBarTetro = (boardAndTetro, translatedTetro, tetro) => {
+export const manageBarTetro = (boardAndTetro, translatedTetro, tetro) => {
     let flag = 0;
     translatedTetro.forEach((e) => {
         if (tetro.type === tetrosType.BARTOP && flag === 0) {
