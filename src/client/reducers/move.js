@@ -8,7 +8,7 @@ function pickRandom(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-const moveCheck = ({board, tetro}, move = FALL) => {
+const moveCheck = ({board, tetro}, move = null) => {
     let mat = tetro.matrix[tetro.orientation]
     let moveX = 0
     let moveY = 0
@@ -24,6 +24,8 @@ const moveCheck = ({board, tetro}, move = FALL) => {
             moveX = 1; break
         case ROTATE:
             mat = tetro.matrix[matriceRotate(tetro)]; break
+        case null:
+            break;
     }
     let flag = true
     mat.forEach((index, y) => {
@@ -121,7 +123,10 @@ const boardInit = () => {
 
 const move = (state = {}, action) => {
     let board = []
-
+    let tetro = null
+    let nextTetro = null
+    let index = state.index + 1
+    
     switch(action.type){
         
         case LIST:
@@ -145,10 +150,8 @@ const move = (state = {}, action) => {
             }
             
         case ROOM_START:
-            const initStack = action.initStack
-            const tetro = action.initStack[0]
-            const nextTetro = action.initStack[1]
-            console.log({ tetro, nextTetro })
+            tetro = action.initStack[0]
+            nextTetro = action.initStack[1]
             return {
                 ...state,
                 tetro,
@@ -158,23 +161,11 @@ const move = (state = {}, action) => {
             }
 
         case ROOM_EXIT:
-            return {
-                ...state,
-                tetro: null,
-                nextTetro: null,
-                board: boardInit(),
-            }
+            return { ...state, tetro, nextTetro, board: boardInit() }
 
         case NEWTETRO:
-            return {
-                ...state,
-                nextTetro: {
-                    ...action.tetro,
-                    matrix: action.tetro.matrix,
-                    orientation: 0
-                },
-                index: state.index + 1,
-            }
+            nextTetro = action.tetro
+            return { ...state, nextTetro, index }
 
         case ADD_LINE:
             board = addLine(state.board, action.typeLineToAdd)
@@ -186,13 +177,13 @@ const move = (state = {}, action) => {
                     ...state.tetro,
                     crd: {
                         ...state.tetro.crd,
-                        y: moveCheck(state) ? state.tetro.crd.y : state.tetro.crd.y + 1,
+                        y: moveCheck(state, FALL) ? state.tetro.crd.y : state.tetro.crd.y + 1,
                     }
                 }
             }
 
         case FALL:
-            if (moveCheck(state)){
+            if (moveCheck(state, FALL)){
                 return {
                     ...state,
                     tetro: {
@@ -206,15 +197,11 @@ const move = (state = {}, action) => {
             } else {
                 let newBoard = writeTetroOnBoard(state)
                 let { board, linesDeleted } = deleteLine(newBoard)
-                const index = state.index + 1
+                tetro = state.nextTetro
                 state.socket.emit('ask newtetro', { index, linesDeleted })
                 state.socket.emit('board change', { board })
                 
-                return {
-                    ...state,
-                    tetro: state.nextTetro,
-                    board
-                }
+                return { ...state, tetro, board }
             }
 
         case ROTATE:
@@ -226,9 +213,9 @@ const move = (state = {}, action) => {
                         orientation: matriceRotate(state.tetro)
                     }
                 }
-            } else {
-                return state                
             }
+            return { ...state } 
+
         case LEFT:
             if (moveCheck(state, LEFT)){
                 return {
@@ -241,9 +228,9 @@ const move = (state = {}, action) => {
                         }
                     }
                 }
-            } else {
-                return state
             }
+            return { ...state }
+
         case RIGHT:
             if (moveCheck(state, RIGHT)){
                 return {
@@ -256,27 +243,23 @@ const move = (state = {}, action) => {
                         }
                     }
                 }
-            } else {
-                return state
             }
+            return { ...state }
+
         case DIVE:
             let stateCopy = {...state}
-            while ( moveCheck(stateCopy)) {
+            while ( moveCheck(stateCopy, FALL)) {
                 stateCopy.tetro.crd.y = stateCopy.tetro.crd.y - 1
             }
             let newBoard = writeTetroOnBoard(stateCopy)
             let { board, linesDeleted } = deleteLine(newBoard)
-            const index = state.index + 1
+            tetro = state.nextTetro
             state.socket.emit('ask newtetro', { index, linesDeleted })
             state.socket.emit('board change', { board })
-            return {
-                ...state,
-                tetro: state.nextTetro,
-                board,
-            }
+            return { ...state, tetro, board }
 
         default:
-            return state
+            return { ...state }
     }
 }
 
