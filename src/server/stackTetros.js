@@ -177,7 +177,7 @@ export class StackTetros {
     })
   }
 
-  removeTetroToPool () {
+  removeTetroOfPool () {
     delete this._pool[this._getMinIndex()]
   }
 

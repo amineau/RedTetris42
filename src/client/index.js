@@ -24,7 +24,6 @@ boardInit.forEach((e, i) => {
 let socket = io.connect('http://localhost:3004');
 
 let socketIoMiddleware = createSocketIoMiddleware(socket, (type, action) => {
-  console.log('socket', {type, action})
 });
 
 const initialState =

@@ -106,6 +106,18 @@ const initEngine = io => {
       }
       io.sockets.emit('action', list())
     })
+
+    socket.on('loose', () => {
+      let room = room_list.find(e => e.listPlayer.indexOf(player) !== undefined)
+      if (!room)
+        return;
+      player.loose()
+      if (room.listPlayer.length === 1 || room.listPlayer.filter(player => !player.looser).length === 1) {
+        room.finish()
+      }
+      io.sockets.in(room.name).emit('action', room_init(room))
+    })
+
     socket.on('ask newtetro', action => {
       let room = room_list.find(e => e.listPlayer.indexOf(player) !== undefined)
       if (!room)
@@ -123,6 +135,7 @@ const initEngine = io => {
           socket.emit('action', {type: 'NEWTETRO', tetro})
         })
     })
+
     socket.on('board change', action => {
       const room = room_list.find(e => e.listPlayer.indexOf(player) !== undefined)
       if (!room)

@@ -114,10 +114,15 @@ const boardInit = () => {
     let board = [];
     board.length = 252;
     board.fill(0);
-    board.forEach((e, i) => {
-    if (i % 12 === 0 || i % 12 === 11 || i < 12)
-        board[i] = 8
-    })
+    board = board.map((e, i) => (i % 12 === 0 || i % 12 === 11 || i < 12) ? 8 : 0)
+    return board
+}
+
+const boardFill = (type = 0) => {
+    let board = [];
+    board.length = 252;
+    board.fill(type);
+    board = board.map((e, i) => (i % 12 === 0 || i % 12 === 11 || i < 12) ? 8 : e)
     return board
 }
 
@@ -136,7 +141,7 @@ const move = (state = {}, action) => {
             return { ...state, playerName: action.name }
 
         case ROOM_INIT:
-            board = state.board || boardInit()
+            board = state.board || boardFill()
             return {
                 ...state,
                 room: {
@@ -152,16 +157,18 @@ const move = (state = {}, action) => {
         case ROOM_START:
             tetro = action.initStack[0]
             nextTetro = action.initStack[1]
+            board = boardFill()
             return {
                 ...state,
                 tetro,
                 nextTetro,
                 index: 0,
+                board,
                 room: {...state.room, state: action.state},
             }
 
         case ROOM_EXIT:
-            return { ...state, tetro, nextTetro, board: boardInit() }
+            return { ...state, tetro, nextTetro, board: boardFill() }
 
         case NEWTETRO:
             nextTetro = action.tetro
@@ -249,11 +256,17 @@ const move = (state = {}, action) => {
         case DIVE:
             let stateCopy = {...state}
             while ( moveCheck(stateCopy, FALL)) {
-                stateCopy.tetro.crd.y = stateCopy.tetro.crd.y - 1
+                stateCopy.tetro.crd.y--
             }
             let newBoard = writeTetroOnBoard(stateCopy)
             let { board, linesDeleted } = deleteLine(newBoard)
             tetro = state.nextTetro
+            if (!moveCheck({board, tetro})){
+                board = boardFill(11)
+                tetro = null
+                state.socket.emit('loose')
+                return { ...state, board, tetro }
+            }
             state.socket.emit('ask newtetro', { index, linesDeleted })
             state.socket.emit('board change', { board })
             return { ...state, tetro, board }

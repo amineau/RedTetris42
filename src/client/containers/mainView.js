@@ -21,7 +21,6 @@ class MainView extends React.Component {
 
     onKeyDown (e) {
         if (this.state.antiRepeatFlag === false) {
-            console.log({keycode:e.keyCode})
             switch (e.keyCode) {
                 case 37: this.props.actions.left(); break;
                 case 39: this.props.actions.right(); break;
@@ -36,11 +35,20 @@ class MainView extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        let newPlayer = {}
+        let oldPlayer = {}
+        if (this.props.room.players) {
+            newPlayer = nextProps.room.players.find(player => player.name === this.props.player.name)
+            oldPlayer = this.props.room.players.find(player => player.name === this.props.player.name)
+        }
+
         if (nextProps.room.state === 1 && this.props.room.state !== 1) {
             const intervalID = setInterval(() => this.props.actions.fall(), 1000);
             this.setState({pause: false, intervalID })
-        } else if (nextProps.room.state !== 1 && this.props.room.state === 1) {
-            clearInterval(this.state.intervalID);            
+        } else if (nextProps.room.state !== 1 && this.props.room.state === 1 || newPlayer.looser !== oldPlayer.looser) {
+            clearInterval(this.state.intervalID);
+            console.log("HERE")           
+            // window.removeEventListener("keydown", this.listener)
         }
     }
 
@@ -83,13 +91,16 @@ class MainView extends React.Component {
                 else
                     return (
                         <div className={"statusGame"}>
-                           <h1>waiting for start game</h1>
+                           <h1>waiting for game start</h1>
                         </div>
                     )
             case 2:
+                const looser = this.props.room.players.find(player => player.name === this.props.player.name).looser
+                const resultGame = looser ? "you loose" : "you win"
                 if (this.props.room.leader === this.props.player.name)
                     return (
                         <div className={"statusGame"}>
+                            <div>{resultGame}</div>
                             <div className={"cursor"}></div>
                             <h1 onClick={this.gameStartSubmit}>restart game</h1>
                         </div>
@@ -97,7 +108,8 @@ class MainView extends React.Component {
                 else
                     return (
                         <div className={"statusGame"}>
-                            <h1>waiting for restart game</h1>
+                            <div>{resultGame}</div>
+                            <h1>waiting for game restart</h1>
                         </div>
                     )
             default:
@@ -119,7 +131,6 @@ class MainView extends React.Component {
             left: list_shadows.slice(0, nbBySide),
             right: list_shadows.slice(nbBySide, len),
         }
-        console.log({linesDeleted:this.props.linesDeleted})
         return (
             <div className={"mainView"}>
                 <div className={"shadowLeftPart"}>

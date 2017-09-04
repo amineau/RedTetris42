@@ -8,6 +8,7 @@ export default class Player {
     this.name = name
     this.position = 0
     this.score = 0
+    this.looser = false
     this.board = null 
     this.boardInit()
   }
@@ -22,6 +23,19 @@ export default class Player {
     })
     this.position = 0
     this.score = 0
+    this.looser = false
+  }
+
+  loose () {
+    this.looser = true
+    this._boardFull()
+  }
+
+  _boardFull () {
+    this.board.forEach((e, i) => {
+    if (!(i % 12 === 0 || i % 12 === 11 || i < 12))
+        this.board[i] = 11
+    })
   }
 
   incrementPosition () { this._position++ }
