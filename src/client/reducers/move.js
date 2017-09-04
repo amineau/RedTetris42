@@ -270,7 +270,6 @@ const move = (state = {}, action) => {
             const index = state.index + 1
             state.socket.emit('ask newtetro', { index, linesDeleted })
             state.socket.emit('board change', { board })
-            
             return {
                 ...state,
                 tetro: state.nextTetro,

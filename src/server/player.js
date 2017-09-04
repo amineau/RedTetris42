@@ -1,3 +1,5 @@
+import math from 'mathjs'
+
 export default class Player {
 
   constructor (socketId, name = 'guest') {
@@ -25,6 +27,7 @@ export default class Player {
   incrementPosition () { this._position++ }
 
   scoring (nbLines) {
-    this.score += 42 * nbLines
+    const bonus = math.round(0.42 * 42 * (nbLines - 1))
+    this.score += 42 * nbLines + bonus
   }
 }

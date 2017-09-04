@@ -120,7 +120,7 @@ class MainView extends React.Component {
             left: list_shadows.slice(0, nbBySide),
             right: list_shadows.slice(nbBySide, len),
         }
-
+        console.log({linesDeleted:this.props.linesDeleted})
         return (
             <div className={"mainView"}>
                 <div className={"shadowLeftPart"}>
