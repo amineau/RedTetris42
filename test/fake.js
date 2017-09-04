@@ -2,6 +2,7 @@ import chai from "chai"
 import chaiArrays from "chai-arrays"
 import { translateTetro, manageBarTetro } from '../src/client/components/board'
 import { getShadow } from '../src/client/components/shadow'
+import { matriceRotate, writeTetroOnBoard } from '../src/client/reducers/move'
 
 chai.use(chaiArrays)
 const expect = chai.expect
@@ -35,7 +36,6 @@ describe('Board: translateTetro', () => {
     }
     const res = translateTetro(tetro)
     expect(res).to.equalTo([233,232,246,245])
-    // res.should.equalTo([233,232,246,245])
   });
 });
 
@@ -74,3 +74,54 @@ describe('Shadow: get shadow', () => {
     expect(res[160]).to.equal(0)
   });
 });
+
+describe('reducers func: rotateMatrice', () => {
+  it('simple case', () => {
+    const tetro = {
+      crd: {x:7, y:12},
+      orientation: 0,
+      type: 4,
+      matrix: [[
+        [ 0, 0, 0, 0 ],
+        [ 1, 1, 1, 1 ],
+        [ 0, 0, 0, 0 ],
+        [ 0, 0, 0, 0 ],
+      ], [
+        [ 0, 0, 1, 0 ],
+        [ 0, 0, 1, 0 ],
+        [ 0, 0, 1, 0 ],
+        [ 0, 0, 1, 0 ],
+      ]]
+    }
+    const res = matriceRotate(tetro)
+    expect(res).to.equal(1)
+  });
+});
+
+describe('reducers func: writeTetroOnBoard', () => {
+  it('tetro with negative crd', () => {
+    const tetro = {
+      crd: {x:-1, y:-12},
+      orientation: 0,
+      type: 4,
+      matrix: [[
+        [ 0, 0, 0, 0 ],
+        [ 1, 1, 1, 1 ],
+        [ 0, 0, 0, 0 ],
+        [ 0, 0, 0, 0 ],
+      ], [
+        [ 0, 0, 1, 0 ],
+        [ 0, 0, 1, 0 ],
+        [ 0, 0, 1, 0 ],
+        [ 0, 0, 1, 0 ],
+      ]]
+    }
+    const state = {tetro: tetro, board: blankBoard}
+    const res = writeTetroOnBoard(state)
+    expect(res[160]).to.equal(0)
+    expect(res[161]).to.equal(0)
+    expect(res[162]).to.equal(0)
+    expect(res[163]).to.equal(0)
+  });
+});
+

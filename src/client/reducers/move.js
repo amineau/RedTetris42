@@ -39,12 +39,12 @@ const moveCheck = ({board, tetro}, move = FALL) => {
     return flag
 }
 
-const matriceRotate = (tetro) => {
+export const matriceRotate = (tetro) => {
     const nbrPosition = tetro.matrix.length
     return (tetro.orientation + 1) % nbrPosition
 }
 
-const writeTetroOnBoard = (state) => {
+export const writeTetroOnBoard = (state) => {
     let board = [...state.board]
     const tetro = state.tetro
     let flag = 0
