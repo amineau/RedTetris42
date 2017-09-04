@@ -35,7 +35,7 @@ const manageBarTetro = (boardAndTetro, translatedTetro, tetro) => {
     return boardAndTetro
 }
 
-const Board = ({tetro, board, actions, linesDeleted, message}) => {
+const Board = ({tetro, board, actions, message}) => {
     let boardAndTetro = [...board]
     let cells = []
 
@@ -43,14 +43,15 @@ const Board = ({tetro, board, actions, linesDeleted, message}) => {
         const translatedTetro = translateTetro(tetro);
         boardAndTetro = manageBarTetro(boardAndTetro, translatedTetro, tetro)
     }
-        for (let i = 12; i < 252; i++) {
-            cells.push(
-                <Cell
-                    key={i}
-                    type={boardAndTetro[i]} />
-            )
-        }
-        cells.reverse();
+
+    for (let i = 12; i < 252; i++) {
+        cells.push(
+            <Cell
+                key={i}
+                type={boardAndTetro[i]} />
+        )
+    }
+    cells.reverse();
 
     return (
         <div className="board">

@@ -131,7 +131,6 @@ class MainView extends React.Component {
                         tetro={this.props.tetro}
                         board={this.props.board}
                         actions={this.props.actions.fall}
-                        linesDeleted={this.props.linesDeleted}
                         message={this.statusGame()}
                     />
                     <div className={"boardInfoPart"}>

@@ -213,8 +213,7 @@ const move = (state = {}, action) => {
                 return {
                     ...state,
                     tetro: state.nextTetro,
-                    board,
-                    linesDeleted,
+                    board
                 }
             }
 
@@ -275,7 +274,6 @@ const move = (state = {}, action) => {
                 ...state,
                 tetro: state.nextTetro,
                 board,
-                linesDeleted
             }
 
         default:
