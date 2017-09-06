@@ -85,7 +85,7 @@ class MainView extends React.Component {
                     return (
                         <div className={"statusGame"}>
                             <div className={"cursor"}></div>
-                            <h1 onClick={this.gameStartSubmit}>start game</h1>
+                            <h1 className={'startGameButton'} onClick={this.gameStartSubmit}>start game</h1>
                         </div>
                     )
                 else
@@ -102,7 +102,7 @@ class MainView extends React.Component {
                         <div className={"statusGame"}>
                             <div>{resultGame}</div>
                             <div className={"cursor"}></div>
-                            <h1 onClick={this.gameStartSubmit}>restart game</h1>
+                            <h1 className={'startGameButton'} onClick={this.gameStartSubmit}>restart game</h1>
                         </div>
                     )
                 else

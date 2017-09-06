@@ -4,9 +4,9 @@ import math from 'mathjs'
 
 var array = require('lodash/array');
 
-function pickRandom(array) {
-    return array[Math.floor(Math.random() * array.length)];
-}
+// export function pickRandom(array) {
+//     return array[Math.floor(Math.random() * array.length)];
+// }
 
 const moveCheck = ({board, tetro}, move = null) => {
     let mat = tetro.matrix[tetro.orientation]
@@ -72,7 +72,7 @@ export const writeTetroOnBoard = (state) => {
     return board
 }
 
-const completeLine = board => {
+export const completeLine = board => {
     let lines = []
     for(let y = 1; y <= 20; y++) {
         let lineIsFull = true
@@ -89,7 +89,7 @@ const completeLine = board => {
     return lines
 }
 
-const deleteLine = oldBoard => {
+export const deleteLine = oldBoard => {
     let board = [...oldBoard]
     const lines = completeLine(board).reverse()
     lines.forEach(line => {
@@ -100,7 +100,7 @@ const deleteLine = oldBoard => {
     return {board, linesDeleted: lines}
 }
 
-const addLine = (board, typeLineToAdd) => {
+export const addLine = (board, typeLineToAdd) => {
     let newBoard = [...board]
     let typeCell = typeLineToAdd === 4 ? 11 : 11
     for(let cell = 252 - 12; cell >= 0; cell--) {
@@ -110,7 +110,7 @@ const addLine = (board, typeLineToAdd) => {
     return newBoard
 }
 
-const boardInit = () => {
+export const boardInit = () => {
     let board = [];
     board.length = 252;
     board.fill(0);
@@ -118,7 +118,7 @@ const boardInit = () => {
     return board
 }
 
-const boardFill = (type = 0) => {
+export const boardFill = (type = 0) => {
     let board = [];
     board.length = 252;
     board.fill(type);

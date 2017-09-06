@@ -2,7 +2,7 @@ import chai from "chai"
 import chaiArrays from "chai-arrays"
 import { translateTetro, manageBarTetro } from '../src/client/components/board'
 import { getShadow } from '../src/client/components/shadow'
-import { matriceRotate, writeTetroOnBoard } from '../src/client/reducers/move'
+import { matriceRotate, writeTetroOnBoard, completeLine, deleteLine, addLine, boardInit, boardFill } from '../src/client/reducers/move'
 
 chai.use(chaiArrays)
 const expect = chai.expect
@@ -122,6 +122,51 @@ describe('reducers func: writeTetroOnBoard', () => {
     expect(res[161]).to.equal(0)
     expect(res[162]).to.equal(0)
     expect(res[163]).to.equal(0)
+  });
+});
+
+describe('reducers func: completeLine', () => {
+  it('blank board', () => {
+    const board = [...blankBoard]
+    const res = completeLine(board)
+    expect(res).to.be.an('array').with.lengthOf(0);
+  });
+});
+
+describe('reducers func: deleteLine', () => {
+  it('blank board', () => {
+    const board = [...blankBoard]
+    const res = deleteLine(board)
+    expect(res).to.have.property('board')
+    expect(res).to.have.property('linesDeleted')
+  });
+});
+
+describe('reducers func: addLine', () => {
+  const board = [...blankBoard]
+  it('blank board, typeLine 4', () => {
+    const res = addLine(board, 4)
+    expect(res).to.be.an('array').with.lengthOf(252);
+    expect(res[160]).to.equal(0)
+  });
+  it('blank board, typeLine 9', () => {
+    const res = addLine(board, 9)
+    expect(res).to.be.an('array').with.lengthOf(252);
+    expect(res[160]).to.equal(0)
+  });
+});
+
+describe('reducers func: boardInit', () => {
+  it('unique case', () => {
+    const res = boardInit()
+    expect(res).to.be.an('array').with.lengthOf(252);
+  });
+});
+
+describe('reducers func: boardFill', () => {
+  it('fill with brick 0', () => {
+    const res = boardFill(0)
+    expect(res).to.be.an('array').with.lengthOf(252);
   });
 });
 

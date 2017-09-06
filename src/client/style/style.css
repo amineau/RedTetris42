@@ -301,6 +301,10 @@ a {
     cursor: pointer;
 }
 
+.startGameButton {
+    cursor: pointer;
+}
+
 .homeButton.notActive {
     border-bottom: 4px solid #363636; 
 }
