@@ -20,7 +20,7 @@ class Create extends React.Component {
     }
 
     comparePlayersName(name) {
-        const cmp = this.props.list.room.find((e) => {
+        const cmp = this.props.list.player.find((e) => {
             return name === e
         })
         return !cmp && name !== ""
