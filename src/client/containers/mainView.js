@@ -17,6 +17,7 @@ class MainView extends React.Component {
         }
         this.socket = props.socket
         this.gameStartSubmit = this.gameStartSubmit.bind(this)
+        this.listener = this.onKeyDown.bind(this)
     }
 
     onKeyDown (e) {
@@ -43,18 +44,17 @@ class MainView extends React.Component {
         }
 
         if (nextProps.room.state === 1 && this.props.room.state !== 1) {
+            window.addEventListener("keydown", this.listener)
             const intervalID = setInterval(() => this.props.actions.fall(), 1000);
             this.setState({pause: false, intervalID })
         } else if (nextProps.room.state !== 1 && this.props.room.state === 1 || newPlayer.looser !== oldPlayer.looser) {
+            window.removeEventListener("keydown", this.listener)
             clearInterval(this.state.intervalID);
             console.log("HERE")           
-            // window.removeEventListener("keydown", this.listener)
         }
     }
 
     componentDidMount() {
-        this.listener = this.onKeyDown.bind(this)
-        window.addEventListener("keydown", this.listener)
         this.socket.emit('room', {
             type: 'createOrJoin',
             room: {
