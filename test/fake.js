@@ -6,6 +6,11 @@ import { matriceRotate, writeTetroOnBoard, completeLine, deleteLine, addLine, bo
 import Player from '../src/server/player'
 import Room from '../src/server/room'
 import {StackTetros} from '../src/server/stackTetros'
+import Create from '../src/client/components/create'
+import Home from '../src/client/components/home'
+import Preview from '../src/client/components/preview'
+import Shadow from '../src/client/components/shadow'
+import Score from '../src/client/components/score'
 
 chai.use(chaiArrays)
 const expect = chai.expect
@@ -252,7 +257,95 @@ describe('server class: stackTetros', () => {
     res.removeTetroOfPool()
     const min = res._getMinIndex()
     expect(min).to.be.equal(1);
+  });  
+});
+
+describe('component: create', () => {
+  let res = new Create({name: "bob", list: {player: ["herve"]}})
+  it('construction', () => {
+    expect(res).to.have.property('props')
   });
-  
+  it('compare player name different', () => {
+    const test = res.comparePlayersName("bill")
+    expect(test).to.be.equal(true)
+  });
+  it('compare player name equal', () => {
+    const test = res.comparePlayersName("herve")
+    expect(test).to.be.equal(false)
+  });
+  // it('handleChangeName', () => {
+  //   res.handleNameChange({target: {value: 'jim'}})
+  //   expect(res.props).to.have.property('name', 'jim')
+  // });
+});
+
+describe('component: Home', () => {
+  let res = new Home({name: "bob", list: {player: ["herve"]}})
+  it('construction', () => {
+    expect(res).to.have.property('props')
+  });
+  it('init state func', () => {
+    const test = res.initState("phil")
+    expect(test).to.have.property('name', "phil")
+    expect(test).to.have.property('playerNameChecked', true)
+  });
+  it('compare player name different', () => {
+    const test = res.comparePlayersName("bill")
+    expect(test).to.be.equal(true)
+  });
+  it('compare player name equal', () => {
+    const test = res.comparePlayersName("herve")
+    expect(test).to.be.equal(false)
+  });
+  it('create game', () => {
+    res.createGame({})
+    expect(res).to.exist
+  });
+  it('join game', () => {
+    res.joinGame({})
+    expect(res).to.exist
+  });
+});
+
+describe('component: Preview', () => {
+  const tetro = {
+      crd: {x:7, y:12},
+      orientation: 0,
+      type: 4,
+      matrix: [[
+        [ 0, 0, 0, 0 ],
+        [ 1, 1, 1, 1 ],
+        [ 0, 0, 0, 0 ],
+        [ 0, 0, 0, 0 ],
+      ], [
+        [ 0, 0, 1, 0 ],
+        [ 0, 0, 1, 0 ],
+        [ 0, 0, 1, 0 ],
+        [ 0, 0, 1, 0 ],
+      ]]
+    }
+  let res = new Preview(tetro)
+  it('normal construction', () => {
+    expect(res).to.have.property('props')
+  });
+  res = new Preview({})
+  it('empty construction', () => {
+    expect(res).to.have.property('props')
+  });
+});
+
+describe('component: Shadow', () => {
+  const board = blankBoard
+  const res = new Shadow({board, name:"bob"})
+  it('normal construction', () => {
+    expect(res).to.have.property('props')
+  });
+});
+
+describe('component: Score', () => {
+  const res = new Score(42)
+  it('normal construction', () => {
+    expect(res).to.have.property('props')
+  });
 });
 
