@@ -3,6 +3,9 @@ import chaiArrays from "chai-arrays"
 import { translateTetro, manageBarTetro } from '../src/client/components/board'
 import { getShadow } from '../src/client/components/shadow'
 import { matriceRotate, writeTetroOnBoard, completeLine, deleteLine, addLine, boardInit, boardFill } from '../src/client/reducers/move'
+import Player from '../src/server/player'
+import Room from '../src/server/room'
+import {StackTetros} from '../src/server/stackTetros'
 
 chai.use(chaiArrays)
 const expect = chai.expect
@@ -168,5 +171,88 @@ describe('reducers func: boardFill', () => {
     const res = boardFill(0)
     expect(res).to.be.an('array').with.lengthOf(252);
   });
+});
+
+describe('server class: player', () => {
+  const res = new Player(2342342, "bob")
+  it('construction', () => {
+    expect(res).to.have.property('_socketId', 2342342);
+    expect(res).to.have.property('name', 'bob');
+    expect(res).to.have.property('position', 0);
+    expect(res).to.have.property('score', 0);
+    expect(res.board).to.be.an('array').with.lengthOf(252);
+  });
+  it('increment position', () => {
+    res.incrementPosition()
+    expect(res).to.have.property('position', 1);
+  });
+  it('lose', () => {
+    res.loose()
+    expect(res).to.have.property('looser', true);
+  });
+});
+
+describe('server class: room', () => {
+  const player = new Player(2342342, "bob")
+  const res = new Room("room", player)
+
+  it('construction', () => {
+    expect(res).to.have.property('name', "room");
+    expect(res).to.have.property('leader', player);
+    expect(res).to.have.property('state', 0);
+  });
+  const player2 = new Player(2, 'bill');
+  it('add player', () => {
+    res.add(player2)
+    expect(res.listPlayer).to.be.an('array').with.lengthOf(2);
+  });
+  it('remove player', () => {
+    res.remove(player2)
+    expect(res.listPlayer).to.be.an('array').with.lengthOf(1);
+  });
+  it('start after construction', () => {
+    res.start()
+    expect(res).to.have.property('state', 1);
+  });
+  it('start after start', () => {
+    res.start()
+    expect(res).to.have.property('state', 1);
+  });
+  it('finish', () => {
+    res.finish()
+    expect(res).to.have.property('state', 2);
+  });
+});
+
+describe('server class: stackTetros', () => {
+  let res = new StackTetros()
+  it('construction', () => {
+    expect(res).to.have.property('_pool');
+    expect(res._tetros).to.be.an('array').with.lengthOf(7);
+  });
+  it('get tetro by index', () => {
+    let tetro = res.tetroByIndex(1)
+    expect(tetro).to.exist;
+    tetro = res.tetroByIndex(10)
+    expect(tetro).to.exist;
+  });
+  it('get min index', () => {
+    const min = res._getMinIndex()
+    expect(min).to.be.equal(0);
+  });
+  it('get random tetro', () => {
+    const tetro = res._getTetroRandom()
+    expect(tetro).to.have.property('matrix');
+  });
+  it('get new tetro', () => {
+    const tetro = res._getNewTetro()
+    expect(tetro).to.exist;
+  });
+  it('remove tetro', () => {
+    res.removeTetroOfPool()
+    const min = res._getMinIndex()
+    expect(min).to.be.equal(1);
+  });
+  
 });
 
