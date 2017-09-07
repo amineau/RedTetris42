@@ -48,7 +48,7 @@ export default class Room {
   finish () {
     if (this.state === 1) {
       this.state = 2
-      thiss.initStack()
+      this.initStack()
     }
   }
 

@@ -62,15 +62,15 @@ const initEngine = io => {
     socket.emit('action', list())
 
     socket.on('room', action => {
-      let room = room_list.find(e => e.listPlayer.indexOf(player) !== undefined)
+      let room = room_list.find(e => e.listPlayer.indexOf(player) !== -1)
       if (action.type === "createOrJoin") {
-        if (//room_list.find(e => e.name === action.room.name) ||
-             player_list.find(e => e === action.player.name)) {
+        if (player_list.find(e => e === action.player.name)) {
           return socket.emit('action', {
             type: 'ERROR',
             message: 'Name already exists',
           })
         }
+        room = room_list.find(e => e.name === action.room.name)        
         player.name = action.player.name
         if (!room) {
           room = new Room(action.room.name, player)
@@ -83,7 +83,12 @@ const initEngine = io => {
         io.sockets.in(room.name).emit('action', room_init(room))
       
     } else if (action.type === "start") {
-    
+        // console.log("starting room", room.name, "with", room.listPlayer.map(e => e.name), 'and name\'s player is', player.name)
+        // console.log("room's list", room_list.map(room => room.listPlayer.map(e => e.name)))
+        // console.log('room\'s name', room_list.find(e => {
+        //   console.log('player', player.name, '==', e.listPlayer.indexOf(player))
+        //   return e.listPlayer.indexOf(player) !== -1
+        // }))
         room.start()
         io.sockets.in(room.name).emit('action', {
           type: 'ROOM START',
@@ -108,18 +113,19 @@ const initEngine = io => {
     })
 
     socket.on('loose', () => {
-      let room = room_list.find(e => e.listPlayer.indexOf(player) !== undefined)
+      let room = room_list.find(e => e.listPlayer.indexOf(player) !== -1)
       if (!room)
         return;
       player.loose()
       if (room.listPlayer.length === 1 || room.listPlayer.filter(player => !player.looser).length === 1) {
         room.finish()
+        io.sockets.emit('action', list())
       }
       io.sockets.in(room.name).emit('action', room_init(room))
     })
 
     socket.on('ask newtetro', action => {
-      let room = room_list.find(e => e.listPlayer.indexOf(player) !== undefined)
+      let room = room_list.find(e => e.listPlayer.indexOf(player) !== -1)
       if (!room)
         return;
       const linesDeleted = action.linesDeleted.length
@@ -137,7 +143,7 @@ const initEngine = io => {
     })
 
     socket.on('board change', action => {
-      const room = room_list.find(e => e.listPlayer.indexOf(player) !== undefined)
+      const room = room_list.find(e => e.listPlayer.indexOf(player) !== -1)
       if (!room)
         return;
       player.board = action.board
@@ -146,7 +152,7 @@ const initEngine = io => {
 
     socket.on('disconnect', () => {
       console.log('disconnect')
-      const room = room_list.find(e => e.listPlayer.indexOf(player) !== undefined)
+      const room = room_list.find(e => e.listPlayer.indexOf(player) !== -1)
       if (!room)
         return;
       socket.leave(room.name)
