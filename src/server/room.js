@@ -8,11 +8,17 @@ export default class Room {
     this.leader = player
     this.listPlayer = [player]
     this.state = 0
-    this._stack = new StackTetros()
+    this._stack = null
     this._position = 0
+    this.initStack()
   }
 
   get stack ()      { return this._stack.pool }
+
+  initStack () {
+    this._stack = new StackTetros()
+    this._position = 0
+  }
 
   sendTetro ({index, board}, player) {
     player.position = index
@@ -42,6 +48,7 @@ export default class Room {
   finish () {
     if (this.state === 1) {
       this.state = 2
+      thiss.initStack()
     }
   }
 
