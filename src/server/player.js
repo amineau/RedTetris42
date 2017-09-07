@@ -38,7 +38,7 @@ export default class Player {
     })
   }
 
-  incrementPosition () { this._position++ }
+  incrementPosition () { this.position++ }
 
   scoring (nbLines) {
     const bonus = math.round(0.42 * 42 * (nbLines - 1))
