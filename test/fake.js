@@ -11,6 +11,7 @@ import Home from '../src/client/components/home'
 import Preview from '../src/client/components/preview'
 import Shadow from '../src/client/components/shadow'
 import Score from '../src/client/components/score'
+import Join from '../src/client/components/join'
 
 chai.use(chaiArrays)
 const expect = chai.expect
@@ -344,6 +345,13 @@ describe('component: Shadow', () => {
 
 describe('component: Score', () => {
   const res = new Score(42)
+  it('normal construction', () => {
+    expect(res).to.have.property('props')
+  });
+});
+
+describe('component: Join', () => {
+  const res = new Join({name: "bob", list: {player: ["herve"]}})
   it('normal construction', () => {
     expect(res).to.have.property('props')
   });
