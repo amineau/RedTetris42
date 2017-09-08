@@ -19,9 +19,14 @@ a {
 .statusGame {
     position: absolute;
     width: 400px;
-    padding: 40px;
+    /*padding: 40px;*/
     text-align: center;
     top: 300px;
+    background-color: #cdd6a7;
+    margin-left: 40px;
+    margin-top: 21px;
+    padding-top: 40px;
+    padding-bottom: 28px;
 }
 
 .shadowBoard {

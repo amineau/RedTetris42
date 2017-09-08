@@ -43,8 +43,9 @@ export const playerName = (name = null) => {
     }
 }
 
-export const test = () => {
+export const test = (lineToAddNbr) => {
     return {
         type: types.ADD_LINE,
+        lineToAddNbr,
     }
 }

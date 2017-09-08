@@ -1,4 +1,5 @@
 var path = require('path');
+var css = require('src/client/style/style.css')
 
 module.exports = {
   entry: './src/client/index.js',

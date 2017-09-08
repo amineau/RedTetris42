@@ -6,22 +6,22 @@ class Create extends React.Component {
         super(props)
         this.state = {
             name: `${props.playerName}'s room`,
-            roomNameChecked: true
+            roomNameChecked: this.compareRoomsName(`${props.playerName}'s room`)
         }
         this.handleNameChange = this.handleNameChange.bind(this)
     }
 
     handleNameChange(event) {
-        if (this.comparePlayersName(event.target.value))
+        if (this.compareRoomsName(event.target.value))
             this.setState({roomNameChecked: true})
         else
             this.setState({roomNameChecked: false})
         this.setState({name: event.target.value})
     }
 
-    comparePlayersName(name) {
+    compareRoomsName(name) {
         const cmp = this.props.list.room.find((e) => {
-            return name === e
+            return name === e.name
         })
         return !cmp && name !== ""
 

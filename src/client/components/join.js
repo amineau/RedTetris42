@@ -16,16 +16,21 @@ class Join extends React.Component {
             </div>
         )
 
-        const listRoomFilter = this.props.list.room.filter(item => item.state !== 1)
+
+        const listRoomFilter = this.props.room
         if (!_.isEmpty(listRoomFilter)) {
-            room_list = listRoomFilter.map((item, index) => (
-                <div className={"homeButton"}>
-                    <div className={"cursor"}></div>
-                    <Link to={`/${item.name}[${this.playerName}]`}>
-                        <h1>{item.name} - {item.player.length} player{item.player.length > 1 ? "s" : ""}</h1>
-                    </Link>
-                </div>
-            ))
+            room_list = listRoomFilter.map((item, index) => {
+                const disabled = item.state === 1 ? " disabledButton" : ""
+                const disabledLink = item.state === 1 ? "disabledLink" : ""
+                return (
+                    <div className={"homeButton"}>
+                        <div className={"cursor" + disabled}></div>
+                        <Link to={`/${item.name}[${this.playerName}]`} className={disabledLink + disabled}>
+                            <h1 className={disabled}>{item.name} - {item.player.length} player{item.player.length > 1 ? "s" : ""}</h1>
+                        </Link>
+                    </div>
+                )
+            })
         }
         return (                   
                 <div className={"joinButtonContainer menu"}>

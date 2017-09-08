@@ -10,7 +10,7 @@ class Home extends React.Component {
         this.handleNameChange = this.handleNameChange.bind(this)
         this.createGame = this.createGame.bind(this)
         this.joinGame = this.joinGame.bind(this)
-        this.menuComponent = {}
+        this.menuComponentName = null
         this.actions = props.actions
     }
 
@@ -20,13 +20,13 @@ class Home extends React.Component {
             playerNameChecked: true,
         } : {
             name: 'playr',
-            playerNameChecked: false
+            playerNameChecked: false,
         }
     }
 
     handleNameChange(event) {
         this.setState({name: event.target.value})
-        if (this.comparePlayersName(event.target.value.toLowerCase()))
+        if (this.comparePlayersName(event.target.value))
             this.setState({playerNameChecked: true})
         else {
             this.menuComponent = {}
@@ -36,7 +36,7 @@ class Home extends React.Component {
 
     comparePlayersName(name) {
         const cmp = this.props.list.player.find((e) => {
-            return name === e.toLowerCase()
+            return name.toLowerCase() === e.toLowerCase()
         })
         return !cmp && name !== "playr" && name !== ""
 
@@ -44,36 +44,20 @@ class Home extends React.Component {
 
     createGame(event) {
         if (this.comparePlayersName(this.state.name)) {
-            this.actions.playerName(this.state.name.toLowerCase())
-            this.menuComponent = {
-                name: 'create',
-                component: (
-                    <Create
-                        socket={this.props.socket}
-                        list={this.props.list}
-                        playerName={this.state.name}/>
-                )
-            }
+            this.actions.playerName(this.state.name)
+            this.menuComponentName = 'create'
         } else {
-            this.menuComponent = {}
+            this.menuComponentName = null
         }
         this.forceUpdate()
     }
 
-    joinGame(event) {
+    joinGame() {
         if (this.comparePlayersName(this.state.name)) {
             this.actions.playerName(this.state.name)
-            this.menuComponent = {
-                name: 'join',
-                component: (
-                    <Join
-                        socket={this.props.socket}
-                        list={this.props.list}
-                        playerName={this.state.name}/>
-                )
-            }
+            this.menuComponentName = 'join'
         } else {
-            this.menuComponent = {}
+            this.menuComponentName = null
         }
         this.forceUpdate()
     }
@@ -82,10 +66,19 @@ class Home extends React.Component {
         const disabledClass = this.state.playerNameChecked ? "" : " disabledButton"
         let createClass = ''
         let joinClass = ''
-        if (this.menuComponent.name === 'create') {
+        let menuComponent = null
+        if (this.menuComponentName === 'create') {
+            menuComponent = (<Create
+                socket={this.props.socket}
+                list={this.props.list}
+                playerName={this.state.name}/>)
             createClass = ' active'
             joinClass = ' notActive'
-        } else if (this.menuComponent.name === 'join') {
+        } else if (this.menuComponentName === 'join') {
+            menuComponent = (<Join
+                socket={this.props.socket}
+                room={this.props.list.room}
+                playerName={this.state.name}/>)
             createClass = ' notActive'
             joinClass = ' active'
         }
@@ -108,7 +101,7 @@ class Home extends React.Component {
                                 <span className={disabledClass} onClick={this.joinGame}>join game</span>
                             </div>
                         </div>
-                    {this.menuComponent.component}
+                        {menuComponent}
                     <h1 className={"copyright"}>&copy;2017 amineau tpierron</h1>
                 </div>
             </div>

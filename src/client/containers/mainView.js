@@ -17,6 +17,7 @@ class MainView extends React.Component {
         }
         this.socket = props.socket
         this.gameStartSubmit = this.gameStartSubmit.bind(this)
+        this.listener = this.onKeyDown.bind(this)
     }
 
     onKeyDown (e) {
@@ -27,7 +28,10 @@ class MainView extends React.Component {
                 case 40: this.props.actions.fall(); break;
                 case 38: this.props.actions.rotate(); break;
                 case 32: this.props.actions.dive(); break;
-                case 53: this.props.actions.test(); break;
+                case 40: this.props.actions.test(0); break;
+                case 49: this.props.actions.test(1); break;
+                case 50: this.props.actions.test(2); break;
+                case 51: this.props.actions.test(3); break;
             }
             this.setState({antiRepeatFlag: true})
             setTimeout(() => {this.setState({antiRepeatFlag: false})}, 10)
@@ -43,18 +47,17 @@ class MainView extends React.Component {
         }
 
         if (nextProps.room.state === 1 && this.props.room.state !== 1) {
+            window.addEventListener("keydown", this.listener)
             const intervalID = setInterval(() => this.props.actions.fall(), 1000);
             this.setState({pause: false, intervalID })
         } else if (nextProps.room.state !== 1 && this.props.room.state === 1 || newPlayer.looser !== oldPlayer.looser) {
+            window.removeEventListener("keydown", this.listener)
             clearInterval(this.state.intervalID);
             console.log("HERE")           
-            // window.removeEventListener("keydown", this.listener)
         }
     }
 
     componentDidMount() {
-        this.listener = this.onKeyDown.bind(this)
-        window.addEventListener("keydown", this.listener)
         this.socket.emit('room', {
             type: 'createOrJoin',
             room: {
@@ -145,7 +148,7 @@ class MainView extends React.Component {
                     />
                     <div className={"boardInfoPart"}>
                         <Score score={this.props.score}/>
-                        <Panel name={"lines"} info={"42"}/>
+                        <Panel name={"lines"} info={this.props.linesDone}/>
                         <Preview tetro={this.props.nextTetro} />
                     </div>
                 </div>
