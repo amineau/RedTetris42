@@ -1,4 +1,5 @@
 var path = require('path');
+var css = require('src/client/style/style.css')
 
 module.exports = {
   entry: './src/client/index.js',
@@ -16,6 +17,12 @@ module.exports = {
       query:{
         presets: ["es2015", "react", "stage-0"]
       }
-    }]
+    }],
+    rules: [
+      {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
+      }
+    ]
   }
 };
