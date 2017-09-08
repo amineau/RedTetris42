@@ -12,6 +12,7 @@ import App from './containers/app'
 // import Home from './components/home'
 import io from 'socket.io-client'
 import math from 'mathjs'
+import styles from './style/style.css'
 
 // let boardInit = [];
 // boardInit.length = 252;

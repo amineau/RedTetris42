@@ -35,7 +35,7 @@ a {
 }
 
 .previewContainer {
-    background-image: url('./images/preview.png');
+    background-image: url('images/preview.png');
     background-size: 200px, 200px;
     width: 200px;
     height: 200px;
@@ -54,7 +54,7 @@ a {
 }
 
 .panel {
-    background-image: url('./images/panel.png');
+    background-image: url('images/panel.png');
     background-size: 180px, 100px;
     width: 180px;
     height: 81px;
@@ -68,7 +68,7 @@ a {
 }
 
 .score {
-    background-image: url('./images/score.png');
+    background-image: url('images/score.png');
     background-size: cover;
     width: 220px;
     height: 120px;
@@ -113,7 +113,7 @@ a {
 } */
 
 .T {
-    background-image: url('./images/T.png');
+    background-image: url('images/T.png');
     background-size: cover;
 }
 
@@ -150,67 +150,67 @@ a {
 }
 
 .L {
-    background-image: url('./images/L.png');
+    background-image: url('images/L.png');
     background-size: cover;
 }
 
 .square {
-    background-image: url('./images/square.png');
+    background-image: url('images/square.png');
     background-size: cover;
 }
 
 .Linv {
-    background-image: url('./images/Linv.png');
+    background-image: url('images/Linv.png');
     background-size: cover;
 }
 
 .S {
-    background-image: url('./images/S.png');
+    background-image: url('images/S.png');
     background-size: cover;
 }
 
 .Sinv {
-    background-image: url('./images/Sinv.png');
+    background-image: url('images/Sinv.png');
     background-size: cover;
 }
 
 .brick {
-    background-image: url('./images/brick.png');
+    background-image: url('images/brick.png');
     background-size: cover;
 }
 
 .block {
-    background-image: url('./images/block.png');
+    background-image: url('images/block.png');
     background-size: cover;
 }
 
 .barTop {
-    background-image: url('./images/barTop.png');
+    background-image: url('images/barTop.png');
     background-size: cover;
 }
 
 .barMidV {
-    background-image: url('./images/barMidV.png');
+    background-image: url('images/barMidV.png');
     background-size: cover;
 }
 
 .barBot {
-    background-image: url('./images/barBot.png');
+    background-image: url('images/barBot.png');
     background-size: cover;
 }
 
 .barLeft {
-    background-image: url('./images/barLeft.png');
+    background-image: url('images/barLeft.png');
     background-size: cover;
 }
 
 .barMidH {
-    background-image: url('./images/barMidH.png');
+    background-image: url('images/barMidH.png');
     background-size: cover;
 }
 
 .barRight {
-    background-image: url('./images/barRight.png');
+    background-image: url('images/barRight.png');
     background-size: cover;
 }
 
@@ -227,7 +227,7 @@ a {
 
 .homeImage {
     height: 880px;
-    background-image: url('./images/home42Huge.png');
+    background-image: url('images/home42Huge.png');
     background-size: cover;
 }
 
@@ -283,7 +283,7 @@ a {
 .cursor {
     width: 20px; 
     height: 28px; 
-    background-image: url('./images/cursor.png');
+    background-image: url('images/cursor.png');
     opacity: 0;
     background-size: cover; 
 }
@@ -360,7 +360,7 @@ a {
 
 @font-face {
     font-family: 'Super Mario Land (Game Boy)';
-    src: url('./gameBoyFont.ttf');
+    src: url('fonts/gameBoyFont.ttf');
 }
 
 * {
