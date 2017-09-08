@@ -12,16 +12,16 @@ class Create extends React.Component {
     }
 
     handleNameChange(event) {
-        if (this.comparePlayersName(event.target.value))
+        if (this.compareRoomsName(event.target.value))
             this.setState({roomNameChecked: true})
         else
             this.setState({roomNameChecked: false})
         this.setState({name: event.target.value})
     }
 
-    comparePlayersName(name) {
-        const cmp = this.props.list.player.find((e) => {
-            return name === e
+    compareRoomsName(name) {
+        const cmp = this.props.list.room.find((e) => {
+            return name === e.name
         })
         return !cmp && name !== ""
 

@@ -100,12 +100,12 @@ export const deleteLine = oldBoard => {
     return {board, linesDeleted: lines}
 }
 
-export const addLine = (board, typeLineToAdd) => {
+export const addLine = (board, lineToAddNbr) => {
     let newBoard = [...board]
-    let typeCell = typeLineToAdd === 4 ? 11 : 11
+    let typeCell = 11
     for(let cell = 252 - 12; cell >= 0; cell--) {
         if (cell % 12 !== 0 && cell % 12 !== 11)
-            newBoard[cell] = (cell >= 24) ? newBoard[cell - 12] : typeCell
+            newBoard[cell] = (cell >= 12 + (12 * lineToAddNbr)) ? newBoard[cell - 12] : typeCell
     }
     return newBoard
 }
@@ -175,7 +175,7 @@ const move = (state = {}, action) => {
             return { ...state, nextTetro, index }
 
         case ADD_LINE:
-            board = addLine(state.board, action.typeLineToAdd)
+            board = addLine(state.board, action.lineToAddNbr)
             state.socket.emit('board change', { board })
             return {
                 ...state,

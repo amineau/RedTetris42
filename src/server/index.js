@@ -133,7 +133,7 @@ const initEngine = io => {
         player.scoring(linesDeleted)
         socket.broadcast.to(room.name).emit('action', {
           type: "ADD LINE",
-          typeLineToAdd: linesDeleted,
+          lineToAddNbr: linesDeleted - 1,
         })
       }
       room.sendTetro(action, player)
