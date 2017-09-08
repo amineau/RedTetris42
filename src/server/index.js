@@ -57,6 +57,7 @@ const initEngine = io => {
       leader: room.leader.name,
       state: room.state,
       score: player.score,
+      linesDone: player.linesDone
     })
 
     socket.emit('action', list())

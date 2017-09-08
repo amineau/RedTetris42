@@ -145,7 +145,7 @@ class MainView extends React.Component {
                     />
                     <div className={"boardInfoPart"}>
                         <Score score={this.props.score}/>
-                        <Panel name={"lines"} info={"42"}/>
+                        <Panel name={"lines"} info={this.props.linesDone}/>
                         <Preview tetro={this.props.nextTetro} />
                     </div>
                 </div>

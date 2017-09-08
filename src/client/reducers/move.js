@@ -151,6 +151,7 @@ const move = (state = {}, action) => {
                     state: action.state,
                 },
                 score: action.score,
+                linesDone: action.linesDone,
                 board,
             }
             
