@@ -8,6 +8,7 @@ export default class Player {
     this.name = name
     this.position = 0
     this.score = 0
+    this.linesDone = 0
     this.looser = false
     this.board = null 
     this.boardInit()
@@ -22,6 +23,7 @@ export default class Player {
         this.board[i] = 8
     })
     this.position = 0
+    this.score = 0
     this.score = 0
     this.looser = false
   }
@@ -43,5 +45,6 @@ export default class Player {
   scoring (nbLines) {
     const bonus = math.round(0.42 * 42 * (nbLines - 1))
     this.score += 42 * nbLines + bonus
+    this.linesDone += nbLines
   }
 }
