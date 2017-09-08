@@ -28,7 +28,10 @@ class MainView extends React.Component {
                 case 40: this.props.actions.fall(); break;
                 case 38: this.props.actions.rotate(); break;
                 case 32: this.props.actions.dive(); break;
-                case 53: this.props.actions.test(); break;
+                case 40: this.props.actions.test(0); break;
+                case 49: this.props.actions.test(1); break;
+                case 50: this.props.actions.test(2); break;
+                case 51: this.props.actions.test(3); break;
             }
             this.setState({antiRepeatFlag: true})
             setTimeout(() => {this.setState({antiRepeatFlag: false})}, 10)

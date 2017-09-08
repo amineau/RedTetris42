@@ -6,7 +6,7 @@ class Create extends React.Component {
         super(props)
         this.state = {
             name: `${props.playerName}'s room`,
-            roomNameChecked: true
+            roomNameChecked: this.compareRoomsName(`${props.playerName}'s room`)
         }
         this.handleNameChange = this.handleNameChange.bind(this)
     }
