@@ -142,6 +142,7 @@ const move = (state = {}, action) => {
 
         case ROOM_INIT:
             board = state.board || boardFill()
+            const player = action.players.find(player => player.name == state.playerName)
             return {
                 ...state,
                 room: {
@@ -150,8 +151,8 @@ const move = (state = {}, action) => {
                     leader: action.leader,
                     state: action.state,
                 },
-                score: action.score,
-                linesDone: action.linesDone,
+                score: player.score,
+                linesDone: player.linesDone,
                 board,
             }
             
@@ -165,7 +166,11 @@ const move = (state = {}, action) => {
                 nextTetro,
                 index: 0,
                 board,
-                room: {...state.room, state: action.state},
+                room: {
+                    ...state.room,
+                    players: action.players,
+                    state: action.state,                        
+                },
             }
 
         case ROOM_EXIT:

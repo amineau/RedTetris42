@@ -10,37 +10,32 @@ export default class Player {
     this.score = 0
     this.linesDone = 0
     this.looser = false
-    this.board = null 
-    this.boardInit()
+    this.board = this._boardFill()
   }
 
-  boardInit () {
-    this.board = [];
-    this.board.length = 252;
-    this.board.fill(0);
-    this.board.forEach((e, i) => {
+  _boardFill(type = 0) {
+    let board = []
+    board.length = 252;
+    board.fill(type);
+    board.forEach((e, i) => {
     if (i % 12 === 0 || i % 12 === 11 || i < 12)
-        this.board[i] = 8
+      board[i] = 8
     })
+    return board
+  }
+
+  reset () {
+    this.board = this._boardFill()
     this.position = 0
     this.score = 0
-    this.score = 0
+    this.linesDone = 0
     this.looser = false
   }
 
   loose () {
     this.looser = true
-    this._boardFull()
+    this.board = this._boardFill(11)
   }
-
-  _boardFull () {
-    this.board.forEach((e, i) => {
-    if (!(i % 12 === 0 || i % 12 === 11 || i < 12))
-        this.board[i] = 11
-    })
-  }
-
-  incrementPosition () { this.position++ }
 
   scoring (nbLines) {
     const bonus = math.round(0.42 * 42 * (nbLines - 1))

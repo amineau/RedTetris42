@@ -50,10 +50,10 @@ class MainView extends React.Component {
             window.addEventListener("keydown", this.listener)
             const intervalID = setInterval(() => this.props.actions.fall(), 1000);
             this.setState({pause: false, intervalID })
-        } else if (nextProps.room.state !== 1 && this.props.room.state === 1 || newPlayer.looser !== oldPlayer.looser) {
+        } else if (nextProps.room.state !== 1 && this.props.room.state === 1 || (newPlayer.looser && !oldPlayer.looser)) {
             window.removeEventListener("keydown", this.listener)
             clearInterval(this.state.intervalID);
-            console.log("HERE")           
+            console.log("HERE")
         }
     }
 
@@ -71,6 +71,7 @@ class MainView extends React.Component {
 
     componentWillUnmount() {
         clearInterval(this.state.intervalID);
+        console.log("HERE componentWillUnmount")
         window.removeEventListener("keydown", this.listener)
         this.props.actions.room_exit()
         this.socket.emit('room', { type: 'exit' })
@@ -126,8 +127,8 @@ class MainView extends React.Component {
             return null;
         
         const list_shadows = this.props.room.players
-            .filter(e => e.name !== this.props.player.name)
-            .map( item => <Shadow board={item.board} name={item.name} />)
+            .filter( player => player.name !== this.props.player.name)
+            .map( player => (<Shadow board={player.board} name={player.name} />))
         const len = list_shadows.length
         const nbBySide = math.ceil(len / 2)
         const sides = {

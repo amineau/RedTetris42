@@ -9,20 +9,13 @@ import { Provider } from 'react-redux'
 import { storeStateMiddleWare } from './middleware/storeStateMiddleWare'
 import reducers from './reducers'
 import App from './containers/app'
+import { server } from '../../params'
 // import Home from './components/home'
 import io from 'socket.io-client'
 import math from 'mathjs'
 import styles from './style/style.css'
 
-// let boardInit = [];
-// boardInit.length = 252;
-// boardInit.fill(0);
-// boardInit.forEach((e, i) => {
-//   if (i % 12 === 0 || i % 12 === 11 || i < 12)
-//     boardInit[i] = 8
-// })
-
-let socket = io.connect('http://localhost:3004');
+let socket = io.connect(server.url);
 
 let socketIoMiddleware = createSocketIoMiddleware(socket, (type, action) => {
 });

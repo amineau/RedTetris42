@@ -29,7 +29,6 @@ class Home extends React.Component {
         if (this.comparePlayersName(event.target.value))
             this.setState({playerNameChecked: true})
         else {
-            this.menuComponent = {}
             this.setState({playerNameChecked: false})
         }
     }
@@ -42,7 +41,7 @@ class Home extends React.Component {
 
     }
 
-    createGame(event) {
+    createGame() {
         if (this.comparePlayersName(this.state.name)) {
             this.actions.playerName(this.state.name)
             this.menuComponentName = 'create'
@@ -67,14 +66,14 @@ class Home extends React.Component {
         let createClass = ''
         let joinClass = ''
         let menuComponent = null
-        if (this.menuComponentName === 'create') {
+        if (this.menuComponentName === 'create' && this.state.playerNameChecked) {
             menuComponent = (<Create
                 socket={this.props.socket}
                 list={this.props.list}
                 playerName={this.state.name}/>)
             createClass = ' active'
             joinClass = ' notActive'
-        } else if (this.menuComponentName === 'join') {
+        } else if (this.menuComponentName === 'join' && this.state.playerNameChecked) {
             menuComponent = (<Join
                 socket={this.props.socket}
                 room={this.props.list.room}

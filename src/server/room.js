@@ -42,6 +42,7 @@ export default class Room {
   start () {
     if (this.state === 0 || this.state === 2) {
       this.state = 1
+      this.listPlayer.map(player => player.reset())
     }
   }
 

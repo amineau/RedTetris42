@@ -55,9 +55,7 @@ const initEngine = io => {
       type: 'ROOM INIT',
       players: room.listPlayer,
       leader: room.leader.name,
-      state: room.state,
-      score: player.score,
-      linesDone: player.linesDone
+      state: room.state
     })
 
     socket.emit('action', list())
@@ -95,19 +93,26 @@ const initEngine = io => {
           type: 'ROOM START',
           initStack: room.stack,
           state: room.state,
+          players: room.listPlayer,
         })
     
     } else if (action.type === "exit") {
   
         console.log('exit')
+         if (!room)
+        return;
         socket.leave(room.name)
         room.remove(player)
         player_list.splice(player_list.indexOf(player.name), 1)
-        player.boardInit()
+        player.reset()
         if (room.listPlayer.length) {
           io.sockets.in(room.name).emit('action', room_init(room))
         } else {
           room_list.splice(room_list.indexOf(room), 1)
+          if (room.listPlayer.length === 1 || room.listPlayer.filter(player => !player.looser).length === 1) {
+            console.log("End Game, winner is", room.listPlayer.filter(player => !player.looser).map(player => player.name))
+            room.finish()
+          }
         }
       }
       io.sockets.emit('action', list())
@@ -119,6 +124,7 @@ const initEngine = io => {
         return;
       player.loose()
       if (room.listPlayer.length === 1 || room.listPlayer.filter(player => !player.looser).length === 1) {
+        console.log("End Game, winner is", room.listPlayer.filter(player => !player.looser).map(player => player.name))
         room.finish()
         io.sockets.emit('action', list())
       }
@@ -163,6 +169,10 @@ const initEngine = io => {
         io.sockets.in(room.name).emit('action', room_init(room))
       } else {
         room_list.splice(room_list.indexOf(room), 1)
+        if (room.listPlayer.length === 1 || room.listPlayer.filter(player => !player.looser).length === 1) {
+          console.log("End Game, winner is", room.listPlayer.filter(player => !player.looser).map(player => player.name))
+          room.finish()
+        }
       }
       io.sockets.emit('action', list())
     })
