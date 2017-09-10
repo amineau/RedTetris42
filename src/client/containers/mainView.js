@@ -36,6 +36,7 @@ class MainView extends React.Component {
             this.setState({antiRepeatFlag: true})
             setTimeout(() => {this.setState({antiRepeatFlag: false})}, 10)
         }
+        console.log("mainView")
     }
 
     componentWillReceiveProps(nextProps) {
@@ -55,18 +56,6 @@ class MainView extends React.Component {
             clearInterval(this.state.intervalID);
             console.log("HERE")
         }
-    }
-
-    componentDidMount() {
-        this.socket.emit('room', {
-            type: 'createOrJoin',
-            room: {
-                name: this.props.room.name,
-            },
-            player: {
-                name: this.props.player.name,
-            },
-        })
     }
 
     componentWillUnmount() {

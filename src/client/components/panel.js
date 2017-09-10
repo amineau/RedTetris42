@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Panel = ({name, info}) => {
+const Panel = ({name, info = 0}) => {
     return (
         <div className={"panel"}>
             <h1>

@@ -1,7 +1,7 @@
 import fs  from 'fs'
 import debug from 'debug'
-import Player from './player'
-import Room from './room'
+import initEngine from './socket' 
+
 
 const logerror = debug('tetris:error')
   , loginfo = debug('tetris:info')
@@ -30,159 +30,12 @@ const initApp = (app, params, cb) => {
 }
 
 
-let room_list = []
-let player_list = []
-
-const initEngine = io => {
-  io.on('connection', function(socket){
-    loginfo("Socket connected: " + socket.id)
-    
-    let player = new Player(socket.id)
-    
-    const list = () => ({
-      type: 'LIST',
-      list: {
-        room: room_list.map(d => ({
-          name: d.name,
-          state: d.state,
-          player: d.listPlayer.map(e => e.name),
-        })),
-        player: player_list,
-      }
-    })
-
-    const room_init = (room) => ({
-      type: 'ROOM INIT',
-      players: room.listPlayer,
-      leader: room.leader.name,
-      state: room.state
-    })
-
-    socket.emit('action', list())
-
-    socket.on('room', action => {
-      let room = room_list.find(e => e.listPlayer.indexOf(player) !== -1)
-      if (action.type === "createOrJoin") {
-        if (player_list.find(e => e === action.player.name)) {
-          return socket.emit('action', {
-            type: 'ERROR',
-            message: 'Name already exists',
-          })
-        }
-        room = room_list.find(e => e.name === action.room.name)        
-        player.name = action.player.name
-        if (!room) {
-          room = new Room(action.room.name, player)
-          room_list.push(room)
-        } else {
-          room.add(player)
-        }
-        player_list.push(player.name)
-        socket.join(room.name)
-        io.sockets.in(room.name).emit('action', room_init(room))
-      
-    } else if (action.type === "start") {
-        // console.log("starting room", room.name, "with", room.listPlayer.map(e => e.name), 'and name\'s player is', player.name)
-        // console.log("room's list", room_list.map(room => room.listPlayer.map(e => e.name)))
-        // console.log('room\'s name', room_list.find(e => {
-        //   console.log('player', player.name, '==', e.listPlayer.indexOf(player))
-        //   return e.listPlayer.indexOf(player) !== -1
-        // }))
-        room.start()
-        io.sockets.in(room.name).emit('action', {
-          type: 'ROOM START',
-          initStack: room.stack,
-          state: room.state,
-          players: room.listPlayer,
-        })
-    
-    } else if (action.type === "exit") {
-  
-        console.log('exit')
-         if (!room)
-        return;
-        socket.leave(room.name)
-        room.remove(player)
-        player_list.splice(player_list.indexOf(player.name), 1)
-        player.reset()
-        if (room.listPlayer.length) {
-          io.sockets.in(room.name).emit('action', room_init(room))
-        } else {
-          room_list.splice(room_list.indexOf(room), 1)
-          if (room.listPlayer.length === 1 || room.listPlayer.filter(player => !player.looser).length === 1) {
-            console.log("End Game, winner is", room.listPlayer.filter(player => !player.looser).map(player => player.name))
-            room.finish()
-          }
-        }
-      }
-      io.sockets.emit('action', list())
-    })
-
-    socket.on('loose', () => {
-      let room = room_list.find(e => e.listPlayer.indexOf(player) !== -1)
-      if (!room)
-        return;
-      player.loose()
-      if (room.listPlayer.length === 1 || room.listPlayer.filter(player => !player.looser).length === 1) {
-        console.log("End Game, winner is", room.listPlayer.filter(player => !player.looser).map(player => player.name))
-        room.finish()
-        io.sockets.emit('action', list())
-      }
-      io.sockets.in(room.name).emit('action', room_init(room))
-    })
-
-    socket.on('ask newtetro', action => {
-      let room = room_list.find(e => e.listPlayer.indexOf(player) !== -1)
-      if (!room)
-        return;
-      const linesDeleted = action.linesDeleted.length
-      if (linesDeleted) {
-        player.scoring(linesDeleted)
-        socket.broadcast.to(room.name).emit('action', {
-          type: "ADD LINE",
-          lineToAddNbr: linesDeleted - 1,
-        })
-      }
-      room.sendTetro(action, player)
-        .then(tetro => {
-          socket.emit('action', {type: 'NEWTETRO', tetro})
-        })
-    })
-
-    socket.on('board change', action => {
-      const room = room_list.find(e => e.listPlayer.indexOf(player) !== -1)
-      if (!room)
-        return;
-      player.board = action.board
-      io.sockets.in(room.name).emit('action', room_init(room))
-    })
-
-    socket.on('disconnect', () => {
-      console.log('disconnect')
-      const room = room_list.find(e => e.listPlayer.indexOf(player) !== -1)
-      if (!room)
-        return;
-      socket.leave(room.name)
-      room.remove(player)
-      player_list.splice(player_list.indexOf(player.name), 1)
-      if (room.listPlayer.length) {
-        io.sockets.in(room.name).emit('action', room_init(room))
-      } else {
-        room_list.splice(room_list.indexOf(room), 1)
-        if (room.listPlayer.length === 1 || room.listPlayer.filter(player => !player.looser).length === 1) {
-          console.log("End Game, winner is", room.listPlayer.filter(player => !player.looser).map(player => player.name))
-          room.finish()
-        }
-      }
-      io.sockets.emit('action', list())
-    })
-  })
-}
-
 
 export function create(params){
   const promise = new Promise( (resolve, reject) => {
+    
     const app = require('http').createServer()
+
     initApp(app, params, () =>{
       const io = require('socket.io')(app)
       const stop = (cb) => {

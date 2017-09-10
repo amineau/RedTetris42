@@ -9,6 +9,18 @@ class Join extends React.Component {
         this.playerName = props.playerName
     }
 
+    joinRoom(name) {
+        this.props.socket.emit('room', {
+            type: 'join',
+            room: {
+                name,
+            },
+            player: {
+                name: this.playerName,
+            },
+        })
+    }
+
     render() {
         let room_list = (
             <div className={"homeButton"}>
@@ -25,7 +37,7 @@ class Join extends React.Component {
                 return (
                     <div className={"homeButton"}>
                         <div className={"cursor" + disabled}></div>
-                        <Link to={`/${item.name}[${this.playerName}]`} className={disabledLink + disabled}>
+                        <Link to={`/${item.name}[${this.playerName}]`} onClick={() => this.joinRoom(item.name)} className={disabledLink + disabled}>
                             <h1 className={disabled}>{item.name} - {item.player.length} player{item.player.length > 1 ? "s" : ""}</h1>
                         </Link>
                     </div>

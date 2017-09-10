@@ -9,6 +9,19 @@ class Create extends React.Component {
             roomNameChecked: this.compareRoomsName(`${props.playerName}'s room`)
         }
         this.handleNameChange = this.handleNameChange.bind(this)
+        this.createRoom = this.createRoom.bind(this)
+    }
+
+    createRoom(event) {
+        this.props.socket.emit('room', {
+            type: 'create',
+            room: {
+                name: this.state.name,
+            },
+            player: {
+                name: this.props.playerName,
+            },
+        })
     }
 
     handleNameChange(event) {
@@ -42,7 +55,7 @@ class Create extends React.Component {
                     <div className={"homeButtonContainer"}>
                     <div className={"homeButton"}>
                         <div className={"cursor" + disabledClass}></div>
-                        <Link to={`/${this.state.name}[${this.props.playerName}]`} className={linkClass}>
+                        <Link to={`/${this.state.name}[${this.props.playerName}]`} onClick={this.createRoom} className={linkClass}>
                             <h1 className={disabledClass}>ok</h1>
                         </Link>
                     </div>

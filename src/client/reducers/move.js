@@ -1,4 +1,4 @@
-import { FALL, DIVE, LEFT, RIGHT, ROTATE, ROOM_EXIT, NEWTETRO, ROOM_INIT, ROOM_START, LIST, ADD_LINE, PLAYER_NAME } from '../constants/ActionTypes'
+import { FALL, DIVE, LEFT, RIGHT, ROTATE, ROOM_EXIT, NEWTETRO, ROOM_INIT, ROOM_START, LIST, ADD_LINE, PLAYER_NAME, HIGHT_SCORES, SCORE, NEW_BOARD } from '../constants/ActionTypes'
 import * as tetrosTypes from '../constants/tetrosTypes'
 import math from 'mathjs'
 
@@ -133,7 +133,16 @@ const move = (state = {}, action) => {
     let index = state.index + 1
     
     switch(action.type){
-        
+        case HIGHT_SCORES:
+            return { ...state, hightScores: action.hightScores }
+
+        case SCORE:
+            return {
+                ...state,
+                score: action.score,
+                linesDone: action.linesDone,
+            }
+
         case LIST:
             return { ...state, list: action.list }
 
@@ -151,11 +160,10 @@ const move = (state = {}, action) => {
                     leader: action.leader,
                     state: action.state,
                 },
-                score: player.score,
-                linesDone: player.linesDone,
                 board,
             }
-            
+        
+
         case ROOM_START:
             tetro = action.initStack[0]
             nextTetro = action.initStack[1]
@@ -174,7 +182,7 @@ const move = (state = {}, action) => {
             }
 
         case ROOM_EXIT:
-            return { ...state, tetro, nextTetro, board: boardFill() }
+            return { ...state, tetro, nextTetro, score:0, linesDone: 0, board: boardFill() }
 
         case NEWTETRO:
             nextTetro = action.tetro
@@ -182,7 +190,7 @@ const move = (state = {}, action) => {
 
         case ADD_LINE:
             board = addLine(state.board, action.lineToAddNbr)
-            state.socket.emit('board change', { board })
+            state.socket.emit('room', {type: 'board change', board })
             let tetroLineUp = action.lineToAddNbr
             while (tetroLineUp && moveCheck({board, tetro: {
                     ...state.tetro,
@@ -205,6 +213,15 @@ const move = (state = {}, action) => {
                 }
             }
 
+        case NEW_BOARD:
+            return {
+                ...state,
+                room: {
+                    ...state.room,
+                    players: state.room.players.map(player => player.name === action.player.name ? action.player : player)
+                }
+            }
+
         case FALL:
             if (moveCheck(state, FALL)){
                 return {
@@ -224,11 +241,11 @@ const move = (state = {}, action) => {
                 if (!moveCheck({board, tetro})){
                     board = boardFill(11)
                     tetro = null
-                    state.socket.emit('loose')
+                    state.socket.emit('room', {type: 'loose'})
                     return { ...state, board, tetro }
                 }
-                state.socket.emit('ask newtetro', { index, linesDeleted })
-                state.socket.emit('board change', { board })
+                state.socket.emit('room', { type: 'ask newtetro', index, linesDeleted })
+                state.socket.emit('room', { type:'board change', board })
                 
                 return { ...state, tetro, board }
             }
@@ -286,11 +303,11 @@ const move = (state = {}, action) => {
             if (!moveCheck({board, tetro})){
                 board = boardFill(11)
                 tetro = null
-                state.socket.emit('loose')
+                state.socket.emit('room', {type: 'loose'})
                 return { ...state, board, tetro }
             }
-            state.socket.emit('ask newtetro', { index, linesDeleted })
-            state.socket.emit('board change', { board })
+            state.socket.emit('room', { type: 'ask newtetro', index, linesDeleted })
+            state.socket.emit('room', { type: 'board change', board })
             return { ...state, tetro, board }
 
         default:

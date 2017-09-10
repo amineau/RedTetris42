@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Score = ({score}) => {
+const Score = ({score = 0}) => {
     return (
         <div className={"score"}>
             <h1>score</h1>

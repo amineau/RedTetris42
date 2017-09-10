@@ -6,6 +6,14 @@ a {
     text-decoration: none;
 }
 
+table {
+    width: 100%;
+}
+
+td {
+    text-align: center;
+}
+
 .board {
     display: flex;
     border: solid;

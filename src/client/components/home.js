@@ -81,6 +81,25 @@ class Home extends React.Component {
             createClass = ' notActive'
             joinClass = ' active'
         }
+        let hightScores = [(
+            <tr>
+                <th>Rank</th>
+                <th>Player</th>
+                <th>Score</th>
+                <th>Lines</th>
+            </tr>
+         )]
+        if (this.props.hightScores){ 
+            this.props.hightScores.forEach((elem, id) => {
+                hightScores.push(
+                <tr>
+                    <td>{id + 1}</td>
+                    <td>{elem.player}</td>
+                    <td>{elem.score}</td>
+                    <td>{elem.lines}</td>
+                </tr>)
+            })
+        }
 
         return (
             <div className={"home"}>
@@ -101,6 +120,13 @@ class Home extends React.Component {
                             </div>
                         </div>
                         {menuComponent}
+      
+                        <table>
+                            <tbody>
+                                {hightScores}
+                            </tbody>
+                        </table>
+                  
                     <h1 className={"copyright"}>&copy;2017 amineau tpierron</h1>
                 </div>
             </div>
