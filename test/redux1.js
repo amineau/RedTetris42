@@ -84,17 +84,14 @@ describe('redux: PLAYER NAME', function(){
 describe('redux: ROOM INIT', function(){
   it('basic', function(done){
     const initialState = {}
-    const action = {
-      players: [{name: "bob"}]
-    }
     const store =  configureStore(move, null, initialState, {
-      'ROOM INIT': ({dispatch, getState, action}) =>  {
+      'ROOM INIT': ({dispatch, getState}) =>  {
         const state = getState()
         expect(state).to.have.property("room")
         done()
       }
     })
-    store.dispatch({type: ROOM_INIT})
+    store.dispatch({type: ROOM_INIT, players: [{name: "bob"}]})
   });
 });
 
