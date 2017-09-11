@@ -25,13 +25,12 @@ const room_init = (room) => ({
 	type: 'ROOM INIT',
 	players: room.listPlayer.map(p => ({
 		name: p.name,
-		board: p.board
+		board: p.board,
+		looser: p.looser
 	})),
 	leader: room.leader.name,
 	state: room.state
 })
-
-
 
 const initEngine = io => {
 
@@ -76,6 +75,7 @@ const initEngine = io => {
 			}
 		} else 
 			io.sockets.in(room.name).emit('action', room_init(room))
+		io.sockets.emit('action', list())
 	}
 
 
@@ -98,6 +98,7 @@ const initEngine = io => {
 			player_list.push(player.name)
 			socket.join(room.name)
 			io.sockets.in(room.name).emit('action', room_init(room))
+			io.sockets.emit('action', list())
 			break;
 		
 		case 'join':
@@ -114,6 +115,7 @@ const initEngine = io => {
 			player_list.push(player.name)
 			socket.join(room.name)
 			io.sockets.in(room.name).emit('action', room_init(room))
+			io.sockets.emit('action', list())
 			break;
 
 		case 'start':
@@ -126,9 +128,11 @@ const initEngine = io => {
 				state: room.state,
 				players: room.listPlayer.map(p => ({
 					name: p.name,
-					board: p.board
+					board: p.board,
+					looser: p.looser
 				})),
 			})
+			io.sockets.emit('action', list())
 			break;
 
 		case 'ask newtetro':
@@ -161,7 +165,8 @@ const initEngine = io => {
 				type: 'NEW BOARD',
 				player: {
 					name: player.name,
-					board: player.board
+					board: player.board,
+					looser: player.looser
 				}
 			})
 			break;
@@ -185,9 +190,7 @@ const initEngine = io => {
 				return;
 			moveOut(room)
 			break;
-
 		}
-		io.sockets.emit('action', list())
 
 		console.log('action type :', player.name, action.type)
 		console.log('list player :', player_list)
@@ -199,7 +202,6 @@ const initEngine = io => {
       if (!room)
         return;
       moveOut(room)
-      io.sockets.emit('action', list())
     })
   })
 }
