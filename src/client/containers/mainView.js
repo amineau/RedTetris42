@@ -56,6 +56,9 @@ class MainView extends React.Component {
             clearInterval(this.state.intervalID);
             console.log("HERE")
         }
+        if (nextProps.room.state === 2 && this.props.room.state === 1) {
+            this.setState({older: true})
+        }
     }
 
     componentWillUnmount() {
@@ -88,8 +91,11 @@ class MainView extends React.Component {
                         </div>
                     )
             case 2:
-                const looser = this.props.room.players.find(player => player.name === this.props.player.name).looser
-                const resultGame = looser ? "you loose" : "you win"
+                let resultGame = null
+                if (this.state.older){
+                    const looser = this.props.room.players.find(player => player.name === this.props.player.name).looser
+                    resultGame = looser ? "you loose" : "you win"
+                }
                 if (this.props.room.leader === this.props.player.name)
                     return (
                         <div className={"statusGame"}>
