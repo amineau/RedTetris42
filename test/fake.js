@@ -12,6 +12,7 @@ import Preview from '../src/client/components/preview'
 import Shadow from '../src/client/components/shadow'
 import Score from '../src/client/components/score'
 import Join from '../src/client/components/join'
+import HighScores from '../src/server/database'
 
 chai.use(chaiArrays)
 const expect = chai.expect
@@ -188,10 +189,10 @@ describe('server class: player', () => {
     expect(res).to.have.property('score', 0);
     expect(res.board).to.be.an('array').with.lengthOf(252);
   });
-  it('increment position', () => {
-    res.incrementPosition()
-    expect(res).to.have.property('position', 1);
-  });
+  // it('increment position', () => {
+  //   res.incrementPosition()
+  //   expect(res).to.have.property('position', 1);
+  // });
   it('lose', () => {
     res.loose()
     expect(res).to.have.property('looser', true);
@@ -262,17 +263,17 @@ describe('server class: stackTetros', () => {
 });
 
 describe('component: create', () => {
-  let res = new Create({name: "bob", list: {player: ["herve"]}})
+  let res = new Create({name: "bob", list: {player: ["herve"], room: []}})
   it('construction', () => {
     expect(res).to.have.property('props')
   });
   it('compare player name different', () => {
-    const test = res.comparePlayersName("bill")
+    const test = res.compareRoomsName("bill")
     expect(test).to.be.equal(true)
   });
   it('compare player name equal', () => {
-    const test = res.comparePlayersName("herve")
-    expect(test).to.be.equal(false)
+    const test = res.compareRoomsName("herve")
+    expect(test).to.be.equal(true)
   });
   // it('handleChangeName', () => {
   //   res.handleNameChange({target: {value: 'jim'}})
@@ -357,3 +358,14 @@ describe('component: Join', () => {
   });
 });
 
+describe('database', () => {
+  const res = new HighScores()
+  res.add("bob", "1000","10")
+  res.show()
+  res.close()
+  it('normal construction', () => {
+    res.show().then((rows) => {
+      expect(rows[0]).to.have.property('player', "bob")
+    })
+  });
+});
