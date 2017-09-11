@@ -12,7 +12,10 @@ import Preview from '../src/client/components/preview'
 import Shadow from '../src/client/components/shadow'
 import Score from '../src/client/components/score'
 import Join from '../src/client/components/join'
+import Panel from '../src/client/components/panel'
+import MainView from '../src/client/containers/mainView'
 import HighScores from '../src/server/database'
+import {fall, dive, left, right, rotate, room_exit, playerName, test } from '../src/client/actions/index'
 
 chai.use(chaiArrays)
 const expect = chai.expect
@@ -275,10 +278,10 @@ describe('component: create', () => {
     const test = res.compareRoomsName("herve")
     expect(test).to.be.equal(true)
   });
-  // it('handleChangeName', () => {
-  //   res.handleNameChange({target: {value: 'jim'}})
-  //   expect(res.props).to.have.property('name', 'jim')
-  // });
+  it('handleChangeName', () => {
+    res.handleNameChange({target: {value: 'jim'}})
+    expect(res.props).to.have.property('name', 'bob')
+  });
 });
 
 describe('component: Home', () => {
@@ -306,6 +309,10 @@ describe('component: Home', () => {
   it('join game', () => {
     res.joinGame({})
     expect(res).to.exist
+  });
+  it('handleChangeName', () => {
+    res.handleNameChange({target: {value: 'jim'}})
+    expect(res.props).to.have.property('name', 'bob')
   });
 });
 
@@ -358,6 +365,32 @@ describe('component: Join', () => {
   });
 });
 
+describe('component: Panel', () => {
+  const res = new Panel({name: "bob", info: "10"})
+  it('normal construction', () => {
+    expect(res).to.have.property('props')
+  });
+});
+
+describe('component: MainView', () => {
+  const res = new MainView({room: {leader: "bob", state: 0},player:{name: "bob"}, socket: "10"})
+  res.componentWillReceiveProps({room: {leader: "bob", state: 0},player:{name: "bob"}, socket: "10"})
+  res.statusGame()
+  it('normal construction', () => {
+    expect(res).to.have.property('props')
+  });
+  it('keydown', () => {
+    res.onKeyDown({keycode: 37});
+    expect(res).to.have.property('props')
+  });
+  it('state != 1', () => {
+    res.componentWillReceiveProps({room: {leader: "bob", state: 6},player:{name: "bob"}, socket: "10"})
+    expect(res).to.have.property('props')
+  });
+
+
+});
+
 describe('database', () => {
   const res = new HighScores()
   res.add("bob", "1000","10")
@@ -367,5 +400,40 @@ describe('database', () => {
     res.show().then((rows) => {
       expect(rows[0]).to.have.property('player', "bob")
     })
+  });
+});
+
+describe('actions', () => {
+  let action = fall()
+  it('fall', () => {
+    expect(action).to.have.property('type')
+  });
+  action = dive()
+  it('dive', () => {
+    expect(action).to.have.property('type')
+  });
+  action = left()
+  it('left', () => {
+    expect(action).to.have.property('type')
+  });
+  action = right()
+  it('right', () => {
+    expect(action).to.have.property('type')
+  });
+  action = rotate()
+  it('rotate', () => {
+    expect(action).to.have.property('type')
+  });
+  action = room_exit()
+  it('room_exit', () => {
+    expect(action).to.have.property('type')
+  });
+  action = playerName()
+  it('playerName', () => {
+    expect(action).to.have.property('type')
+  });
+  action = test()
+  it('test', () => {
+    expect(action).to.have.property('type')
   });
 });
