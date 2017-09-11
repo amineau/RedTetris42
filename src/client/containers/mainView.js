@@ -123,7 +123,7 @@ class MainView extends React.Component {
         
         const list_shadows = this.props.room.players
             .filter( player => player.name !== this.props.player.name)
-            .map( player => (<Shadow board={player.board} name={player.name} />))
+            .map( player => (<Shadow board={player.board} key={player.name} name={player.name} />))
         const len = list_shadows.length
         const nbBySide = math.ceil(len / 2)
         const sides = {

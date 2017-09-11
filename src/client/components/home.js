@@ -82,7 +82,7 @@ class Home extends React.Component {
             joinClass = ' active'
         }
         let hightScores = [(
-            <tr>
+            <tr key={'-1'}>
                 <th>Rank</th>
                 <th>Player</th>
                 <th>Score</th>
@@ -92,7 +92,7 @@ class Home extends React.Component {
         if (this.props.hightScores){ 
             this.props.hightScores.forEach((elem, id) => {
                 hightScores.push(
-                <tr>
+                <tr key={elem.id}>
                     <td>{id + 1}</td>
                     <td>{elem.player}</td>
                     <td>{elem.score}</td>

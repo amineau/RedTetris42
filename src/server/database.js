@@ -35,7 +35,7 @@ export default class HightScores {
 
 	show() {
 		return new Promise((resolve, reject) => {
-			this._db.all(`SELECT player, score, lines, created_at FROM score ORDER BY score DESC LIMIT 10;`, (err, rows) => {
+			this._db.all(`SELECT id, player, score, lines FROM score ORDER BY score DESC LIMIT 10;`, (err, rows) => {
 				if (err) {
 					return reject(err.message)
 				}

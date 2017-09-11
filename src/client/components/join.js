@@ -35,7 +35,7 @@ class Join extends React.Component {
                 const disabled = item.state === 1 ? " disabledButton" : ""
                 const disabledLink = item.state === 1 ? "disabledLink" : ""
                 return (
-                    <div className={"homeButton"}>
+                    <div className={"homeButton"} key={item.name} >
                         <div className={"cursor" + disabled}></div>
                         <Link to={`/${item.name}[${this.playerName}]`} onClick={() => this.joinRoom(item.name)} className={disabledLink + disabled}>
                             <h1 className={disabled}>{item.name} - {item.player.length} player{item.player.length > 1 ? "s" : ""}</h1>
