@@ -23,10 +23,7 @@ let socketIoMiddleware = createSocketIoMiddleware(socket, (type, action) => {
 const initialState =
 {
   playerName: null,
-  list: {
-    room: [],
-    player: [],
-  },
+  roomList: [],
   socket,
 };
 

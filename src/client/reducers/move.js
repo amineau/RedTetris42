@@ -1,4 +1,4 @@
-import { FALL, DIVE, LEFT, RIGHT, ROTATE, ROOM_EXIT, NEWTETRO, ROOM_INIT, ROOM_START, LIST, ADD_LINE, PLAYER_NAME, HIGHT_SCORES, SCORE, NEW_BOARD } from '../constants/ActionTypes'
+import { FALL, DIVE, LEFT, RIGHT, ROTATE, ROOM_EXIT, NEWTETRO, ROOM_INIT, ROOM_START, INIT_LIST,ADD_TO_LIST,REMOVE_TO_LIST,UPDATE_LIST, ADD_LINE, PLAYER_NAME, HIGHT_SCORES, SCORE, NEW_BOARD } from '../constants/ActionTypes'
 import * as tetrosTypes from '../constants/tetrosTypes'
 import math from 'mathjs'
 
@@ -143,8 +143,26 @@ const move = (state = {}, action) => {
                 linesDone: action.linesDone,
             }
 
-        case LIST:
-            return { ...state, list: action.list }
+        case INIT_LIST:
+            return { ...state, roomList: action.roomList }
+        
+        case ADD_TO_LIST:
+            return {
+                ...state,
+                roomList: state.roomList.concat(action.room)
+            }
+
+        case REMOVE_TO_LIST:
+            return {
+                ...state,
+                roomList: state.roomList.filter(room => room.name !== action.room.name)
+            }
+
+        case UPDATE_LIST:
+            return {
+                ...state,
+                roomList: state.roomList.map(room => (room.name === action.room.name) ? Object.assign({}, room, action.room) : room)
+            }
 
         case PLAYER_NAME:
             return { ...state, playerName: action.name }
@@ -192,7 +210,7 @@ const move = (state = {}, action) => {
 
         case ADD_LINE:
             board = addLine(state.board, action.lineToAddNbr)
-            state.socket.emit('room', {type: 'board change', board })
+            state.socket.emit('action', { type: 'server/board change', board })
             let tetroLineUp = action.lineToAddNbr
             while (tetroLineUp && moveCheck({board, tetro: {
                     ...state.tetro,
@@ -243,11 +261,11 @@ const move = (state = {}, action) => {
                 if (!moveCheck({board, tetro})){
                     board = boardFill(11)
                     tetro = null
-                    state.socket.emit('room', {type: 'loose'})
+                    state.socket.emit('action', { type: 'server/loose'})
                     return { ...state, board, tetro }
                 }
-                state.socket.emit('room', { type: 'ask newtetro', index, linesDeleted })
-                state.socket.emit('room', { type:'board change', board })
+                state.socket.emit('action', { type: 'server/ask newtetro', index, linesDeleted })
+                state.socket.emit('action', { type: 'server/board change', board })
                 
                 return { ...state, tetro, board }
             }
@@ -305,11 +323,11 @@ const move = (state = {}, action) => {
             if (!moveCheck({board, tetro})){
                 board = boardFill(11)
                 tetro = null
-                state.socket.emit('room', {type: 'loose'})
+                state.socket.emit('action', { type: 'server/loose'})
                 return { ...state, board, tetro }
             }
-            state.socket.emit('room', { type: 'ask newtetro', index, linesDeleted })
-            state.socket.emit('room', { type: 'board change', board })
+            state.socket.emit('action', { type: 'server/ask newtetro', index, linesDeleted })
+            state.socket.emit('action', { type: 'server/board change', board })
             return { ...state, tetro, board }
 
         default:

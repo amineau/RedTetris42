@@ -13,8 +13,8 @@ class Create extends React.Component {
     }
 
     createRoom(event) {
-        this.props.socket.emit('room', {
-            type: 'create',
+        this.props.socket.emit('action', {
+            type: 'server/create',
             room: {
                 name: this.state.name,
             },
@@ -33,8 +33,8 @@ class Create extends React.Component {
     }
 
     compareRoomsName(name) {
-        const cmp = this.props.list.room.find((e) => {
-            return name === e.name
+        const cmp = this.props.roomList.find((room) => {
+            return name === room.name
         })
         return !cmp && name !== ""
 

@@ -20,7 +20,7 @@ export default class Room {
     this._position = 0
   }
 
-  sendTetro ({index, board}, player) {
+  sendTetro (index, player) {
     player.position = index
     return this._stack.tetroByIndex(index)
   }

@@ -36,7 +36,6 @@ class MainView extends React.Component {
             this.setState({antiRepeatFlag: true})
             setTimeout(() => {this.setState({antiRepeatFlag: false})}, 10)
         }
-        console.log("mainView")
     }
 
     componentWillReceiveProps(nextProps) {
@@ -54,7 +53,6 @@ class MainView extends React.Component {
         } else if (nextProps.room.state !== 1 && this.props.room.state === 1 || (newPlayer.looser && !oldPlayer.looser)) {
             window.removeEventListener("keydown", this.listener)
             clearInterval(this.state.intervalID);
-            console.log("HERE")
         }
         if (nextProps.room.state === 2 && this.props.room.state === 1) {
             this.setState({older: true})
@@ -63,15 +61,14 @@ class MainView extends React.Component {
 
     componentWillUnmount() {
         clearInterval(this.state.intervalID);
-        console.log("HERE componentWillUnmount")
         window.removeEventListener("keydown", this.listener)
         this.props.actions.room_exit()
-        this.socket.emit('room', { type: 'exit' })
+        this.socket.emit('action', { type: 'server/exit' })
     }
 
     gameStartSubmit(event) {
         event.preventDefault()
-        this.socket.emit('room', { type: "start" })
+        this.socket.emit('action', { type: "server/start" })
     }
 
     statusGame () {

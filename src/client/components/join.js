@@ -10,8 +10,8 @@ class Join extends React.Component {
     }
 
     joinRoom(name) {
-        this.props.socket.emit('room', {
-            type: 'join',
+        this.props.socket.emit('action', {
+            type: 'server/join',
             room: {
                 name,
             },
@@ -29,7 +29,7 @@ class Join extends React.Component {
         )
 
 
-        const listRoomFilter = this.props.room
+        const listRoomFilter = this.props.roomList
         if (!_.isEmpty(listRoomFilter)) {
             room_list = listRoomFilter.map((item, index) => {
                 const disabled = item.state === 1 ? " disabledButton" : ""
@@ -38,7 +38,7 @@ class Join extends React.Component {
                     <div className={"homeButton"} key={item.name} >
                         <div className={"cursor" + disabled}></div>
                         <Link to={`/${item.name}[${this.playerName}]`} onClick={() => this.joinRoom(item.name)} className={disabledLink + disabled}>
-                            <h1 className={disabled}>{item.name} - {item.player.length} player{item.player.length > 1 ? "s" : ""}</h1>
+                            <h1 className={disabled}>{item.name} - {item.players.length} player{item.players.length > 1 ? "s" : ""}</h1>
                         </Link>
                     </div>
                 )

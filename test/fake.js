@@ -266,7 +266,7 @@ describe('server class: stackTetros', () => {
 });
 
 describe('component: create', () => {
-  let res = new Create({name: "bob", list: {player: ["herve"], room: []}})
+  let res = new Create({name: "bob", roomList: [{name: "e2", state: 0, players: [ {name: "herve"} ]}]})
   it('construction', () => {
     expect(res).to.have.property('props')
   });
@@ -285,7 +285,7 @@ describe('component: create', () => {
 });
 
 describe('component: Home', () => {
-  let res = new Home({name: "bob", list: {player: ["herve"]}})
+  let res = new Home({name: "bob", roomList: [{name: "e2", state: 0, players: [ {name: "herve"} ]}]})
   it('construction', () => {
     expect(res).to.have.property('props')
   });
@@ -359,7 +359,7 @@ describe('component: Score', () => {
 });
 
 describe('component: Join', () => {
-  const res = new Join({name: "bob", list: {player: ["herve"]}})
+  const res = new Join({name: "bob", roomList: [{name: "e2", state: 0, players: [ {name: "herve"} ]}]})
   it('normal construction', () => {
     expect(res).to.have.property('props')
   });
