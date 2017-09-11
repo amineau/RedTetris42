@@ -286,6 +286,7 @@ describe('component: create', () => {
 
 describe('component: Home', () => {
   let res = new Home({name: "bob", list: {player: ["herve"]}})
+  res.render()
   it('construction', () => {
     expect(res).to.have.property('props')
   });
@@ -337,7 +338,7 @@ describe('component: Preview', () => {
   it('normal construction', () => {
     expect(res).to.have.property('props')
   });
-  res = new Preview({})
+  res = new Preview({tetro: {}})
   it('empty construction', () => {
     expect(res).to.have.property('props')
   });
@@ -360,6 +361,7 @@ describe('component: Score', () => {
 
 describe('component: Join', () => {
   const res = new Join({name: "bob", list: {player: ["herve"]}})
+  res.render()
   it('normal construction', () => {
     expect(res).to.have.property('props')
   });
@@ -373,7 +375,9 @@ describe('component: Panel', () => {
 });
 
 describe('component: MainView', () => {
-  const res = new MainView({room: {leader: "bob", state: 0},player:{name: "bob"}, socket: "10"})
+  const actions = {fall, dive, left, right, rotate, room_exit, playerName, test }
+  const res = new MainView({room: {leader: "bob", state: 0},player:{name: "bob"}, socket: "10", actions})
+
   res.componentWillReceiveProps({room: {leader: "bob", state: 0},player:{name: "bob"}, socket: "10"})
   res.statusGame()
   it('normal construction', () => {
@@ -384,7 +388,19 @@ describe('component: MainView', () => {
     expect(res).to.have.property('props')
   });
   it('state != 1', () => {
-    res.componentWillReceiveProps({room: {leader: "bob", state: 6},player:{name: "bob"}, socket: "10"})
+    res.componentWillReceiveProps({room: {leader: "bob", state: 2},player:{name: "bob"}, socket: "10"})
+    res.statusGame()
+    expect(res).to.have.property('props')
+  });
+  it('state.older', () => {
+    res.componentWillReceiveProps({room: {leader: "bob", state: 2},player:{name: "bob"}, socket: "10"})
+    res.state.older = 1
+    res.statusGame()
+    expect(res).to.have.property('props')
+  });
+  it('state == undefined', () => {
+    res.componentWillReceiveProps({room: {leader: "bob", state: undefined},player:{name: "bob"}, socket: "10"})
+    res.render()
     expect(res).to.have.property('props')
   });
 
