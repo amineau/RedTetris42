@@ -179,6 +179,8 @@ const move = (state = {}, action) => {
                     players: action.players,
                     state: action.state,                        
                 },
+                score:0,
+                linesDone: 0,
             }
 
         case ROOM_EXIT:
