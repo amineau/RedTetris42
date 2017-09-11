@@ -374,7 +374,8 @@ describe('component: Panel', () => {
 
 describe('component: MainView', () => {
   const res = new MainView({room: {leader: "bob", state: 0},player:{name: "bob"}, socket: "10"})
-
+  res.componentWillReceiveProps({room: {leader: "bob", state: 0},player:{name: "bob"}, socket: "10"})
+  res.statusGame()
   it('normal construction', () => {
     expect(res).to.have.property('props')
   });
@@ -382,6 +383,12 @@ describe('component: MainView', () => {
     res.onKeyDown({keycode: 37});
     expect(res).to.have.property('props')
   });
+  it('state != 1', () => {
+    res.componentWillReceiveProps({room: {leader: "bob", state: 6},player:{name: "bob"}, socket: "10"})
+    expect(res).to.have.property('props')
+  });
+
+
 });
 
 describe('database', () => {
