@@ -398,11 +398,6 @@ describe('component: MainView', () => {
     res.statusGame()
     expect(res).to.have.property('props')
   });
-  // it('state == undefined', () => {
-  //   res.componentWillReceiveProps({game: {leader: "bob", state: undefined},player:{name: "bob"}, socket: "10"})
-  //   res.render()
-  //   expect(res).to.have.property('props')
-  // });
 
 
 });
