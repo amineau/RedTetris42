@@ -34,8 +34,8 @@ class Home extends React.Component {
     }
 
     comparePlayersName(name) {
-        const cmp = this.props.roomList.find( room => (
-            room.players.find(player => (
+        const cmp = this.props.gameList.find( game => (
+            game.players.find(player => (
                 name.toLowerCase() === player.name.toLowerCase()
             ))
         ))
@@ -71,14 +71,14 @@ class Home extends React.Component {
         if (this.menuComponentName === 'create' && this.state.playerNameChecked) {
             menuComponent = (<Create
                 socket={this.props.socket}
-                roomList={this.props.roomList}
+                gameList={this.props.gameList}
                 playerName={this.state.name}/>)
             createClass = ' active'
             joinClass = ' notActive'
         } else if (this.menuComponentName === 'join' && this.state.playerNameChecked) {
             menuComponent = (<Join
                 socket={this.props.socket}
-                roomList={this.props.roomList}
+                gameList={this.props.gameList}
                 playerName={this.state.name}/>)
             createClass = ' notActive'
             joinClass = ' active'

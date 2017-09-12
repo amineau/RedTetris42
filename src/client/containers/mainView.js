@@ -12,7 +12,7 @@ class MainView extends React.Component {
         super(props)
         this.state = {
             pause: true,
-            state: props.room.state,
+            state: props.game.state,
             antiRepeatFlag: false,
         }
         this.socket = props.socket
@@ -41,20 +41,20 @@ class MainView extends React.Component {
     componentWillReceiveProps(nextProps) {
         let newPlayer = {}
         let oldPlayer = {}
-        if (this.props.room.players) {
-            newPlayer = nextProps.room.players.find(player => player.name === this.props.player.name)
-            oldPlayer = this.props.room.players.find(player => player.name === this.props.player.name)
+        if (this.props.game.players) {
+            newPlayer = nextProps.game.players.find(player => player.name === this.props.player.name)
+            oldPlayer = this.props.game.players.find(player => player.name === this.props.player.name)
         }
 
-        if (nextProps.room.state === 1 && this.props.room.state !== 1) {
+        if (nextProps.game.state === 1 && this.props.game.state !== 1) {
             window.addEventListener("keydown", this.listener)
             const intervalID = setInterval(() => this.props.actions.fall(), 1000);
             this.setState({pause: false, intervalID })
-        } else if (nextProps.room.state !== 1 && this.props.room.state === 1 || (newPlayer.looser && !oldPlayer.looser)) {
+        } else if (nextProps.game.state !== 1 && this.props.game.state === 1 || (newPlayer.looser && !oldPlayer.looser)) {
             window.removeEventListener("keydown", this.listener)
             clearInterval(this.state.intervalID);
         }
-        if (nextProps.room.state === 2 && this.props.room.state === 1) {
+        if (nextProps.game.state === 2 && this.props.game.state === 1) {
             this.setState({older: true})
         }
     }
@@ -62,7 +62,7 @@ class MainView extends React.Component {
     componentWillUnmount() {
         clearInterval(this.state.intervalID);
         window.removeEventListener("keydown", this.listener)
-        this.props.actions.room_exit()
+        this.props.actions.game_exit()
         this.socket.emit('action', { type: 'server/exit' })
     }
 
@@ -72,9 +72,9 @@ class MainView extends React.Component {
     }
 
     statusGame () {
-        switch (this.props.room.state) {
+        switch (this.props.game.state) {
             case 0:
-                if (this.props.room.leader === this.props.player.name)
+                if (this.props.game.leader === this.props.player.name)
                     return (
                         <div className={"statusGame"}>
                             <div className={"cursor"}></div>
@@ -90,10 +90,10 @@ class MainView extends React.Component {
             case 2:
                 let resultGame = null
                 if (this.state.older){
-                    const looser = this.props.room.players.find(player => player.name === this.props.player.name).looser
+                    const looser = this.props.game.players.find(player => player.name === this.props.player.name).looser
                     resultGame = looser ? "you loose" : "you win"
                 }
-                if (this.props.room.leader === this.props.player.name)
+                if (this.props.game.leader === this.props.player.name)
                     return (
                         <div className={"statusGame"}>
                             <div>{resultGame}</div>
@@ -115,10 +115,10 @@ class MainView extends React.Component {
 
 
     render() {
-        if (this.props.room.state === undefined) 
+        if (this.props.game.state === undefined) 
             return null;
         
-        const list_shadows = this.props.room.players
+        const list_shadows = this.props.game.players
             .filter( player => player.name !== this.props.player.name)
             .map( player => (<Shadow board={player.board} key={player.name} name={player.name} />))
         const len = list_shadows.length

@@ -9,10 +9,10 @@ class Join extends React.Component {
         this.playerName = props.playerName
     }
 
-    joinRoom(name) {
+    joinGame(name) {
         this.props.socket.emit('action', {
             type: 'server/join',
-            room: {
+            game: {
                 name,
             },
             player: {
@@ -22,22 +22,22 @@ class Join extends React.Component {
     }
 
     render() {
-        let room_list = (
+        let game_list = (
             <div className={"homeButton"}>
                 <h1>No game</h1>
             </div>
         )
 
 
-        const listRoomFilter = this.props.roomList
-        if (!_.isEmpty(listRoomFilter)) {
-            room_list = listRoomFilter.map((item, index) => {
+        const listGameFilter = this.props.gameList
+        if (!_.isEmpty(listGameFilter)) {
+            game_list = listGameFilter.map((item, index) => {
                 const disabled = item.state === 1 ? " disabledButton" : ""
                 const disabledLink = item.state === 1 ? "disabledLink" : ""
                 return (
                     <div className={"homeButton"} key={item.name} >
                         <div className={"cursor" + disabled}></div>
-                        <Link to={`/${item.name}[${this.playerName}]`} onClick={() => this.joinRoom(item.name)} className={disabledLink + disabled}>
+                        <Link to={`/${item.name}[${this.playerName}]`} onClick={() => this.joinGame(item.name)} className={disabledLink + disabled}>
                             <h1 className={disabled}>{item.name} - {item.players.length} player{item.players.length > 1 ? "s" : ""}</h1>
                         </Link>
                     </div>
@@ -46,7 +46,7 @@ class Join extends React.Component {
         }
         return (                   
                 <div className={"joinButtonContainer menu"}>
-                    {room_list}
+                    {game_list}
                 </div>
         )
     }

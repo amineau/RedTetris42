@@ -1,4 +1,4 @@
-import { FALL, DIVE, LEFT, RIGHT, ROTATE, ROOM_EXIT, NEWTETRO, ROOM_INIT, ROOM_START, INIT_LIST,ADD_TO_LIST,REMOVE_TO_LIST,UPDATE_LIST, ADD_LINE, PLAYER_NAME, HIGHT_SCORES, SCORE, NEW_BOARD } from '../constants/ActionTypes'
+import { FALL, DIVE, LEFT, RIGHT, ROTATE, GAME_EXIT, NEWTETRO, GAME_INIT, GAME_START, INIT_LIST,ADD_TO_LIST,REMOVE_TO_LIST,UPDATE_LIST, ADD_LINE, PLAYER_NAME, HIGHT_SCORES, SCORE, NEW_BOARD } from '../constants/ActionTypes'
 import * as tetrosTypes from '../constants/tetrosTypes'
 import math from 'mathjs'
 
@@ -144,36 +144,36 @@ const move = (state = {}, action) => {
             }
 
         case INIT_LIST:
-            return { ...state, roomList: action.roomList }
+            return { ...state, gameList: action.gameList }
         
         case ADD_TO_LIST:
             return {
                 ...state,
-                roomList: state.roomList.concat(action.room)
+                gameList: state.gameList.concat(action.game)
             }
 
         case REMOVE_TO_LIST:
             return {
                 ...state,
-                roomList: state.roomList.filter(room => room.name !== action.room.name)
+                gameList: state.gameList.filter(game => game.name !== action.game.name)
             }
 
         case UPDATE_LIST:
             return {
                 ...state,
-                roomList: state.roomList.map(room => (room.name === action.room.name) ? Object.assign({}, room, action.room) : room)
+                gameList: state.gameList.map(game => (game.name === action.game.name) ? Object.assign({}, game, action.game) : game)
             }
 
         case PLAYER_NAME:
             return { ...state, playerName: action.name }
 
-        case ROOM_INIT:
+        case GAME_INIT:
             board = state.board || boardFill()
             const player = action.players.find(player => player.name == state.playerName)
             return {
                 ...state,
-                room: {
-                    ...state.room,
+                game: {
+                    ...state.game,
                     players: action.players,
                     leader: action.leader,
                     state: action.state,
@@ -182,7 +182,7 @@ const move = (state = {}, action) => {
             }
         
 
-        case ROOM_START:
+        case GAME_START:
             tetro = action.initStack[0]
             nextTetro = action.initStack[1]
             board = boardFill()
@@ -192,8 +192,8 @@ const move = (state = {}, action) => {
                 nextTetro,
                 index: 0,
                 board,
-                room: {
-                    ...state.room,
+                game: {
+                    ...state.game,
                     players: action.players,
                     state: action.state,                        
                 },
@@ -201,7 +201,7 @@ const move = (state = {}, action) => {
                 linesDone: 0,
             }
 
-        case ROOM_EXIT:
+        case GAME_EXIT:
             return { ...state, tetro, nextTetro, score:0, linesDone: 0, board: boardFill() }
 
         case NEWTETRO:
@@ -236,9 +236,9 @@ const move = (state = {}, action) => {
         case NEW_BOARD:
             return {
                 ...state,
-                room: {
-                    ...state.room,
-                    players: state.room.players.map(player => player.name === action.player.name ? action.player : player)
+                game: {
+                    ...state.game,
+                    players: state.game.players.map(player => player.name === action.player.name ? action.player : player)
                 }
             }
 

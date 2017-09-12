@@ -30,9 +30,9 @@ export const rotate = () => {
     }
 }
 
-export const room_exit = () => {
+export const game_exit = () => {
     return {
-        type: types.ROOM_EXIT,
+        type: types.GAME_EXIT,
     }
 }
 

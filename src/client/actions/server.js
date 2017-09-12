@@ -1,8 +1,8 @@
-export const create = ({room, player}) => {
+export const create = ({game, player}) => {
   return {
     type: 'server/create',
-    room: {
-      name: room
+    game: {
+      name: game
     },
     player: {
       name: player
@@ -10,11 +10,11 @@ export const create = ({room, player}) => {
   }
 }
 
-export const join = ({room, player}) => {
+export const join = ({game, player}) => {
   return {
     type: 'server/join',
-    room: {
-      name: room
+    game: {
+      name: game
     },
     player: {
       name: player

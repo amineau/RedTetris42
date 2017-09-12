@@ -4,8 +4,8 @@ import { translateTetro, manageBarTetro } from '../src/client/components/board'
 import { getShadow } from '../src/client/components/shadow'
 import { matriceRotate, writeTetroOnBoard, completeLine, deleteLine, addLine, boardInit, boardFill } from '../src/client/reducers/move'
 import Player from '../src/server/player'
-import Room from '../src/server/room'
-import {StackTetros} from '../src/server/stackTetros'
+import Game from '../src/server/game'
+import {Piece} from '../src/server/piece'
 import Create from '../src/client/components/create'
 import Home from '../src/client/components/home'
 import Preview from '../src/client/components/preview'
@@ -15,7 +15,7 @@ import Join from '../src/client/components/join'
 import Panel from '../src/client/components/panel'
 import MainView from '../src/client/containers/mainView'
 import HighScores from '../src/server/database'
-import {fall, dive, left, right, rotate, room_exit, playerName, test } from '../src/client/actions/index'
+import {fall, dive, left, right, rotate, game_exit, playerName, test } from '../src/client/actions/index'
 
 chai.use(chaiArrays)
 const expect = chai.expect
@@ -202,12 +202,12 @@ describe('server class: player', () => {
   });
 });
 
-describe('server class: room', () => {
+describe('server class: game', () => {
   const player = new Player(2342342, "bob")
-  const res = new Room("room", player)
+  const res = new Game("game", player)
 
   it('construction', () => {
-    expect(res).to.have.property('name', "room");
+    expect(res).to.have.property('name', "game");
     expect(res).to.have.property('leader', player);
     expect(res).to.have.property('state', 0);
   });
@@ -234,8 +234,8 @@ describe('server class: room', () => {
   });
 });
 
-describe('server class: stackTetros', () => {
-  let res = new StackTetros()
+describe('server class: piece', () => {
+  let res = new Piece()
   it('construction', () => {
     expect(res).to.have.property('_pool');
     expect(res._tetros).to.be.an('array').with.lengthOf(7);
@@ -266,16 +266,16 @@ describe('server class: stackTetros', () => {
 });
 
 describe('component: create', () => {
-  let res = new Create({name: "bob", roomList: [{name: "e2", state: 0, players: [ {name: "herve"} ]}]})
+  let res = new Create({name: "bob", gameList: [{name: "e2", state: 0, players: [ {name: "herve"} ]}]})
   it('construction', () => {
     expect(res).to.have.property('props')
   });
   it('compare player name different', () => {
-    const test = res.compareRoomsName("bill")
+    const test = res.compareGamesName("bill")
     expect(test).to.be.equal(true)
   });
   it('compare player name equal', () => {
-    const test = res.compareRoomsName("herve")
+    const test = res.compareGamesName("herve")
     expect(test).to.be.equal(true)
   });
   it('handleChangeName', () => {
@@ -285,7 +285,7 @@ describe('component: create', () => {
 });
 
 describe('component: Home', () => {
-  let res = new Home({name: "bob", roomList: [{name: "e2", state: 0, players: [ {name: "herve"} ]}]})
+  let res = new Home({name: "bob", gameList: [{name: "e2", state: 0, players: [ {name: "herve"} ]}]})
   res.render()
   it('construction', () => {
     expect(res).to.have.property('props')
@@ -360,7 +360,7 @@ describe('component: Score', () => {
 });
 
 describe('component: Join', () => {
-  const res = new Join({name: "bob", roomList: [{name: "e2", state: 0, players: [ {name: "herve"} ]}]})
+  const res = new Join({name: "bob", gameList: [{name: "e2", state: 0, players: [ {name: "herve"} ]}]})
   res.render()
   it('normal construction', () => {
     expect(res).to.have.property('props')
@@ -375,10 +375,10 @@ describe('component: Panel', () => {
 });
 
 describe('component: MainView', () => {
-  const actions = {fall, dive, left, right, rotate, room_exit, playerName, test }
-  const res = new MainView({room: {leader: "bob", state: 0},player:{name: "bob"}, socket: "10", actions})
+  const actions = {fall, dive, left, right, rotate, game_exit, playerName, test }
+  const res = new MainView({game: {leader: "bob", state: 0},player:{name: "bob"}, socket: "10", actions})
 
-  res.componentWillReceiveProps({room: {leader: "bob", state: 0},player:{name: "bob"}, socket: "10"})
+  res.componentWillReceiveProps({game: {leader: "bob", state: 0},player:{name: "bob"}, socket: "10"})
   res.statusGame()
   it('normal construction', () => {
     expect(res).to.have.property('props')
@@ -388,18 +388,18 @@ describe('component: MainView', () => {
     expect(res).to.have.property('props')
   });
   it('state != 1', () => {
-    res.componentWillReceiveProps({room: {leader: "bob", state: 2},player:{name: "bob"}, socket: "10"})
+    res.componentWillReceiveProps({game: {leader: "bob", state: 2},player:{name: "bob"}, socket: "10"})
     res.statusGame()
     expect(res).to.have.property('props')
   });
   it('state.older', () => {
-    res.componentWillReceiveProps({room: {leader: "bob", state: 2},player:{name: "bob"}, socket: "10"})
+    res.componentWillReceiveProps({game: {leader: "bob", state: 2},player:{name: "bob"}, socket: "10"})
     res.state.older = 1
     res.statusGame()
     expect(res).to.have.property('props')
   });
   // it('state == undefined', () => {
-  //   res.componentWillReceiveProps({room: {leader: "bob", state: undefined},player:{name: "bob"}, socket: "10"})
+  //   res.componentWillReceiveProps({game: {leader: "bob", state: undefined},player:{name: "bob"}, socket: "10"})
   //   res.render()
   //   expect(res).to.have.property('props')
   // });
@@ -440,8 +440,8 @@ describe('actions', () => {
   it('rotate', () => {
     expect(action).to.have.property('type')
   });
-  action = room_exit()
-  it('room_exit', () => {
+  action = game_exit()
+  it('game_exit', () => {
     expect(action).to.have.property('type')
   });
   action = playerName()

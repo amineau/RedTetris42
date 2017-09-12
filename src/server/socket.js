@@ -1,58 +1,58 @@
 import debug from 'debug'
 import Player from './player'
-import Room from './room'
+import Game from './game'
 import HightScores from './database'
 
 const loginfo = debug('tetris:info')
 
-let room_list = []
+let game_list = []
 const hightScores = new HightScores()
 
 const playerExists = playerName => (
-	room_list.find(room => (
-		room.listPlayer.find(player => player.name === playerName)
+	game_list.find(game => (
+		game.listPlayer.find(player => player.name === playerName)
 	))
 )
 
-const roomExists = roomName => (
-	room_list.find(room => room.name === roomName)
+const gameExists = gameName => (
+	game_list.find(game => game.name === gameName)
 )
 
-const nbrPlayersInGame = room => (
-	room.listPlayer.filter(player => !player.looser).length
+const nbrPlayersInGame = game => (
+	game.listPlayer.filter(player => !player.looser).length
 )
 
 const init_list = () => ({
 	type: 'INIT LIST',
-	roomList: room_list.map(room => ({
-		name: room.name,
-		state: room.state,
-		players: room.listPlayer.map(({name}) => ({ name })),
+	gameList: game_list.map(game => ({
+		name: game.name,
+		state: game.state,
+		players: game.listPlayer.map(({name}) => ({ name })),
 	}))
 })
 
-const add_to_list = room => ({
+const add_to_list = game => ({
 	type: 'ADD TO LIST',
-	room: {
-		name: room.name,
-		state: room.state,
-		players: room.listPlayer.map(({ name }) => ({ name })),
+	game: {
+		name: game.name,
+		state: game.state,
+		players: game.listPlayer.map(({ name }) => ({ name })),
 	}
 })
 
-const remove_to_list = room => ({
+const remove_to_list = game => ({
 	type: 'REMOVE TO LIST',
-	room: {
-		name: room.name,
+	game: {
+		name: game.name,
 	}
 })
 
-const update_list = room => ({
+const update_list = game => ({
 	type: 'UPDATE LIST',
-	room: {
-		name: room.name,
-		state: room.state,
-		players: room.listPlayer.map(({ name }) => ({ name })),
+	game: {
+		name: game.name,
+		state: game.state,
+		players: game.listPlayer.map(({ name }) => ({ name })),
 	}
 })
 
@@ -67,11 +67,11 @@ const new_board = ({name, board,looser}) => ({
 	player: { name, board, looser }
 })
 
-const room_init = (room) => ({
-	type: 'ROOM INIT',
-	players: room.listPlayer.map(({ name, board, looser }) => ({ name, board, looser })),
-	leader: room.leader.name,
-	state: room.state
+const game_init = (game) => ({
+	type: 'GAME INIT',
+	players: game.listPlayer.map(({ name, board, looser }) => ({ name, board, looser })),
+	leader: game.leader.name,
+	state: game.state
 })
 
 const error = message => ({
@@ -97,82 +97,82 @@ const initEngine = io => {
 				})
 			})
 	}
-	const moveOut = room => {
-		socket.leave(room.name)
-		if (room.state === 1)
+	const moveOut = game => {
+		socket.leave(game.name)
+		if (game.state === 1)
 			addScoreToDb(player)
-		room.remove(player)
+		game.remove(player)
 		player.reset()
-		if (!room.listPlayer.length) {
-			room.finish()
-			room_list.splice(room_list.indexOf(room), 1)
-			io.sockets.emit('action', remove_to_list(room))
+		if (!game.listPlayer.length) {
+			game.finish()
+			game_list.splice(game_list.indexOf(game), 1)
+			io.sockets.emit('action', remove_to_list(game))
 		} else {
-			io.sockets.emit('action', update_list(room))
-			io.sockets.in(room.name).emit('action', room_init(room))
+			io.sockets.emit('action', update_list(game))
+			io.sockets.in(game.name).emit('action', game_init(game))
 		}
 	}
 
     socket.on('action', action => {
 
 		
-      let room = room_list.find(e => e.listPlayer.indexOf(player) !== -1)
+      let game = game_list.find(e => e.listPlayer.indexOf(player) !== -1)
 
 	  switch (action.type.slice(action.type.indexOf('/') + 1)) {
 
 		case 'create':
-			if (playerExists(action.player.name) || roomExists(action.room.name)) {
+			if (playerExists(action.player.name) || gameExists(action.game.name)) {
 				return socket.emit('action', error('Name already exists'))
 			}
 			player.name = action.player.name
-			room = new Room(action.room.name, player)
-			room_list.push(room)
-			socket.join(room.name)
-			io.sockets.in(room.name).emit('action', room_init(room))
-			io.sockets.emit('action', add_to_list(room))
+			game = new Game(action.game.name, player)
+			game_list.push(game)
+			socket.join(game.name)
+			io.sockets.in(game.name).emit('action', game_init(game))
+			io.sockets.emit('action', add_to_list(game))
 			break;
 		
 		case 'join':
 			if (playerExists(action.player.name)) {
 				return socket.emit('action', error('Name already exists'))
 			}
-			if (!(room = room_list.find(e => e.name === action.room.name)))
-				return socket.emit('action', error('Room unknows'))
+			if (!(game = game_list.find(e => e.name === action.game.name)))
+				return socket.emit('action', error('Game unknows'))
 			player.name = action.player.name
-			room.add(player)
-			socket.join(room.name)
-			io.sockets.in(room.name).emit('action', room_init(room))
-			io.sockets.emit('action', update_list(room))
+			game.add(player)
+			socket.join(game.name)
+			io.sockets.in(game.name).emit('action', game_init(game))
+			io.sockets.emit('action', update_list(game))
 			break;
 
 		case 'start':
-			if (!room)
+			if (!game)
 				return;
-			room.start()
-			io.sockets.in(room.name).emit('action', {
-				type: 'ROOM START',
-				initStack: room.stack,
-				state: room.state,
-				players: room.listPlayer.map(p => ({
+			game.start()
+			io.sockets.in(game.name).emit('action', {
+				type: 'GAME START',
+				initStack: game.stack,
+				state: game.state,
+				players: game.listPlayer.map(p => ({
 					name: p.name,
 					board: p.board,
 					looser: p.looser
 				})),
 			})
-			io.sockets.emit('action', update_list(room))
+			io.sockets.emit('action', update_list(game))
 			break;
 
 		case 'ask newtetro':
-			if (!room)
+			if (!game)
 				return;
 			
-			room.sendTetro(action.index, player)
+			game.sendTetro(action.index, player)
 				.then( tetro => socket.emit('action', {type: 'NEWTETRO', tetro}) )
 			
 			const linesDeleted = action.linesDeleted.length
 			if (linesDeleted) {
 				player.scoring(linesDeleted)
-				socket.broadcast.to(room.name).emit('action', {
+				socket.broadcast.to(game.name).emit('action', {
 					type: "ADD LINE",
 					lineToAddNbr: linesDeleted - 1,
 				})
@@ -181,40 +181,40 @@ const initEngine = io => {
 			break;
 
 		case 'board change':
-			if (!room)
+			if (!game)
 				return;
 			player.board = action.board
-			socket.broadcast.to(room.name).emit('action', new_board(player))
+			socket.broadcast.to(game.name).emit('action', new_board(player))
 			break;
 
 		case 'loose':
-			if (!room)
+			if (!game)
 				return;
 			player.loose()
-			if (room.listPlayer.length === 1 || nbrPlayersInGame(room) === 1) {
-				room.listPlayer.forEach(player => {
+			if (game.listPlayer.length === 1 || nbrPlayersInGame(game) === 1) {
+				game.listPlayer.forEach(player => {
 					addScoreToDb(player)
 				})
-				room.finish()
-				io.sockets.emit('action', update_list(room))
+				game.finish()
+				io.sockets.emit('action', update_list(game))
 			}
-			io.sockets.in(room.name).emit('action', room_init(room))
+			io.sockets.in(game.name).emit('action', game_init(game))
 			break;
 
 		case 'exit':
-			if (!room)
+			if (!game)
 				return;
-			moveOut(room)
+			moveOut(game)
 			break;
 		}
 
     })
 
     socket.on('disconnect', () => {
-      const room = room_list.find(e => e.listPlayer.indexOf(player) !== -1)
-      if (!room)
+      const game = game_list.find(e => e.listPlayer.indexOf(player) !== -1)
+      if (!game)
         return;
-      moveOut(room)
+      moveOut(game)
     })
 
     hightScores.show()

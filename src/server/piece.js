@@ -124,7 +124,7 @@ const tetros = [
   },
 ]
 
-export class StackTetros {
+export class Piece {
 
   constructor() {
     this._tetros = tetros

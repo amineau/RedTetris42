@@ -5,17 +5,17 @@ class Create extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            name: `${props.playerName}'s room`,
-            roomNameChecked: this.compareRoomsName(`${props.playerName}'s room`)
+            name: `${props.playerName}'s game`,
+            gameNameChecked: this.compareGamesName(`${props.playerName}'s game`)
         }
         this.handleNameChange = this.handleNameChange.bind(this)
-        this.createRoom = this.createRoom.bind(this)
+        this.createGame = this.createGame.bind(this)
     }
 
-    createRoom(event) {
+    createGame(event) {
         this.props.socket.emit('action', {
             type: 'server/create',
-            room: {
+            game: {
                 name: this.state.name,
             },
             player: {
@@ -25,37 +25,37 @@ class Create extends React.Component {
     }
 
     handleNameChange(event) {
-        if (this.compareRoomsName(event.target.value))
-            this.setState({roomNameChecked: true})
+        if (this.compareGamesName(event.target.value))
+            this.setState({gameNameChecked: true})
         else
-            this.setState({roomNameChecked: false})
+            this.setState({gameNameChecked: false})
         this.setState({name: event.target.value})
     }
 
-    compareRoomsName(name) {
-        const cmp = this.props.roomList.find((room) => {
-            return name === room.name
+    compareGamesName(name) {
+        const cmp = this.props.gameList.find((game) => {
+            return name === game.name
         })
         return !cmp && name !== ""
 
     }
 
     render() {
-        const linkClass = this.state.roomNameChecked ? "" : "disabledLink"
-        const disabledClass = this.state.roomNameChecked ? "" : " disabledButton"
+        const linkClass = this.state.gameNameChecked ? "" : "disabledLink"
+        const disabledClass = this.state.gameNameChecked ? "" : " disabledButton"
 
         return (
             <div className={"menu"}>
                 <form  onSubmit={(e) => {e.preventDefault()}}>
                     <label style={{ fontSize: "30px" }}>
-                        Room name:
-                        <input className={"roomNameInput" + disabledClass} type="text" value={this.state.name} onChange={this.handleNameChange} maxLength="50"/>
+                        Game name:
+                        <input className={"gameNameInput" + disabledClass} type="text" value={this.state.name} onChange={this.handleNameChange} maxLength="50"/>
                     </label>
                 </form>
                     <div className={"homeButtonContainer"}>
                     <div className={"homeButton"}>
                         <div className={"cursor" + disabledClass}></div>
-                        <Link to={`/${this.state.name}[${this.props.playerName}]`} onClick={this.createRoom} className={linkClass}>
+                        <Link to={`/${this.state.name}[${this.props.playerName}]`} onClick={this.createGame} className={linkClass}>
                             <h1 className={disabledClass}>ok</h1>
                         </Link>
                     </div>

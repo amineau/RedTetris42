@@ -1,28 +1,28 @@
-import { StackTetros } from './stackTetros'
+import { Piece } from './piece'
 import { Player } from './player'
 
-export default class Room {
+export default class Game {
 
-  constructor (room, player) {
-    this.name = room
+  constructor (game, player) {
+    this.name = game
     this.leader = player
     this.listPlayer = [player]
     this.state = 0
-    this._stack = null
+    this._piece = null
     this._position = 0
     this.initStack()
   }
 
-  get stack ()      { return this._stack.pool }
+  get stack ()      { return this._piece.pool }
 
   initStack () {
-    this._stack = new StackTetros()
+    this._piece = new Piece()
     this._position = 0
   }
 
   sendTetro (index, player) {
     player.position = index
-    return this._stack.tetroByIndex(index)
+    return this._piece.tetroByIndex(index)
   }
 
   add (player) {

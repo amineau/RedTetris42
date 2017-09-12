@@ -16,12 +16,12 @@ describe('socket: init', function(){
 
   after(function(done){tetrisServer.stop(done)})
 
-  it('init empty roomList', function(done){
+  it('init empty gameList', function(done){
     const initialState = {}
     const socket = io(params.server.url)
     const store =  configureStore(rootReducer, socket, initialState, {
       'INIT LIST': ({action}) =>{
-        expect(action).to.have.property("roomList")        
+        expect(action).to.have.property("gameList")        
         done()
       }
     })
@@ -30,7 +30,7 @@ describe('socket: init', function(){
 });
 
 
-describe('socket: room', function(){
+describe('socket: game', function(){
   let tetrisServer
   before(cb => startServer( params.server, function(err, server){
     tetrisServer = server
@@ -44,14 +44,14 @@ describe('socket: room', function(){
     const socket = io(params.server.url)
     const store =  configureStore(rootReducer, socket, initialState, {
       'ADD TO LIST': ({ action }) => {
-        expect(action).to.have.property("room")
-        expect(action.room.name).to.be.a("string")
-        expect(action.room).to.have.property("state")
-        expect(action.room.players).to.be.an('array').that.includes({name: "toto"})
+        expect(action).to.have.property("game")
+        expect(action.game.name).to.be.a("string")
+        expect(action.game).to.have.property("state")
+        expect(action.game.players).to.be.an('array').that.includes({name: "toto"})
         done()
       },
 	})
-    store.dispatch(create({room: 'e2',player: 'toto'}))
+    store.dispatch(create({game: 'e2',player: 'toto'}))
   });
 
    it('create fail', function(done){
@@ -64,7 +64,7 @@ describe('socket: room', function(){
           done()
         },
 	})
-    store.dispatch(create({room: 'e2',player: 'tutu'}))
+    store.dispatch(create({game: 'e2',player: 'tutu'}))
   });
 
   it('join fail', function(done){
@@ -73,11 +73,11 @@ describe('socket: room', function(){
     const store =  configureStore(rootReducer, socket, initialState, {
       'ERROR': ({ action }) => {
         expect(action).to.have.property("message")
-        expect(action.message).to.deep.equal('Room unknows')
+        expect(action.message).to.deep.equal('Game unknows')
         done()
       },
 	})
-    store.dispatch(join({room: 'e3',player: 'plop'}))
+    store.dispatch(join({game: 'e3',player: 'plop'}))
   });
 
   it('join success', function(done){
@@ -85,15 +85,15 @@ describe('socket: room', function(){
     const socket = io(params.server.url)
     const store =  configureStore(rootReducer, socket, initialState, {
       'UPDATE LIST': ({ action }) => {
-        expect(action).to.have.property("room")
-        expect(action.room.name).to.be.a("string")
-        expect(action.room).to.have.property("state")
-        expect(action.room.players).to.deep.include({name: "toto"})
-        expect(action.room.players).to.deep.include({name: "titi"})
+        expect(action).to.have.property("game")
+        expect(action.game.name).to.be.a("string")
+        expect(action.game).to.have.property("state")
+        expect(action.game.players).to.deep.include({name: "toto"})
+        expect(action.game.players).to.deep.include({name: "titi"})
         done()
       },
 	})
-    store.dispatch(join({room: 'e2',player: 'titi'}))
+    store.dispatch(join({game: 'e2',player: 'titi'}))
   });
 
 });
@@ -112,15 +112,15 @@ describe('socket: game', function(){
     const socket = io(params.server.url)
     const store =  configureStore(rootReducer, socket, initialState, {
       'UPDATE LIST': ({ action }) => {
-        expect(action).to.have.property("room")
-        expect(action.room.name).to.be.a("string")
-        expect(action.room).to.have.property("state")
-        expect(action.room.state).to.deep.equal(1)
+        expect(action).to.have.property("game")
+        expect(action.game.name).to.be.a("string")
+        expect(action.game).to.have.property("state")
+        expect(action.game.state).to.deep.equal(1)
       },
       'REMOVE TO LIST': ({ getState, action }) => {
         const state = getState()
-        expect(state).to.have.property("roomList")
-        expect(state.roomList).to.be.empty
+        expect(state).to.have.property("gameList")
+        expect(state.gameList).to.be.empty
         done()
       },
       'SCORE': ({action}) => {
@@ -132,7 +132,7 @@ describe('socket: game', function(){
         expect(action.player.board).to.deep.equal([0,0])   
       }
 	})
-    store.dispatch(create({room: 'e2',player: 'titi'}))
+    store.dispatch(create({game: 'e2',player: 'titi'}))
     store.dispatch(start())
     store.dispatch(ask_newtetro())
     store.dispatch(board_change())

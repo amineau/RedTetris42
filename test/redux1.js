@@ -1,6 +1,6 @@
 import {configureStore} from './helpers/server'
 import move from '../src/client/reducers/move'
-import {FALL, PLAYER_NAME, ROOM_INIT, RIGHT, LEFT, DIVE, INIT_LIST, ADD_TO_LIST, REMOVE_TO_LIST, UPDATE_LIST} from '../src/client/constants/ActionTypes'
+import {FALL, PLAYER_NAME, GAME_INIT, RIGHT, LEFT, DIVE, INIT_LIST, ADD_TO_LIST, REMOVE_TO_LIST, UPDATE_LIST} from '../src/client/constants/ActionTypes'
 
 import chai from "chai"
 
@@ -45,7 +45,7 @@ let blankState =
 {
   playerName: null,
   list: {
-    room: [],
+    game: [],
     player: [],
   },
   socket: 1,
@@ -59,67 +59,67 @@ describe('redux: INIT LIST', function(){
     const store =  configureStore(move, null, initialState, {
       'INIT LIST': ({dispatch, getState}) =>  {
         const state = getState()
-        expect(state.roomList).to.be.equal(7)
+        expect(state.gameList).to.be.equal(7)
         done()
       }
     })
-    store.dispatch({type: INIT_LIST, roomList: 7})
+    store.dispatch({type: INIT_LIST, gameList: 7})
   });
 });
 
 describe('redux: ADD TO LIST', function(){
   it('basic', function(done){
-    const initialState = { roomList: [5, 4] }
+    const initialState = { gameList: [5, 4] }
     const store =  configureStore(move, null, initialState, {
       'ADD TO LIST': ({dispatch, getState}) =>  {
         const state = getState()
-        expect(state.roomList).to.deep.equal([5, 4, 7])
+        expect(state.gameList).to.deep.equal([5, 4, 7])
         done()
       }
     })
-    store.dispatch({type: ADD_TO_LIST, room: 7})
+    store.dispatch({type: ADD_TO_LIST, game: 7})
   });
 });
 
 describe('redux: REMOVE TO LIST', function(){
   it('basic', function(done){
-    const initialState = { roomList: [ {name: "tutu"}, {name: "toto"} ] }
+    const initialState = { gameList: [ {name: "tutu"}, {name: "toto"} ] }
     const store =  configureStore(move, null, initialState, {
       'REMOVE TO LIST': ({dispatch, getState}) =>  {
         const state = getState()
-        expect(state.roomList).to.not.include({name: "tutu"})
-        expect(state.roomList).to.deep.include({name: "toto"})
+        expect(state.gameList).to.not.include({name: "tutu"})
+        expect(state.gameList).to.deep.include({name: "toto"})
         done()
       }
     })
-    store.dispatch({type: REMOVE_TO_LIST, room: {name: "tutu"}})
+    store.dispatch({type: REMOVE_TO_LIST, game: {name: "tutu"}})
   });
 });
 
 describe('redux: UPDATE LIST', function(){
   it('basic', function(done){
-    const initialState = { roomList: [ {name: "tutu", state: 0} ] }
+    const initialState = { gameList: [ {name: "tutu", state: 0} ] }
     const store =  configureStore(move, null, initialState, {
       'UPDATE LIST': ({dispatch, getState}) =>  {
         const state = getState()
-        expect(state.roomList).to.have.lengthOf(1)
-        expect(state.roomList[0]).to.have.all.keys('name', 'foo','state')
+        expect(state.gameList).to.have.lengthOf(1)
+        expect(state.gameList[0]).to.have.all.keys('name', 'foo','state')
         done()
       }
     })
-    store.dispatch({type: UPDATE_LIST, room: {name: "tutu", foo: "bar"}})
+    store.dispatch({type: UPDATE_LIST, game: {name: "tutu", foo: "bar"}})
   });
   it('basic_bis', function(done){
-    const initialState = { roomList: [ {name: "toto", state: 0} ] }
+    const initialState = { gameList: [ {name: "toto", state: 0} ] }
     const store =  configureStore(move, null, initialState, {
       'UPDATE LIST': ({dispatch, getState}) =>  {
         const state = getState()
-        expect(state.roomList).to.have.lengthOf(1)
-        expect(state.roomList[0]).to.have.all.keys('name','state')
+        expect(state.gameList).to.have.lengthOf(1)
+        expect(state.gameList[0]).to.have.all.keys('name','state')
         done()
       }
     })
-    store.dispatch({type: UPDATE_LIST, room: {name: "tutu", foo: "bar"}})
+    store.dispatch({type: UPDATE_LIST, game: {name: "tutu", foo: "bar"}})
   });
 });
 
@@ -139,17 +139,17 @@ describe('redux: PLAYER NAME', function(){
   });
 });
 
-describe('redux: ROOM INIT', function(){
+describe('redux: GAME INIT', function(){
   it('basic', function(done){
     const initialState = {}
     const store =  configureStore(move, null, initialState, {
-      'ROOM INIT': ({dispatch, getState}) =>  {
+      'GAME INIT': ({dispatch, getState}) =>  {
         const state = getState()
-        expect(state).to.have.property("room")
+        expect(state).to.have.property("game")
         done()
       }
     })
-    store.dispatch({type: ROOM_INIT, players: [{name: "bob"}]})
+    store.dispatch({type: GAME_INIT, players: [{name: "bob"}]})
   });
 });
 

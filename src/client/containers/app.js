@@ -10,17 +10,17 @@ import _ from 'lodash'
 import * as allActions from '../actions'
 import ping from '../actions/server'
 
-const App = ({ tetro, nextTetro, board, actions, roomList, hightScores, playerName, player, score, linesDone, linesDeleted, room, socket }) => {
+const App = ({ tetro, nextTetro, board, actions, gameList, hightScores, playerName, player, score, linesDone, linesDeleted, game, socket }) => {
   return (
     <BrowserRouter>
       <div>
         <Route exact path="/" render={ props => (
-          <Home actions={actions} playerName={playerName} roomList={roomList} hightScores={hightScores} socket={socket}/>
+          <Home actions={actions} playerName={playerName} gameList={gameList} hightScores={hightScores} socket={socket}/>
         )} />
-        <Route path="/:room[:player]" render={ props => (
+        <Route path="/:game[:player]" render={ props => (
           <MainView 
                   player={_.merge(player, {name: props.match.params.player})}
-                  room={_.merge(room, {name: props.match.params.room})}
+                  game={_.merge(game, {name: props.match.params.game})}
                   tetro={tetro}
                   nextTetro={nextTetro}
                   board={board}
