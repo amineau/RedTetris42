@@ -2,7 +2,6 @@
 .vscode/settings.json
 build
 dist
-package-lock.json
 npm-debug.log
 /coverage
 /.nyc_output

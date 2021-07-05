@@ -78,7 +78,7 @@ export const completeLine = board => {
         let lineIsFull = true
         for(let x = 1; x <= 10; x++) {
             const cell = x + y * 12
-            if (!board[cell] || board[cell] === 11) {
+            if (!board[cell]) {
                 lineIsFull = false
             }
         }
@@ -102,10 +102,16 @@ export const deleteLine = oldBoard => {
 
 export const addLine = (board, lineToAddNbr) => {
     let newBoard = [...board]
-    let typeCell = 11
+    let mapCellAdded = Array((lineToAddNbr + 1) * 12)
+    for (let line = 1; line <= lineToAddNbr; line++) {
+        const indexEmptyCell = Math.floor(Math.random() * 11 + 1);
+        for (let cell = 1; cell < 12; cell ++) {
+            mapCellAdded[line * 12 + cell] = indexEmptyCell === cell ? 0 : 11
+        }
+    }
     for(let cell = 252 - 12; cell >= 12; cell--) {
         if (cell % 12 !== 0 && cell % 12 !== 11)
-            newBoard[cell] = (cell >= 12 + (12 * lineToAddNbr)) ? newBoard[cell - (12 * lineToAddNbr)] : typeCell
+            newBoard[cell] = (cell >= 12 + (12 * lineToAddNbr)) ? newBoard[cell - (12 * lineToAddNbr)] : mapCellAdded[cell]
     }
     return newBoard
 }
